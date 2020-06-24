@@ -1,0 +1,36 @@
+{
+  "name": "fhir-mongoose-models",
+  "version": "0.0.1",
+  "description": "This is a library containing Mongoose models that conform to the FHIR specification. Its code is generated using the model-info-parser utility",
+  "main": "app/assets/javascripts/index.js",
+  "browser": {
+    "index.js": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MeasureAuthoringTool/fhir-mongoose-models.git"
+  },
+  "scripts": {
+    "generate-mongoose": "npx generateMongooseTypes -o ./app/assets/javascripts"
+  },
+  "keywords": [],
+  "author": "SemanticBits sb-mat-help@semanticbits.com",
+  "license": "CC0-1.0",
+  "dependencies": {},
+  "bak": {
+    "model-info-parser": "^0.0.3"
+  },
+  "devDependencies": {
+    "model-info-parser": "file:../model-info-parser"
+  },
+  "contributors": [
+    "Andrew Bird <andrew.bird@semanticbits.com>",
+    "Ashok Dongare <ashok.dongare@semanticbits.com>",
+    "Joseph Kotanchik <joseph.kotanchik@semanticbits.com>",
+    "Serhii Ilin <serhii.ilin@semanticbits.com>"
+  ],
+  "bugs": {
+    "url": "https://github.com/MeasureAuthoringTool/fhir-mongoose-models/issues"
+  },
+  "homepage": "https://github.com/MeasureAuthoringTool/fhir-mongoose-models#readme"
+}

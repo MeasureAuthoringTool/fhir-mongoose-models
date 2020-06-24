@@ -1,0 +1,16 @@
+node_modules
+coverage
+/Gemfile.lock
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+/.idea/
+*.iml
+.DS_Store
+# rspec failure tracking
+.rspec_status
