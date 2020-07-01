@@ -1,0 +1,61 @@
+{
+  "name": "fhir-mongoose-models",
+  "version": "0.0.1",
+  "description": "This is a library containing Mongoose models that conform to the FHIR specification. Its code is generated using the model-info-parser utility",
+  "main": "app/assets/javascripts/index.js",
+  "browser": {
+    "index.js": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MeasureAuthoringTool/fhir-mongoose-models.git"
+  },
+  "scripts": {
+    "dist": "browserify app/assets/javascripts/index.js > dist/index.js",
+    "browser": "browserify app/assets/javascripts/browser.js > dist/browser.js",
+    "browser_test": "browserify app/assets/javascripts/browser.js > tmp/dist/browser.js",
+    "dist_test": "browserify app/assets/javascripts/index.js > tmp/dist/index.js",
+    "lint": "npx eslint 'app/assets/javascripts/**/*.js' --ext .js",
+    "test": "npx jest",
+    "coverage": "npx jest --coverage"
+  },
+  "keywords": [],
+  "author": "SemanticBits sb-mat-help@semanticbits.com",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "mongoose": "^5.7.5"
+  },
+  "devDependencies": {
+    "model-info-parser": "^0.0.3",
+    "browserify": "^16.5.1",
+    "@types/faker": "^4.1.12",
+    "@types/jest": "^25.2.3",
+    "@types/lodash": "^4.14.153",
+    "@types/node": "^14.0.5",
+    "@types/xml2js": "^0.4.5",
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.13.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "faker": "^4.1.0",
+    "jest": "^26.0.1",
+    "jest-extended": "^0.11.5",
+    "prettier": "^2.0.5"
+  },
+  "contributors": [
+    "Andrew Bird <andrew.bird@semanticbits.com>",
+    "Ashok Dongare <ashok.dongare@semanticbits.com>",
+    "Joseph Kotanchik <joseph.kotanchik@semanticbits.com>",
+    "Serhii Ilin <serhii.ilin@semanticbits.com>"
+  ],
+  "bugs": {
+    "url": "https://github.com/MeasureAuthoringTool/fhir-mongoose-models/issues"
+  },
+  "homepage": "https://github.com/MeasureAuthoringTool/fhir-mongoose-models#readme",
+  "directories": {
+    "test": "test"
+  }
+}
