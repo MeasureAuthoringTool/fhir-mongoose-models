@@ -1,33 +1,27 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { ReferenceSchema } = require('./Reference');
 
 const ListEntrySchema = BackboneElementSchemaFunction({
-   flag : CodeableConceptSchema,
-   deleted : Boolean,
-   date : DateTime,
-   item : ReferenceSchema,
-   fhirTitle: { type: String, default: 'ListEntry' },
+  flag: CodeableConceptSchema,
+  deleted: PrimitiveBooleanSchema,
+  date: PrimitiveDateTimeSchema,
+  item: ReferenceSchema,
+  typeName: { type: String, default: 'ListEntry' },
+  _type: { type: String, default: 'FHIR::ListEntry' },
 });
 
 class ListEntry extends mongoose.Document {
   constructor(object) {
     super(object, ListEntrySchema);
+    this.typeName = 'ListEntry';
     this._type = 'FHIR::ListEntry';
   }
-};
-
+}
 
 module.exports.ListEntrySchema = ListEntrySchema;
 module.exports.ListEntry = ListEntry;

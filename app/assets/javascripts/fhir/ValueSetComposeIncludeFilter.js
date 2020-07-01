@@ -1,30 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { FilterOperatorSchema } = require('./FilterOperator');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { FilterOperatorSchema } = require('./FilterOperator');
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ValueSetComposeIncludeFilterSchema = BackboneElementSchemaFunction({
-   property : String,
-   op : FilterOperatorSchema,
-   value : String,
-   fhirTitle: { type: String, default: 'ValueSetComposeIncludeFilter' },
+  property: PrimitiveCodeSchema,
+  op: FilterOperatorSchema,
+  value: PrimitiveStringSchema,
+  typeName: { type: String, default: 'ValueSetComposeIncludeFilter' },
+  _type: { type: String, default: 'FHIR::ValueSetComposeIncludeFilter' },
 });
 
 class ValueSetComposeIncludeFilter extends mongoose.Document {
   constructor(object) {
     super(object, ValueSetComposeIncludeFilterSchema);
+    this.typeName = 'ValueSetComposeIncludeFilter';
     this._type = 'FHIR::ValueSetComposeIncludeFilter';
   }
-};
-
+}
 
 module.exports.ValueSetComposeIncludeFilterSchema = ValueSetComposeIncludeFilterSchema;
 module.exports.ValueSetComposeIncludeFilter = ValueSetComposeIncludeFilter;

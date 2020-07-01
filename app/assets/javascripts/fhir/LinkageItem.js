@@ -1,30 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { LinkageTypeSchema } = require('./LinkageType');
 const { ReferenceSchema } = require('./Reference');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const LinkageItemSchema = BackboneElementSchemaFunction({
-   type : LinkageTypeSchema,
-   resource : ReferenceSchema,
-   fhirTitle: { type: String, default: 'LinkageItem' },
+  type: LinkageTypeSchema,
+  resource: ReferenceSchema,
+  typeName: { type: String, default: 'LinkageItem' },
+  _type: { type: String, default: 'FHIR::LinkageItem' },
 });
 
 class LinkageItem extends mongoose.Document {
   constructor(object) {
     super(object, LinkageItemSchema);
+    this.typeName = 'LinkageItem';
     this._type = 'FHIR::LinkageItem';
   }
-};
-
+}
 
 module.exports.LinkageItemSchema = LinkageItemSchema;
 module.exports.LinkageItem = LinkageItem;

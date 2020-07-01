@@ -1,29 +1,22 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { QuantitySchema } = require('./Quantity');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { QuantitySchema } = require('./Quantity');
 
 const RatioSchema = ElementSchemaFunction({
-   numerator : QuantitySchema,
-   denominator : QuantitySchema,
-   fhirTitle: { type: String, default: 'Ratio' },
+  numerator: QuantitySchema,
+  denominator: QuantitySchema,
+  typeName: { type: String, default: 'Ratio' },
+  _type: { type: String, default: 'FHIR::Ratio' },
 });
 
 class Ratio extends mongoose.Document {
   constructor(object) {
     super(object, RatioSchema);
+    this.typeName = 'Ratio';
     this._type = 'FHIR::Ratio';
   }
-};
-
+}
 
 module.exports.RatioSchema = RatioSchema;
 module.exports.Ratio = Ratio;

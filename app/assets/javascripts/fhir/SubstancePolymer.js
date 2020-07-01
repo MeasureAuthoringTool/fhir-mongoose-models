@@ -1,35 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 const { SubstancePolymerMonomerSetSchema } = require('./SubstancePolymerMonomerSet');
 const { SubstancePolymerRepeatSchema } = require('./SubstancePolymerRepeat');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const SubstancePolymerSchema = DomainResourceSchemaFunction({
-   class : CodeableConceptSchema,
-   geometry : CodeableConceptSchema,
-   copolymerConnectivity : [CodeableConceptSchema],
-   modification : [String],
-   monomerSet : [SubstancePolymerMonomerSetSchema],
-   repeat : [SubstancePolymerRepeatSchema],
-   fhirTitle: { type: String, default: 'SubstancePolymer' },
+  class: CodeableConceptSchema,
+  geometry: CodeableConceptSchema,
+  copolymerConnectivity: [CodeableConceptSchema],
+  modification: [PrimitiveStringSchema],
+  monomerSet: [SubstancePolymerMonomerSetSchema],
+  repeat: [SubstancePolymerRepeatSchema],
+  typeName: { type: String, default: 'SubstancePolymer' },
+  _type: { type: String, default: 'FHIR::SubstancePolymer' },
 });
 
 class SubstancePolymer extends mongoose.Document {
   constructor(object) {
     super(object, SubstancePolymerSchema);
+    this.typeName = 'SubstancePolymer';
     this._type = 'FHIR::SubstancePolymer';
   }
-};
-
+}
 
 module.exports.SubstancePolymerSchema = SubstancePolymerSchema;
 module.exports.SubstancePolymer = SubstancePolymer;

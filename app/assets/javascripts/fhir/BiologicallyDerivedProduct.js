@@ -7,40 +7,34 @@ const { BiologicallyDerivedProductStatusSchema } = require('./BiologicallyDerive
 const { BiologicallyDerivedProductStorageSchema } = require('./BiologicallyDerivedProductStorage');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DomainResourceSchema } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ReferenceSchema } = require('./Reference');
 const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { IdentifierSchema } = require('./Identifier');
+const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
+const { ReferenceSchema } = require('./Reference');
 
 const BiologicallyDerivedProductSchema = DomainResourceSchemaFunction({
-   identifier : [IdentifierSchema],
-   productCategory : BiologicallyDerivedProductCategorySchema,
-   productCode : CodeableConceptSchema,
-   status : BiologicallyDerivedProductStatusSchema,
-   request : [ReferenceSchema],
-   quantity : Number,
-   parent : [ReferenceSchema],
-   collection : BiologicallyDerivedProductCollectionSchema,
-   processing : [BiologicallyDerivedProductProcessingSchema],
-   manipulation : BiologicallyDerivedProductManipulationSchema,
-   storage : [BiologicallyDerivedProductStorageSchema],
-   fhirTitle: { type: String, default: 'BiologicallyDerivedProduct' },
+  identifier: [IdentifierSchema],
+  productCategory: BiologicallyDerivedProductCategorySchema,
+  productCode: CodeableConceptSchema,
+  status: BiologicallyDerivedProductStatusSchema,
+  request: [ReferenceSchema],
+  quantity: PrimitiveIntegerSchema,
+  parent: [ReferenceSchema],
+  _collection: BiologicallyDerivedProductCollectionSchema,
+  processing: [BiologicallyDerivedProductProcessingSchema],
+  manipulation: BiologicallyDerivedProductManipulationSchema,
+  storage: [BiologicallyDerivedProductStorageSchema],
+  typeName: { type: String, default: 'BiologicallyDerivedProduct' },
+  _type: { type: String, default: 'FHIR::BiologicallyDerivedProduct' },
 });
 
 class BiologicallyDerivedProduct extends mongoose.Document {
   constructor(object) {
     super(object, BiologicallyDerivedProductSchema);
+    this.typeName = 'BiologicallyDerivedProduct';
     this._type = 'FHIR::BiologicallyDerivedProduct';
   }
-};
-
+}
 
 module.exports.BiologicallyDerivedProductSchema = BiologicallyDerivedProductSchema;
 module.exports.BiologicallyDerivedProduct = BiologicallyDerivedProduct;

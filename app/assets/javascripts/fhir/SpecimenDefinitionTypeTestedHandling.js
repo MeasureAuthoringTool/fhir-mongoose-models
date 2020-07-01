@@ -1,33 +1,27 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DurationSchema } = require('./Duration');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 const { RangeSchema } = require('./Range');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const SpecimenDefinitionTypeTestedHandlingSchema = BackboneElementSchemaFunction({
-   temperatureQualifier : CodeableConceptSchema,
-   temperatureRange : RangeSchema,
-   maxDuration : DurationSchema,
-   instruction : String,
-   fhirTitle: { type: String, default: 'SpecimenDefinitionTypeTestedHandling' },
+  temperatureQualifier: CodeableConceptSchema,
+  temperatureRange: RangeSchema,
+  maxDuration: DurationSchema,
+  instruction: PrimitiveStringSchema,
+  typeName: { type: String, default: 'SpecimenDefinitionTypeTestedHandling' },
+  _type: { type: String, default: 'FHIR::SpecimenDefinitionTypeTestedHandling' },
 });
 
 class SpecimenDefinitionTypeTestedHandling extends mongoose.Document {
   constructor(object) {
     super(object, SpecimenDefinitionTypeTestedHandlingSchema);
+    this.typeName = 'SpecimenDefinitionTypeTestedHandling';
     this._type = 'FHIR::SpecimenDefinitionTypeTestedHandling';
   }
-};
-
+}
 
 module.exports.SpecimenDefinitionTypeTestedHandlingSchema = SpecimenDefinitionTypeTestedHandlingSchema;
 module.exports.SpecimenDefinitionTypeTestedHandling = SpecimenDefinitionTypeTestedHandling;

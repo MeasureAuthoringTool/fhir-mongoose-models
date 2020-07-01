@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { PeriodSchema } = require('./Period');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PeriodSchema } = require('./Period');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { ReferenceSchema } = require('./Reference');
 
 const AccountGuarantorSchema = BackboneElementSchemaFunction({
-   party : ReferenceSchema,
-   onHold : Boolean,
-   period : PeriodSchema,
-   fhirTitle: { type: String, default: 'AccountGuarantor' },
+  party: ReferenceSchema,
+  onHold: PrimitiveBooleanSchema,
+  period: PeriodSchema,
+  typeName: { type: String, default: 'AccountGuarantor' },
+  _type: { type: String, default: 'FHIR::AccountGuarantor' },
 });
 
 class AccountGuarantor extends mongoose.Document {
   constructor(object) {
     super(object, AccountGuarantorSchema);
+    this.typeName = 'AccountGuarantor';
     this._type = 'FHIR::AccountGuarantor';
   }
-};
-
+}
 
 module.exports.AccountGuarantorSchema = AccountGuarantorSchema;
 module.exports.AccountGuarantor = AccountGuarantor;

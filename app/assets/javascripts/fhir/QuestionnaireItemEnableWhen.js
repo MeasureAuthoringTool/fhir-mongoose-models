@@ -1,44 +1,42 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
-const FHIRDate = require('./basetypes/FHIRDate');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodingSchema } = require('./Coding');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveTimeSchema } = require('./PrimitiveTime');
 const { QuantitySchema } = require('./Quantity');
 const { QuestionnaireItemOperatorSchema } = require('./QuestionnaireItemOperator');
 const { ReferenceSchema } = require('./Reference');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const QuestionnaireItemEnableWhenSchema = BackboneElementSchemaFunction({
-   question : String,
-   operator : QuestionnaireItemOperatorSchema,
-   answerBoolean : Boolean,
-   answerDecimal : Number,
-   answerInteger : Number,
-   answerDate : FHIRDate,
-   answerDateTime : DateTime,
-   answerTime : DateTime,
-   answerString : String,
-   answerCoding : CodingSchema,
-   answerQuantity : QuantitySchema,
-   answerReference : ReferenceSchema,
-   fhirTitle: { type: String, default: 'QuestionnaireItemEnableWhen' },
+  question: PrimitiveStringSchema,
+  operator: QuestionnaireItemOperatorSchema,
+  answerBoolean: PrimitiveBooleanSchema,
+  answerDecimal: PrimitiveDecimalSchema,
+  answerInteger: PrimitiveIntegerSchema,
+  answerDate: PrimitiveDateSchema,
+  answerDateTime: PrimitiveDateTimeSchema,
+  answerTime: PrimitiveTimeSchema,
+  answerString: PrimitiveStringSchema,
+  answerCoding: CodingSchema,
+  answerQuantity: QuantitySchema,
+  answerReference: ReferenceSchema,
+  typeName: { type: String, default: 'QuestionnaireItemEnableWhen' },
+  _type: { type: String, default: 'FHIR::QuestionnaireItemEnableWhen' },
 });
 
 class QuestionnaireItemEnableWhen extends mongoose.Document {
   constructor(object) {
     super(object, QuestionnaireItemEnableWhenSchema);
+    this.typeName = 'QuestionnaireItemEnableWhen';
     this._type = 'FHIR::QuestionnaireItemEnableWhen';
   }
-};
-
+}
 
 module.exports.QuestionnaireItemEnableWhenSchema = QuestionnaireItemEnableWhenSchema;
 module.exports.QuestionnaireItemEnableWhen = QuestionnaireItemEnableWhen;

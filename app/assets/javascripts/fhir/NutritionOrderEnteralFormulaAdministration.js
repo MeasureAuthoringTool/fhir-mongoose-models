@@ -1,33 +1,26 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { RatioSchema } = require('./Ratio');
 const { SimpleQuantitySchema } = require('./SimpleQuantity');
 const { TimingSchema } = require('./Timing');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const NutritionOrderEnteralFormulaAdministrationSchema = BackboneElementSchemaFunction({
-   schedule : TimingSchema,
-   quantity : SimpleQuantitySchema,
-   rateSimpleQuantity : SimpleQuantitySchema,
-   rateRatio : RatioSchema,
-   fhirTitle: { type: String, default: 'NutritionOrderEnteralFormulaAdministration' },
+  schedule: TimingSchema,
+  quantity: SimpleQuantitySchema,
+  rateSimpleQuantity: SimpleQuantitySchema,
+  rateRatio: RatioSchema,
+  typeName: { type: String, default: 'NutritionOrderEnteralFormulaAdministration' },
+  _type: { type: String, default: 'FHIR::NutritionOrderEnteralFormulaAdministration' },
 });
 
 class NutritionOrderEnteralFormulaAdministration extends mongoose.Document {
   constructor(object) {
     super(object, NutritionOrderEnteralFormulaAdministrationSchema);
+    this.typeName = 'NutritionOrderEnteralFormulaAdministration';
     this._type = 'FHIR::NutritionOrderEnteralFormulaAdministration';
   }
-};
-
+}
 
 module.exports.NutritionOrderEnteralFormulaAdministrationSchema = NutritionOrderEnteralFormulaAdministrationSchema;
 module.exports.NutritionOrderEnteralFormulaAdministration = NutritionOrderEnteralFormulaAdministration;

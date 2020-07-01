@@ -1,34 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeSystemConceptDesignationSchema } = require('./CodeSystemConceptDesignation');
 const { CodeSystemConceptPropertySchema } = require('./CodeSystemConceptProperty');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const CodeSystemConceptSchema = BackboneElementSchemaFunction({
-   code : String,
-   display : String,
-   definition : String,
-   designation : [CodeSystemConceptDesignationSchema],
-   property : [CodeSystemConceptPropertySchema],
-   concept : [CodeSystemConceptSchema],
-   fhirTitle: { type: String, default: 'CodeSystemConcept' },
+  code: PrimitiveCodeSchema,
+  display: PrimitiveStringSchema,
+  definition: PrimitiveStringSchema,
+  designation: [CodeSystemConceptDesignationSchema],
+  property: [CodeSystemConceptPropertySchema],
+  concept: [CodeSystemConceptSchema],
+  typeName: { type: String, default: 'CodeSystemConcept' },
+  _type: { type: String, default: 'FHIR::CodeSystemConcept' },
 });
 
 class CodeSystemConcept extends mongoose.Document {
   constructor(object) {
     super(object, CodeSystemConceptSchema);
+    this.typeName = 'CodeSystemConcept';
     this._type = 'FHIR::CodeSystemConcept';
   }
-};
-
+}
 
 module.exports.CodeSystemConceptSchema = CodeSystemConceptSchema;
 module.exports.CodeSystemConcept = CodeSystemConcept;

@@ -1,31 +1,24 @@
 const mongoose = require('mongoose/browser');
 const { ExtensionSchema } = require('./Extension');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
-const ElementSchema = new Schema({
-   id : String,
-   extension : [ExtensionSchema],
-   fhirTitle: { type: String, default: 'Element' },
+const ElementSchema = new mongoose.Schema({
+  id: String,
+  extension: [ExtensionSchema],
+  typeName: { type: String, default: 'Element' },
+  _type: { type: String, default: 'FHIR::Element' },
 });
 
 class Element extends mongoose.Document {
   constructor(object) {
     super(object, ElementSchema);
+    this.typeName = 'Element';
     this._type = 'FHIR::Element';
   }
-};
+}
 
-function  ElementSchemaFunction(add: SchemaDefinition, options: SchemaOptions) {
-  const extended = new Schema({
-
-   extension : [ExtensionSchema],
+function ElementSchemaFunction(add, options) {
+  const extended = new mongoose.Schema({
+    extension: [ExtensionSchema],
     id: {
       type: String,
       default() {

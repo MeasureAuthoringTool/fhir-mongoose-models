@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const StructureMapContextTypeSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'StructureMapContextType' },
+  value: String,
+  typeName: { type: String, default: 'StructureMapContextType' },
+  _type: { type: String, default: 'FHIR::StructureMapContextType' },
 });
 
 class StructureMapContextType extends mongoose.Document {
   constructor(object) {
     super(object, StructureMapContextTypeSchema);
+    this.typeName = 'StructureMapContextType';
     this._type = 'FHIR::StructureMapContextType';
   }
-};
-
+}
 
 module.exports.StructureMapContextTypeSchema = StructureMapContextTypeSchema;
 module.exports.StructureMapContextType = StructureMapContextType;

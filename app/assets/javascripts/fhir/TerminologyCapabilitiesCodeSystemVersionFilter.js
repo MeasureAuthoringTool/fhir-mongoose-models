@@ -1,28 +1,22 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
 
 const TerminologyCapabilitiesCodeSystemVersionFilterSchema = BackboneElementSchemaFunction({
-   code : String,
-   op : [String],
-   fhirTitle: { type: String, default: 'TerminologyCapabilitiesCodeSystemVersionFilter' },
+  code: PrimitiveCodeSchema,
+  op: [PrimitiveCodeSchema],
+  typeName: { type: String, default: 'TerminologyCapabilitiesCodeSystemVersionFilter' },
+  _type: { type: String, default: 'FHIR::TerminologyCapabilitiesCodeSystemVersionFilter' },
 });
 
 class TerminologyCapabilitiesCodeSystemVersionFilter extends mongoose.Document {
   constructor(object) {
     super(object, TerminologyCapabilitiesCodeSystemVersionFilterSchema);
+    this.typeName = 'TerminologyCapabilitiesCodeSystemVersionFilter';
     this._type = 'FHIR::TerminologyCapabilitiesCodeSystemVersionFilter';
   }
-};
-
+}
 
 module.exports.TerminologyCapabilitiesCodeSystemVersionFilterSchema = TerminologyCapabilitiesCodeSystemVersionFilterSchema;
 module.exports.TerminologyCapabilitiesCodeSystemVersionFilter = TerminologyCapabilitiesCodeSystemVersionFilter;

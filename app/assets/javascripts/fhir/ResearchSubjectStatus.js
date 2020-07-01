@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const ResearchSubjectStatusSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'ResearchSubjectStatus' },
+  value: String,
+  typeName: { type: String, default: 'ResearchSubjectStatus' },
+  _type: { type: String, default: 'FHIR::ResearchSubjectStatus' },
 });
 
 class ResearchSubjectStatus extends mongoose.Document {
   constructor(object) {
     super(object, ResearchSubjectStatusSchema);
+    this.typeName = 'ResearchSubjectStatus';
     this._type = 'FHIR::ResearchSubjectStatus';
   }
-};
-
+}
 
 module.exports.ResearchSubjectStatusSchema = ResearchSubjectStatusSchema;
 module.exports.ResearchSubjectStatus = ResearchSubjectStatus;

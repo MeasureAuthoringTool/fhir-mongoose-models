@@ -1,46 +1,43 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { CompartmentDefinitionResourceSchema } = require('./CompartmentDefinitionResource');
 const { CompartmentTypeSchema } = require('./CompartmentType');
 const { ContactDetailSchema } = require('./ContactDetail');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 const { PublicationStatusSchema } = require('./PublicationStatus');
 const { UsageContextSchema } = require('./UsageContext');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const CompartmentDefinitionSchema = DomainResourceSchemaFunction({
-   url : String,
-   version : String,
-   name : String,
-   status : PublicationStatusSchema,
-   experimental : Boolean,
-   date : DateTime,
-   publisher : String,
-   contact : [ContactDetailSchema],
-   description : String,
-   useContext : [UsageContextSchema],
-   purpose : String,
-   code : CompartmentTypeSchema,
-   search : Boolean,
-   resource : [CompartmentDefinitionResourceSchema],
-   fhirTitle: { type: String, default: 'CompartmentDefinition' },
+  url: PrimitiveUriSchema,
+  version: PrimitiveStringSchema,
+  name: PrimitiveStringSchema,
+  status: PublicationStatusSchema,
+  experimental: PrimitiveBooleanSchema,
+  date: PrimitiveDateTimeSchema,
+  publisher: PrimitiveStringSchema,
+  contact: [ContactDetailSchema],
+  description: PrimitiveMarkdownSchema,
+  useContext: [UsageContextSchema],
+  purpose: PrimitiveMarkdownSchema,
+  code: CompartmentTypeSchema,
+  search: PrimitiveBooleanSchema,
+  resource: [CompartmentDefinitionResourceSchema],
+  typeName: { type: String, default: 'CompartmentDefinition' },
+  _type: { type: String, default: 'FHIR::CompartmentDefinition' },
 });
 
 class CompartmentDefinition extends mongoose.Document {
   constructor(object) {
     super(object, CompartmentDefinitionSchema);
+    this.typeName = 'CompartmentDefinition';
     this._type = 'FHIR::CompartmentDefinition';
   }
-};
-
+}
 
 module.exports.CompartmentDefinitionSchema = CompartmentDefinitionSchema;
 module.exports.CompartmentDefinition = CompartmentDefinition;

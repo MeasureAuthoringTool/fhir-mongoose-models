@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const DeviceSpecializationSchema = BackboneElementSchemaFunction({
-   systemType : CodeableConceptSchema,
-   version : String,
-   fhirTitle: { type: String, default: 'DeviceSpecialization' },
+  systemType: CodeableConceptSchema,
+  version: PrimitiveStringSchema,
+  typeName: { type: String, default: 'DeviceSpecialization' },
+  _type: { type: String, default: 'FHIR::DeviceSpecialization' },
 });
 
 class DeviceSpecialization extends mongoose.Document {
   constructor(object) {
     super(object, DeviceSpecializationSchema);
+    this.typeName = 'DeviceSpecialization';
     this._type = 'FHIR::DeviceSpecialization';
   }
-};
-
+}
 
 module.exports.DeviceSpecializationSchema = DeviceSpecializationSchema;
 module.exports.DeviceSpecialization = DeviceSpecialization;

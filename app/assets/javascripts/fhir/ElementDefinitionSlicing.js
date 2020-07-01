@@ -1,32 +1,27 @@
 const mongoose = require('mongoose/browser');
-const { ElementDefinitionSlicingDiscriminatorSchema } = require('./ElementDefinitionSlicingDiscriminator');
 const { ElementSchema } = require('./Element');
-const { SlicingRulesSchema } = require('./SlicingRules');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { ElementDefinitionSlicingDiscriminatorSchema } = require('./ElementDefinitionSlicingDiscriminator');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { SlicingRulesSchema } = require('./SlicingRules');
 
 const ElementDefinitionSlicingSchema = ElementSchemaFunction({
-   discriminator : [ElementDefinitionSlicingDiscriminatorSchema],
-   description : String,
-   ordered : Boolean,
-   rules : SlicingRulesSchema,
-   fhirTitle: { type: String, default: 'ElementDefinitionSlicing' },
+  discriminator: [ElementDefinitionSlicingDiscriminatorSchema],
+  description: PrimitiveStringSchema,
+  ordered: PrimitiveBooleanSchema,
+  rules: SlicingRulesSchema,
+  typeName: { type: String, default: 'ElementDefinitionSlicing' },
+  _type: { type: String, default: 'FHIR::ElementDefinitionSlicing' },
 });
 
 class ElementDefinitionSlicing extends mongoose.Document {
   constructor(object) {
     super(object, ElementDefinitionSlicingSchema);
+    this.typeName = 'ElementDefinitionSlicing';
     this._type = 'FHIR::ElementDefinitionSlicing';
   }
-};
-
+}
 
 module.exports.ElementDefinitionSlicingSchema = ElementDefinitionSlicingSchema;
 module.exports.ElementDefinitionSlicing = ElementDefinitionSlicing;

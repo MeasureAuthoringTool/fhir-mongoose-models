@@ -1,28 +1,22 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const OperationDefinitionParameterReferencedFromSchema = BackboneElementSchemaFunction({
-   source : String,
-   sourceId : String,
-   fhirTitle: { type: String, default: 'OperationDefinitionParameterReferencedFrom' },
+  source: PrimitiveStringSchema,
+  sourceId: PrimitiveStringSchema,
+  typeName: { type: String, default: 'OperationDefinitionParameterReferencedFrom' },
+  _type: { type: String, default: 'FHIR::OperationDefinitionParameterReferencedFrom' },
 });
 
 class OperationDefinitionParameterReferencedFrom extends mongoose.Document {
   constructor(object) {
     super(object, OperationDefinitionParameterReferencedFromSchema);
+    this.typeName = 'OperationDefinitionParameterReferencedFrom';
     this._type = 'FHIR::OperationDefinitionParameterReferencedFrom';
   }
-};
-
+}
 
 module.exports.OperationDefinitionParameterReferencedFromSchema = OperationDefinitionParameterReferencedFromSchema;
 module.exports.OperationDefinitionParameterReferencedFrom = OperationDefinitionParameterReferencedFrom;

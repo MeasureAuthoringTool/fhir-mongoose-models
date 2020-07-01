@@ -2,38 +2,32 @@ const mongoose = require('mongoose/browser');
 const { AddressTypeSchema } = require('./AddressType');
 const { AddressUseSchema } = require('./AddressUse');
 const { ElementSchema } = require('./Element');
-const { PeriodSchema } = require('./Period');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PeriodSchema } = require('./Period');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const AddressSchema = ElementSchemaFunction({
-   use : AddressUseSchema,
-   type : AddressTypeSchema,
-   text : String,
-   line : [String],
-   city : String,
-   district : String,
-   state : String,
-   postalCode : String,
-   country : String,
-   period : PeriodSchema,
-   fhirTitle: { type: String, default: 'Address' },
+  use: AddressUseSchema,
+  type: AddressTypeSchema,
+  text: PrimitiveStringSchema,
+  line: [PrimitiveStringSchema],
+  city: PrimitiveStringSchema,
+  district: PrimitiveStringSchema,
+  state: PrimitiveStringSchema,
+  postalCode: PrimitiveStringSchema,
+  country: PrimitiveStringSchema,
+  period: PeriodSchema,
+  typeName: { type: String, default: 'Address' },
+  _type: { type: String, default: 'FHIR::Address' },
 });
 
 class Address extends mongoose.Document {
   constructor(object) {
     super(object, AddressSchema);
+    this.typeName = 'Address';
     this._type = 'FHIR::Address';
   }
-};
-
+}
 
 module.exports.AddressSchema = AddressSchema;
 module.exports.Address = Address;

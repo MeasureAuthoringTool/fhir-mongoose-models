@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { ExpressionSchema } = require('./Expression');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const MeasureGroupPopulationSchema = BackboneElementSchemaFunction({
-   code : CodeableConceptSchema,
-   description : String,
-   criteria : ExpressionSchema,
-   fhirTitle: { type: String, default: 'MeasureGroupPopulation' },
+  code: CodeableConceptSchema,
+  description: PrimitiveStringSchema,
+  criteria: ExpressionSchema,
+  typeName: { type: String, default: 'MeasureGroupPopulation' },
+  _type: { type: String, default: 'FHIR::MeasureGroupPopulation' },
 });
 
 class MeasureGroupPopulation extends mongoose.Document {
   constructor(object) {
     super(object, MeasureGroupPopulationSchema);
+    this.typeName = 'MeasureGroupPopulation';
     this._type = 'FHIR::MeasureGroupPopulation';
   }
-};
-
+}
 
 module.exports.MeasureGroupPopulationSchema = MeasureGroupPopulationSchema;
 module.exports.MeasureGroupPopulation = MeasureGroupPopulation;

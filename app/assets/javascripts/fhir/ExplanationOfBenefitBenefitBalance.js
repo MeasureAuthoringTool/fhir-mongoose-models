@@ -1,36 +1,31 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { ExplanationOfBenefitBenefitBalanceFinancialSchema } = require('./ExplanationOfBenefitBenefitBalanceFinancial');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ExplanationOfBenefitBenefitBalanceSchema = BackboneElementSchemaFunction({
-   category : CodeableConceptSchema,
-   excluded : Boolean,
-   name : String,
-   description : String,
-   network : CodeableConceptSchema,
-   unit : CodeableConceptSchema,
-   term : CodeableConceptSchema,
-   financial : [ExplanationOfBenefitBenefitBalanceFinancialSchema],
-   fhirTitle: { type: String, default: 'ExplanationOfBenefitBenefitBalance' },
+  category: CodeableConceptSchema,
+  excluded: PrimitiveBooleanSchema,
+  name: PrimitiveStringSchema,
+  description: PrimitiveStringSchema,
+  network: CodeableConceptSchema,
+  unit: CodeableConceptSchema,
+  term: CodeableConceptSchema,
+  financial: [ExplanationOfBenefitBenefitBalanceFinancialSchema],
+  typeName: { type: String, default: 'ExplanationOfBenefitBenefitBalance' },
+  _type: { type: String, default: 'FHIR::ExplanationOfBenefitBenefitBalance' },
 });
 
 class ExplanationOfBenefitBenefitBalance extends mongoose.Document {
   constructor(object) {
     super(object, ExplanationOfBenefitBenefitBalanceSchema);
+    this.typeName = 'ExplanationOfBenefitBenefitBalance';
     this._type = 'FHIR::ExplanationOfBenefitBenefitBalance';
   }
-};
-
+}
 
 module.exports.ExplanationOfBenefitBenefitBalanceSchema = ExplanationOfBenefitBenefitBalanceSchema;
 module.exports.ExplanationOfBenefitBenefitBalance = ExplanationOfBenefitBenefitBalance;

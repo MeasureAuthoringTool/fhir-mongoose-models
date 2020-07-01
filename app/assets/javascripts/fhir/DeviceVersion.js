@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { IdentifierSchema } = require('./Identifier');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const DeviceVersionSchema = BackboneElementSchemaFunction({
-   type : CodeableConceptSchema,
-   component : IdentifierSchema,
-   value : String,
-   fhirTitle: { type: String, default: 'DeviceVersion' },
+  type: CodeableConceptSchema,
+  component: IdentifierSchema,
+  value: PrimitiveStringSchema,
+  typeName: { type: String, default: 'DeviceVersion' },
+  _type: { type: String, default: 'FHIR::DeviceVersion' },
 });
 
 class DeviceVersion extends mongoose.Document {
   constructor(object) {
     super(object, DeviceVersionSchema);
+    this.typeName = 'DeviceVersion';
     this._type = 'FHIR::DeviceVersion';
   }
-};
-
+}
 
 module.exports.DeviceVersionSchema = DeviceVersionSchema;
 module.exports.DeviceVersion = DeviceVersion;

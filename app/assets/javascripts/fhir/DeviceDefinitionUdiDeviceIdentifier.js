@@ -1,29 +1,24 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 
 const DeviceDefinitionUdiDeviceIdentifierSchema = BackboneElementSchemaFunction({
-   deviceIdentifier : String,
-   issuer : String,
-   jurisdiction : String,
-   fhirTitle: { type: String, default: 'DeviceDefinitionUdiDeviceIdentifier' },
+  deviceIdentifier: PrimitiveStringSchema,
+  issuer: PrimitiveUriSchema,
+  jurisdiction: PrimitiveUriSchema,
+  typeName: { type: String, default: 'DeviceDefinitionUdiDeviceIdentifier' },
+  _type: { type: String, default: 'FHIR::DeviceDefinitionUdiDeviceIdentifier' },
 });
 
 class DeviceDefinitionUdiDeviceIdentifier extends mongoose.Document {
   constructor(object) {
     super(object, DeviceDefinitionUdiDeviceIdentifierSchema);
+    this.typeName = 'DeviceDefinitionUdiDeviceIdentifier';
     this._type = 'FHIR::DeviceDefinitionUdiDeviceIdentifier';
   }
-};
-
+}
 
 module.exports.DeviceDefinitionUdiDeviceIdentifierSchema = DeviceDefinitionUdiDeviceIdentifierSchema;
 module.exports.DeviceDefinitionUdiDeviceIdentifier = DeviceDefinitionUdiDeviceIdentifier;

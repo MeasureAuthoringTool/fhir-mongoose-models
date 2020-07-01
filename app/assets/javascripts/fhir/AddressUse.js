@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const AddressUseSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'AddressUse' },
+  value: String,
+  typeName: { type: String, default: 'AddressUse' },
+  _type: { type: String, default: 'FHIR::AddressUse' },
 });
 
 class AddressUse extends mongoose.Document {
   constructor(object) {
     super(object, AddressUseSchema);
+    this.typeName = 'AddressUse';
     this._type = 'FHIR::AddressUse';
   }
-};
-
+}
 
 module.exports.AddressUseSchema = AddressUseSchema;
 module.exports.AddressUse = AddressUse;

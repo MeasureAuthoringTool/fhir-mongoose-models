@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const RequestIntentSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'RequestIntent' },
+  value: String,
+  typeName: { type: String, default: 'RequestIntent' },
+  _type: { type: String, default: 'FHIR::RequestIntent' },
 });
 
 class RequestIntent extends mongoose.Document {
   constructor(object) {
     super(object, RequestIntentSchema);
+    this.typeName = 'RequestIntent';
     this._type = 'FHIR::RequestIntent';
   }
-};
-
+}
 
 module.exports.RequestIntentSchema = RequestIntentSchema;
 module.exports.RequestIntent = RequestIntent;

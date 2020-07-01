@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const CatalogEntryRelationTypeSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'CatalogEntryRelationType' },
+  value: String,
+  typeName: { type: String, default: 'CatalogEntryRelationType' },
+  _type: { type: String, default: 'FHIR::CatalogEntryRelationType' },
 });
 
 class CatalogEntryRelationType extends mongoose.Document {
   constructor(object) {
     super(object, CatalogEntryRelationTypeSchema);
+    this.typeName = 'CatalogEntryRelationType';
     this._type = 'FHIR::CatalogEntryRelationType';
   }
-};
-
+}
 
 module.exports.CatalogEntryRelationTypeSchema = CatalogEntryRelationTypeSchema;
 module.exports.CatalogEntryRelationType = CatalogEntryRelationType;

@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const CareTeamStatusSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'CareTeamStatus' },
+  value: String,
+  typeName: { type: String, default: 'CareTeamStatus' },
+  _type: { type: String, default: 'FHIR::CareTeamStatus' },
 });
 
 class CareTeamStatus extends mongoose.Document {
   constructor(object) {
     super(object, CareTeamStatusSchema);
+    this.typeName = 'CareTeamStatus';
     this._type = 'FHIR::CareTeamStatus';
   }
-};
-
+}
 
 module.exports.CareTeamStatusSchema = CareTeamStatusSchema;
 module.exports.CareTeamStatus = CareTeamStatus;

@@ -1,37 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ExtensionSchema } = require('./Extension');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { ExtensionSchema } = require('./Extension');
 
 const BackboneElementSchema = ElementSchemaFunction({
-   modifierExtension : [ExtensionSchema],
-   fhirTitle: { type: String, default: 'BackboneElement' },
+  modifierExtension: [ExtensionSchema],
+  typeName: { type: String, default: 'BackboneElement' },
+  _type: { type: String, default: 'FHIR::BackboneElement' },
 });
 
 class BackboneElement extends mongoose.Document {
   constructor(object) {
     super(object, BackboneElementSchema);
+    this.typeName = 'BackboneElement';
     this._type = 'FHIR::BackboneElement';
   }
-};
+}
 
-function  BackboneElementSchemaFunction(add: SchemaDefinition, options: SchemaOptions) {
-  const extended = new Schema({
-   modifierExtension : [ExtensionSchema],
-    id: {
-      type: String,
-      default() {
-        return this._id ? this._id.toString() : mongoose.Types.ObjectId().toString();
-      },
-    },
+function BackboneElementSchemaFunction(add, options) {
+  const extended = new mongoose.Schema({
+    modifierExtension: [ExtensionSchema],
   }, options);
 
   if (add) {

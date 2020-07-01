@@ -1,32 +1,27 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { NoteTypeSchema } = require('./NoteType');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ClaimResponseProcessNoteSchema = BackboneElementSchemaFunction({
-   number : Number,
-   type : NoteTypeSchema,
-   text : String,
-   language : CodeableConceptSchema,
-   fhirTitle: { type: String, default: 'ClaimResponseProcessNote' },
+  number: PrimitivePositiveIntSchema,
+  type: NoteTypeSchema,
+  text: PrimitiveStringSchema,
+  language: CodeableConceptSchema,
+  typeName: { type: String, default: 'ClaimResponseProcessNote' },
+  _type: { type: String, default: 'FHIR::ClaimResponseProcessNote' },
 });
 
 class ClaimResponseProcessNote extends mongoose.Document {
   constructor(object) {
     super(object, ClaimResponseProcessNoteSchema);
+    this.typeName = 'ClaimResponseProcessNote';
     this._type = 'FHIR::ClaimResponseProcessNote';
   }
-};
-
+}
 
 module.exports.ClaimResponseProcessNoteSchema = ClaimResponseProcessNoteSchema;
 module.exports.ClaimResponseProcessNote = ClaimResponseProcessNote;

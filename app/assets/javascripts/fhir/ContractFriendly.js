@@ -1,30 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { AttachmentSchema } = require('./Attachment');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { ReferenceSchema } = require('./Reference');
 
 const ContractFriendlySchema = BackboneElementSchemaFunction({
-   contentAttachment : AttachmentSchema,
-   contentReference : ReferenceSchema,
-   fhirTitle: { type: String, default: 'ContractFriendly' },
+  contentAttachment: AttachmentSchema,
+  contentReference: ReferenceSchema,
+  typeName: { type: String, default: 'ContractFriendly' },
+  _type: { type: String, default: 'FHIR::ContractFriendly' },
 });
 
 class ContractFriendly extends mongoose.Document {
   constructor(object) {
     super(object, ContractFriendlySchema);
+    this.typeName = 'ContractFriendly';
     this._type = 'FHIR::ContractFriendly';
   }
-};
-
+}
 
 module.exports.ContractFriendlySchema = ContractFriendlySchema;
 module.exports.ContractFriendly = ContractFriendly;

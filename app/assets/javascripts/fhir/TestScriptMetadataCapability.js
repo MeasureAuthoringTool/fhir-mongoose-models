@@ -1,33 +1,31 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
+const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 
 const TestScriptMetadataCapabilitySchema = BackboneElementSchemaFunction({
-   required : Boolean,
-   validated : Boolean,
-   description : String,
-   origin : [Number],
-   destination : Number,
-   link : [String],
-   capabilities : String,
-   fhirTitle: { type: String, default: 'TestScriptMetadataCapability' },
+  required: PrimitiveBooleanSchema,
+  _validated: PrimitiveBooleanSchema,
+  description: PrimitiveStringSchema,
+  origin: [PrimitiveIntegerSchema],
+  destination: PrimitiveIntegerSchema,
+  link: [PrimitiveUriSchema],
+  capabilities: PrimitiveCanonicalSchema,
+  typeName: { type: String, default: 'TestScriptMetadataCapability' },
+  _type: { type: String, default: 'FHIR::TestScriptMetadataCapability' },
 });
 
 class TestScriptMetadataCapability extends mongoose.Document {
   constructor(object) {
     super(object, TestScriptMetadataCapabilitySchema);
+    this.typeName = 'TestScriptMetadataCapability';
     this._type = 'FHIR::TestScriptMetadataCapability';
   }
-};
-
+}
 
 module.exports.TestScriptMetadataCapabilitySchema = TestScriptMetadataCapabilitySchema;
 module.exports.TestScriptMetadataCapability = TestScriptMetadataCapability;

@@ -1,34 +1,28 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { ReferenceSchema } = require('./Reference');
 
 const SubstanceSpecificationCodeSchema = BackboneElementSchemaFunction({
-   code : CodeableConceptSchema,
-   status : CodeableConceptSchema,
-   statusDate : DateTime,
-   comment : String,
-   source : [ReferenceSchema],
-   fhirTitle: { type: String, default: 'SubstanceSpecificationCode' },
+  code: CodeableConceptSchema,
+  status: CodeableConceptSchema,
+  statusDate: PrimitiveDateTimeSchema,
+  comment: PrimitiveStringSchema,
+  source: [ReferenceSchema],
+  typeName: { type: String, default: 'SubstanceSpecificationCode' },
+  _type: { type: String, default: 'FHIR::SubstanceSpecificationCode' },
 });
 
 class SubstanceSpecificationCode extends mongoose.Document {
   constructor(object) {
     super(object, SubstanceSpecificationCodeSchema);
+    this.typeName = 'SubstanceSpecificationCode';
     this._type = 'FHIR::SubstanceSpecificationCode';
   }
-};
-
+}
 
 module.exports.SubstanceSpecificationCodeSchema = SubstanceSpecificationCodeSchema;
 module.exports.SubstanceSpecificationCode = SubstanceSpecificationCode;

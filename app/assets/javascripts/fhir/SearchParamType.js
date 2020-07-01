@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const SearchParamTypeSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'SearchParamType' },
+  value: String,
+  typeName: { type: String, default: 'SearchParamType' },
+  _type: { type: String, default: 'FHIR::SearchParamType' },
 });
 
 class SearchParamType extends mongoose.Document {
   constructor(object) {
     super(object, SearchParamTypeSchema);
+    this.typeName = 'SearchParamType';
     this._type = 'FHIR::SearchParamType';
   }
-};
-
+}
 
 module.exports.SearchParamTypeSchema = SearchParamTypeSchema;
 module.exports.SearchParamType = SearchParamType;

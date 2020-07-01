@@ -1,33 +1,28 @@
 const mongoose = require('mongoose/browser');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DomainResourceSchema } = require('./DomainResource');
-const { SubstanceNucleicAcidSubunitSchema } = require('./SubstanceNucleicAcidSubunit');
 const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { SubstanceNucleicAcidSubunitSchema } = require('./SubstanceNucleicAcidSubunit');
 
 const SubstanceNucleicAcidSchema = DomainResourceSchemaFunction({
-   sequenceType : CodeableConceptSchema,
-   numberOfSubunits : Number,
-   areaOfHybridisation : String,
-   oligoNucleotideType : CodeableConceptSchema,
-   subunit : [SubstanceNucleicAcidSubunitSchema],
-   fhirTitle: { type: String, default: 'SubstanceNucleicAcid' },
+  sequenceType: CodeableConceptSchema,
+  numberOfSubunits: PrimitiveIntegerSchema,
+  areaOfHybridisation: PrimitiveStringSchema,
+  oligoNucleotideType: CodeableConceptSchema,
+  subunit: [SubstanceNucleicAcidSubunitSchema],
+  typeName: { type: String, default: 'SubstanceNucleicAcid' },
+  _type: { type: String, default: 'FHIR::SubstanceNucleicAcid' },
 });
 
 class SubstanceNucleicAcid extends mongoose.Document {
   constructor(object) {
     super(object, SubstanceNucleicAcidSchema);
+    this.typeName = 'SubstanceNucleicAcid';
     this._type = 'FHIR::SubstanceNucleicAcid';
   }
-};
-
+}
 
 module.exports.SubstanceNucleicAcidSchema = SubstanceNucleicAcidSchema;
 module.exports.SubstanceNucleicAcid = SubstanceNucleicAcid;

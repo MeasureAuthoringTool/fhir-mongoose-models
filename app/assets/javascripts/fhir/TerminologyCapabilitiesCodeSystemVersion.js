@@ -1,33 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { TerminologyCapabilitiesCodeSystemVersionFilterSchema } = require('./TerminologyCapabilitiesCodeSystemVersionFilter');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { TerminologyCapabilitiesCodeSystemVersionFilterSchema } = require('./TerminologyCapabilitiesCodeSystemVersionFilter');
 
 const TerminologyCapabilitiesCodeSystemVersionSchema = BackboneElementSchemaFunction({
-   code : String,
-   isDefault : Boolean,
-   compositional : Boolean,
-   language : [String],
-   filter : [TerminologyCapabilitiesCodeSystemVersionFilterSchema],
-   property : [String],
-   fhirTitle: { type: String, default: 'TerminologyCapabilitiesCodeSystemVersion' },
+  code: PrimitiveStringSchema,
+  isDefault: PrimitiveBooleanSchema,
+  compositional: PrimitiveBooleanSchema,
+  language: [PrimitiveCodeSchema],
+  filter: [TerminologyCapabilitiesCodeSystemVersionFilterSchema],
+  property: [PrimitiveCodeSchema],
+  typeName: { type: String, default: 'TerminologyCapabilitiesCodeSystemVersion' },
+  _type: { type: String, default: 'FHIR::TerminologyCapabilitiesCodeSystemVersion' },
 });
 
 class TerminologyCapabilitiesCodeSystemVersion extends mongoose.Document {
   constructor(object) {
     super(object, TerminologyCapabilitiesCodeSystemVersionSchema);
+    this.typeName = 'TerminologyCapabilitiesCodeSystemVersion';
     this._type = 'FHIR::TerminologyCapabilitiesCodeSystemVersion';
   }
-};
-
+}
 
 module.exports.TerminologyCapabilitiesCodeSystemVersionSchema = TerminologyCapabilitiesCodeSystemVersionSchema;
 module.exports.TerminologyCapabilitiesCodeSystemVersion = TerminologyCapabilitiesCodeSystemVersion;

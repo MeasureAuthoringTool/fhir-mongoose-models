@@ -1,38 +1,32 @@
 const mongoose = require('mongoose/browser');
-const FHIRDate = require('./basetypes/FHIRDate');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 const { ReferenceSchema } = require('./Reference');
 const { SignatureSchema } = require('./Signature');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const VerificationResultAttestationSchema = BackboneElementSchemaFunction({
-   who : ReferenceSchema,
-   onBehalfOf : ReferenceSchema,
-   communicationMethod : CodeableConceptSchema,
-   date : FHIRDate,
-   sourceIdentityCertificate : String,
-   proxyIdentityCertificate : String,
-   proxySignature : SignatureSchema,
-   sourceSignature : SignatureSchema,
-   fhirTitle: { type: String, default: 'VerificationResultAttestation' },
+  who: ReferenceSchema,
+  onBehalfOf: ReferenceSchema,
+  communicationMethod: CodeableConceptSchema,
+  date: PrimitiveDateSchema,
+  sourceIdentityCertificate: PrimitiveStringSchema,
+  proxyIdentityCertificate: PrimitiveStringSchema,
+  proxySignature: SignatureSchema,
+  sourceSignature: SignatureSchema,
+  typeName: { type: String, default: 'VerificationResultAttestation' },
+  _type: { type: String, default: 'FHIR::VerificationResultAttestation' },
 });
 
 class VerificationResultAttestation extends mongoose.Document {
   constructor(object) {
     super(object, VerificationResultAttestationSchema);
+    this.typeName = 'VerificationResultAttestation';
     this._type = 'FHIR::VerificationResultAttestation';
   }
-};
-
+}
 
 module.exports.VerificationResultAttestationSchema = VerificationResultAttestationSchema;
 module.exports.VerificationResultAttestation = VerificationResultAttestation;

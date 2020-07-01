@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const ProvenanceEntityRoleSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'ProvenanceEntityRole' },
+  value: String,
+  typeName: { type: String, default: 'ProvenanceEntityRole' },
+  _type: { type: String, default: 'FHIR::ProvenanceEntityRole' },
 });
 
 class ProvenanceEntityRole extends mongoose.Document {
   constructor(object) {
     super(object, ProvenanceEntityRoleSchema);
+    this.typeName = 'ProvenanceEntityRole';
     this._type = 'FHIR::ProvenanceEntityRole';
   }
-};
-
+}
 
 module.exports.ProvenanceEntityRoleSchema = ProvenanceEntityRoleSchema;
 module.exports.ProvenanceEntityRole = ProvenanceEntityRole;

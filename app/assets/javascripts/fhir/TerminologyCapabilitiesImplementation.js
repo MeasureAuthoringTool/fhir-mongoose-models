@@ -1,28 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
 
 const TerminologyCapabilitiesImplementationSchema = BackboneElementSchemaFunction({
-   description : String,
-   url : String,
-   fhirTitle: { type: String, default: 'TerminologyCapabilitiesImplementation' },
+  description: PrimitiveStringSchema,
+  url: PrimitiveUrlSchema,
+  typeName: { type: String, default: 'TerminologyCapabilitiesImplementation' },
+  _type: { type: String, default: 'FHIR::TerminologyCapabilitiesImplementation' },
 });
 
 class TerminologyCapabilitiesImplementation extends mongoose.Document {
   constructor(object) {
     super(object, TerminologyCapabilitiesImplementationSchema);
+    this.typeName = 'TerminologyCapabilitiesImplementation';
     this._type = 'FHIR::TerminologyCapabilitiesImplementation';
   }
-};
-
+}
 
 module.exports.TerminologyCapabilitiesImplementationSchema = TerminologyCapabilitiesImplementationSchema;
 module.exports.TerminologyCapabilitiesImplementation = TerminologyCapabilitiesImplementation;

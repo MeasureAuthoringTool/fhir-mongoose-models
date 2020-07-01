@@ -1,35 +1,30 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
+const { PrimitiveIdSchema } = require('./PrimitiveId');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 const { StructureMapGroupInputSchema } = require('./StructureMapGroupInput');
 const { StructureMapGroupRuleSchema } = require('./StructureMapGroupRule');
 const { StructureMapGroupTypeModeSchema } = require('./StructureMapGroupTypeMode');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const StructureMapGroupSchema = BackboneElementSchemaFunction({
-   name : String,
-   extends : String,
-   typeMode : StructureMapGroupTypeModeSchema,
-   documentation : String,
-   input : [StructureMapGroupInputSchema],
-   rule : [StructureMapGroupRuleSchema],
-   fhirTitle: { type: String, default: 'StructureMapGroup' },
+  name: PrimitiveIdSchema,
+  extends: PrimitiveIdSchema,
+  typeMode: StructureMapGroupTypeModeSchema,
+  documentation: PrimitiveStringSchema,
+  input: [StructureMapGroupInputSchema],
+  rule: [StructureMapGroupRuleSchema],
+  typeName: { type: String, default: 'StructureMapGroup' },
+  _type: { type: String, default: 'FHIR::StructureMapGroup' },
 });
 
 class StructureMapGroup extends mongoose.Document {
   constructor(object) {
     super(object, StructureMapGroupSchema);
+    this.typeName = 'StructureMapGroup';
     this._type = 'FHIR::StructureMapGroup';
   }
-};
-
+}
 
 module.exports.StructureMapGroupSchema = StructureMapGroupSchema;
 module.exports.StructureMapGroup = StructureMapGroup;

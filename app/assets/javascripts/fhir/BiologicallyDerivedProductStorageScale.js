@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const BiologicallyDerivedProductStorageScaleSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'BiologicallyDerivedProductStorageScale' },
+  value: String,
+  typeName: { type: String, default: 'BiologicallyDerivedProductStorageScale' },
+  _type: { type: String, default: 'FHIR::BiologicallyDerivedProductStorageScale' },
 });
 
 class BiologicallyDerivedProductStorageScale extends mongoose.Document {
   constructor(object) {
     super(object, BiologicallyDerivedProductStorageScaleSchema);
+    this.typeName = 'BiologicallyDerivedProductStorageScale';
     this._type = 'FHIR::BiologicallyDerivedProductStorageScale';
   }
-};
-
+}
 
 module.exports.BiologicallyDerivedProductStorageScaleSchema = BiologicallyDerivedProductStorageScaleSchema;
 module.exports.BiologicallyDerivedProductStorageScale = BiologicallyDerivedProductStorageScale;

@@ -1,28 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const TerminologyCapabilitiesExpansionParameterSchema = BackboneElementSchemaFunction({
-   name : String,
-   documentation : String,
-   fhirTitle: { type: String, default: 'TerminologyCapabilitiesExpansionParameter' },
+  name: PrimitiveCodeSchema,
+  documentation: PrimitiveStringSchema,
+  typeName: { type: String, default: 'TerminologyCapabilitiesExpansionParameter' },
+  _type: { type: String, default: 'FHIR::TerminologyCapabilitiesExpansionParameter' },
 });
 
 class TerminologyCapabilitiesExpansionParameter extends mongoose.Document {
   constructor(object) {
     super(object, TerminologyCapabilitiesExpansionParameterSchema);
+    this.typeName = 'TerminologyCapabilitiesExpansionParameter';
     this._type = 'FHIR::TerminologyCapabilitiesExpansionParameter';
   }
-};
-
+}
 
 module.exports.TerminologyCapabilitiesExpansionParameterSchema = TerminologyCapabilitiesExpansionParameterSchema;
 module.exports.TerminologyCapabilitiesExpansionParameter = TerminologyCapabilitiesExpansionParameter;

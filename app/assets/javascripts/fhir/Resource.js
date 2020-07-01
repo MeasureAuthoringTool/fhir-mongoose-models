@@ -1,37 +1,32 @@
 const mongoose = require('mongoose/browser');
 const { MetaSchema } = require('./Meta');
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
-const ResourceSchema = new Schema({
-   id : String,
-   meta : MetaSchema,
-   implicitRules : String,
-   language : String,
-   resourceType : String,
-   fhirTitle: { type: String, default: 'Resource' },
+const ResourceSchema = new mongoose.Schema({
+  id: String,
+  meta: MetaSchema,
+  implicitRules: PrimitiveUriSchema,
+  language: PrimitiveCodeSchema,
+  resourceType: String,
+  typeName: { type: String, default: 'Resource' },
+  _type: { type: String, default: 'FHIR::Resource' },
 });
 
 class Resource extends mongoose.Document {
   constructor(object) {
     super(object, ResourceSchema);
+    this.typeName = 'Resource';
     this._type = 'FHIR::Resource';
   }
-};
+}
 
-function  ResourceSchemaFunction(add: SchemaDefinition, options: SchemaOptions) {
-  const extended = new Schema({
-
-   meta : MetaSchema,
-   implicitRules : String,
-   language : String,
-   resourceType : String,
+function ResourceSchemaFunction(add, options) {
+  const extended = new mongoose.Schema({
+    meta: MetaSchema,
+    implicitRules: PrimitiveUriSchema,
+    language: PrimitiveCodeSchema,
+    resourceType: String,
     id: {
       type: String,
       default() {

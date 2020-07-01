@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const MedicationKnowledgeStatusSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'MedicationKnowledgeStatus' },
+  value: String,
+  typeName: { type: String, default: 'MedicationKnowledgeStatus' },
+  _type: { type: String, default: 'FHIR::MedicationKnowledgeStatus' },
 });
 
 class MedicationKnowledgeStatus extends mongoose.Document {
   constructor(object) {
     super(object, MedicationKnowledgeStatusSchema);
+    this.typeName = 'MedicationKnowledgeStatus';
     this._type = 'FHIR::MedicationKnowledgeStatus';
   }
-};
-
+}
 
 module.exports.MedicationKnowledgeStatusSchema = MedicationKnowledgeStatusSchema;
 module.exports.MedicationKnowledgeStatus = MedicationKnowledgeStatus;

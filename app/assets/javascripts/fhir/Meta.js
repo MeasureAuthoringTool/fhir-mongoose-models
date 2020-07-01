@@ -1,34 +1,30 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { CodingSchema } = require('./Coding');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
+const { PrimitiveIdSchema } = require('./PrimitiveId');
+const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 
 const MetaSchema = ElementSchemaFunction({
-   versionId : String,
-   lastUpdated : DateTime,
-   source : String,
-   profile : [String],
-   security : [CodingSchema],
-   tag : [CodingSchema],
-   fhirTitle: { type: String, default: 'Meta' },
+  versionId: PrimitiveIdSchema,
+  lastUpdated: PrimitiveInstantSchema,
+  source: PrimitiveUriSchema,
+  profile: [PrimitiveCanonicalSchema],
+  security: [CodingSchema],
+  tag: [CodingSchema],
+  typeName: { type: String, default: 'Meta' },
+  _type: { type: String, default: 'FHIR::Meta' },
 });
 
 class Meta extends mongoose.Document {
   constructor(object) {
     super(object, MetaSchema);
+    this.typeName = 'Meta';
     this._type = 'FHIR::Meta';
   }
-};
-
+}
 
 module.exports.MetaSchema = MetaSchema;
 module.exports.Meta = Meta;

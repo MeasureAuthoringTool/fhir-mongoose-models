@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { GuideParameterCodeSchema } = require('./GuideParameterCode');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { GuideParameterCodeSchema } = require('./GuideParameterCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ImplementationGuideDefinitionParameterSchema = BackboneElementSchemaFunction({
-   code : GuideParameterCodeSchema,
-   value : String,
-   fhirTitle: { type: String, default: 'ImplementationGuideDefinitionParameter' },
+  code: GuideParameterCodeSchema,
+  value: PrimitiveStringSchema,
+  typeName: { type: String, default: 'ImplementationGuideDefinitionParameter' },
+  _type: { type: String, default: 'FHIR::ImplementationGuideDefinitionParameter' },
 });
 
 class ImplementationGuideDefinitionParameter extends mongoose.Document {
   constructor(object) {
     super(object, ImplementationGuideDefinitionParameterSchema);
+    this.typeName = 'ImplementationGuideDefinitionParameter';
     this._type = 'FHIR::ImplementationGuideDefinitionParameter';
   }
-};
-
+}
 
 module.exports.ImplementationGuideDefinitionParameterSchema = ImplementationGuideDefinitionParameterSchema;
 module.exports.ImplementationGuideDefinitionParameter = ImplementationGuideDefinitionParameter;

@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const FHIRDefinedTypeSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'FHIRDefinedType' },
+  value: String,
+  typeName: { type: String, default: 'FHIRDefinedType' },
+  _type: { type: String, default: 'FHIR::FHIRDefinedType' },
 });
 
 class FHIRDefinedType extends mongoose.Document {
   constructor(object) {
     super(object, FHIRDefinedTypeSchema);
+    this.typeName = 'FHIRDefinedType';
     this._type = 'FHIR::FHIRDefinedType';
   }
-};
-
+}
 
 module.exports.FHIRDefinedTypeSchema = FHIRDefinedTypeSchema;
 module.exports.FHIRDefinedType = FHIRDefinedType;

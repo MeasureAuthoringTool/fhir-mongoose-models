@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { MedicinalProductNameCountryLanguageSchema } = require('./MedicinalProductNameCountryLanguage');
 const { MedicinalProductNameNamePartSchema } = require('./MedicinalProductNameNamePart');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const MedicinalProductNameSchema = BackboneElementSchemaFunction({
-   productName : String,
-   namePart : [MedicinalProductNameNamePartSchema],
-   countryLanguage : [MedicinalProductNameCountryLanguageSchema],
-   fhirTitle: { type: String, default: 'MedicinalProductName' },
+  productName: PrimitiveStringSchema,
+  namePart: [MedicinalProductNameNamePartSchema],
+  countryLanguage: [MedicinalProductNameCountryLanguageSchema],
+  typeName: { type: String, default: 'MedicinalProductName' },
+  _type: { type: String, default: 'FHIR::MedicinalProductName' },
 });
 
 class MedicinalProductName extends mongoose.Document {
   constructor(object) {
     super(object, MedicinalProductNameSchema);
+    this.typeName = 'MedicinalProductName';
     this._type = 'FHIR::MedicinalProductName';
   }
-};
-
+}
 
 module.exports.MedicinalProductNameSchema = MedicinalProductNameSchema;
 module.exports.MedicinalProductName = MedicinalProductName;

@@ -1,33 +1,28 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { ResourceSchema } = require('./Resource');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { ResourceSchema } = require('./Resource');
 
 const BundleEntryResponseSchema = BackboneElementSchemaFunction({
-   status : String,
-   location : String,
-   etag : String,
-   lastModified : DateTime,
-   outcome : ResourceSchema,
-   fhirTitle: { type: String, default: 'BundleEntryResponse' },
+  status: PrimitiveStringSchema,
+  location: PrimitiveUriSchema,
+  etag: PrimitiveStringSchema,
+  lastModified: PrimitiveInstantSchema,
+  outcome: ResourceSchema,
+  typeName: { type: String, default: 'BundleEntryResponse' },
+  _type: { type: String, default: 'FHIR::BundleEntryResponse' },
 });
 
 class BundleEntryResponse extends mongoose.Document {
   constructor(object) {
     super(object, BundleEntryResponseSchema);
+    this.typeName = 'BundleEntryResponse';
     this._type = 'FHIR::BundleEntryResponse';
   }
-};
-
+}
 
 module.exports.BundleEntryResponseSchema = BundleEntryResponseSchema;
 module.exports.BundleEntryResponse = BundleEntryResponse;

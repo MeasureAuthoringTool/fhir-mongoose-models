@@ -1,56 +1,52 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { AnnotationSchema } = require('./Annotation');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { ContractTermActionSubjectSchema } = require('./ContractTermActionSubject');
 const { PeriodSchema } = require('./Period');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
 const { ReferenceSchema } = require('./Reference');
 const { TimingSchema } = require('./Timing');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const ContractTermActionSchema = BackboneElementSchemaFunction({
-   doNotPerform : Boolean,
-   type : CodeableConceptSchema,
-   subject : [ContractTermActionSubjectSchema],
-   intent : CodeableConceptSchema,
-   linkId : [String],
-   status : CodeableConceptSchema,
-   context : ReferenceSchema,
-   contextLinkId : [String],
-   occurrenceDateTime : DateTime,
-   occurrencePeriod : PeriodSchema,
-   occurrenceTiming : TimingSchema,
-   requester : [ReferenceSchema],
-   requesterLinkId : [String],
-   performerType : [CodeableConceptSchema],
-   performerRole : CodeableConceptSchema,
-   performer : ReferenceSchema,
-   performerLinkId : [String],
-   reasonCode : [CodeableConceptSchema],
-   reasonReference : [ReferenceSchema],
-   reason : [String],
-   reasonLinkId : [String],
-   note : [AnnotationSchema],
-   securityLabelNumber : [Number],
-   fhirTitle: { type: String, default: 'ContractTermAction' },
+  doNotPerform: PrimitiveBooleanSchema,
+  type: CodeableConceptSchema,
+  subject: [ContractTermActionSubjectSchema],
+  intent: CodeableConceptSchema,
+  linkId: [PrimitiveStringSchema],
+  status: CodeableConceptSchema,
+  context: ReferenceSchema,
+  contextLinkId: [PrimitiveStringSchema],
+  occurrenceDateTime: PrimitiveDateTimeSchema,
+  occurrencePeriod: PeriodSchema,
+  occurrenceTiming: TimingSchema,
+  requester: [ReferenceSchema],
+  requesterLinkId: [PrimitiveStringSchema],
+  performerType: [CodeableConceptSchema],
+  performerRole: CodeableConceptSchema,
+  performer: ReferenceSchema,
+  performerLinkId: [PrimitiveStringSchema],
+  reasonCode: [CodeableConceptSchema],
+  reasonReference: [ReferenceSchema],
+  reason: [PrimitiveStringSchema],
+  reasonLinkId: [PrimitiveStringSchema],
+  note: [AnnotationSchema],
+  securityLabelNumber: [PrimitiveUnsignedIntSchema],
+  typeName: { type: String, default: 'ContractTermAction' },
+  _type: { type: String, default: 'FHIR::ContractTermAction' },
 });
 
 class ContractTermAction extends mongoose.Document {
   constructor(object) {
     super(object, ContractTermActionSchema);
+    this.typeName = 'ContractTermAction';
     this._type = 'FHIR::ContractTermAction';
   }
-};
-
+}
 
 module.exports.ContractTermActionSchema = ContractTermActionSchema;
 module.exports.ContractTermAction = ContractTermAction;

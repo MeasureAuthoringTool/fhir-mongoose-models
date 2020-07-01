@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const SubstanceSourceMaterialOrganismAuthorSchema = BackboneElementSchemaFunction({
-   authorType : CodeableConceptSchema,
-   authorDescription : String,
-   fhirTitle: { type: String, default: 'SubstanceSourceMaterialOrganismAuthor' },
+  authorType: CodeableConceptSchema,
+  authorDescription: PrimitiveStringSchema,
+  typeName: { type: String, default: 'SubstanceSourceMaterialOrganismAuthor' },
+  _type: { type: String, default: 'FHIR::SubstanceSourceMaterialOrganismAuthor' },
 });
 
 class SubstanceSourceMaterialOrganismAuthor extends mongoose.Document {
   constructor(object) {
     super(object, SubstanceSourceMaterialOrganismAuthorSchema);
+    this.typeName = 'SubstanceSourceMaterialOrganismAuthor';
     this._type = 'FHIR::SubstanceSourceMaterialOrganismAuthor';
   }
-};
-
+}
 
 module.exports.SubstanceSourceMaterialOrganismAuthorSchema = SubstanceSourceMaterialOrganismAuthorSchema;
 module.exports.SubstanceSourceMaterialOrganismAuthor = SubstanceSourceMaterialOrganismAuthor;

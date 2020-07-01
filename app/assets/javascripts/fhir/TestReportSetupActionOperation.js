@@ -1,30 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { TestReportActionResultSchema } = require('./TestReportActionResult');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { TestReportActionResultSchema } = require('./TestReportActionResult');
 
 const TestReportSetupActionOperationSchema = BackboneElementSchemaFunction({
-   result : TestReportActionResultSchema,
-   message : String,
-   detail : String,
-   fhirTitle: { type: String, default: 'TestReportSetupActionOperation' },
+  result: TestReportActionResultSchema,
+  message: PrimitiveMarkdownSchema,
+  detail: PrimitiveUriSchema,
+  typeName: { type: String, default: 'TestReportSetupActionOperation' },
+  _type: { type: String, default: 'FHIR::TestReportSetupActionOperation' },
 });
 
 class TestReportSetupActionOperation extends mongoose.Document {
   constructor(object) {
     super(object, TestReportSetupActionOperationSchema);
+    this.typeName = 'TestReportSetupActionOperation';
     this._type = 'FHIR::TestReportSetupActionOperation';
   }
-};
-
+}
 
 module.exports.TestReportSetupActionOperationSchema = TestReportSetupActionOperationSchema;
 module.exports.TestReportSetupActionOperation = TestReportSetupActionOperation;

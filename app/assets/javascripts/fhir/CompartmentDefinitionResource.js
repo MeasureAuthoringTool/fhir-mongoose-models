@@ -1,30 +1,24 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { ResourceTypeSchema } = require('./ResourceType');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { ResourceTypeSchema } = require('./ResourceType');
 
 const CompartmentDefinitionResourceSchema = BackboneElementSchemaFunction({
-   code : ResourceTypeSchema,
-   param : [String],
-   documentation : String,
-   fhirTitle: { type: String, default: 'CompartmentDefinitionResource' },
+  code: ResourceTypeSchema,
+  param: [PrimitiveStringSchema],
+  documentation: PrimitiveStringSchema,
+  typeName: { type: String, default: 'CompartmentDefinitionResource' },
+  _type: { type: String, default: 'FHIR::CompartmentDefinitionResource' },
 });
 
 class CompartmentDefinitionResource extends mongoose.Document {
   constructor(object) {
     super(object, CompartmentDefinitionResourceSchema);
+    this.typeName = 'CompartmentDefinitionResource';
     this._type = 'FHIR::CompartmentDefinitionResource';
   }
-};
-
+}
 
 module.exports.CompartmentDefinitionResourceSchema = CompartmentDefinitionResourceSchema;
 module.exports.CompartmentDefinitionResource = CompartmentDefinitionResource;

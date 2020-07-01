@@ -1,30 +1,24 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const CoverageClassSchema = BackboneElementSchemaFunction({
-   type : CodeableConceptSchema,
-   value : String,
-   name : String,
-   fhirTitle: { type: String, default: 'CoverageClass' },
+  type: CodeableConceptSchema,
+  value: PrimitiveStringSchema,
+  name: PrimitiveStringSchema,
+  typeName: { type: String, default: 'CoverageClass' },
+  _type: { type: String, default: 'FHIR::CoverageClass' },
 });
 
 class CoverageClass extends mongoose.Document {
   constructor(object) {
     super(object, CoverageClassSchema);
+    this.typeName = 'CoverageClass';
     this._type = 'FHIR::CoverageClass';
   }
-};
-
+}
 
 module.exports.CoverageClassSchema = CoverageClassSchema;
 module.exports.CoverageClass = CoverageClass;

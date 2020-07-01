@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const ServiceRequestPrioritySchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'ServiceRequestPriority' },
+  value: String,
+  typeName: { type: String, default: 'ServiceRequestPriority' },
+  _type: { type: String, default: 'FHIR::ServiceRequestPriority' },
 });
 
 class ServiceRequestPriority extends mongoose.Document {
   constructor(object) {
     super(object, ServiceRequestPrioritySchema);
+    this.typeName = 'ServiceRequestPriority';
     this._type = 'FHIR::ServiceRequestPriority';
   }
-};
-
+}
 
 module.exports.ServiceRequestPrioritySchema = ServiceRequestPrioritySchema;
 module.exports.ServiceRequestPriority = ServiceRequestPriority;

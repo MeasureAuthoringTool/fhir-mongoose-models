@@ -1,37 +1,33 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
-const FHIRDate = require('./basetypes/FHIRDate');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodingSchema } = require('./Coding');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveTimeSchema } = require('./PrimitiveTime');
+const { ReferenceSchema } = require('./Reference');
 
 const QuestionnaireItemAnswerOptionSchema = BackboneElementSchemaFunction({
-   valueInteger : Number,
-   valueDate : FHIRDate,
-   valueTime : DateTime,
-   valueString : String,
-   valueCoding : CodingSchema,
-   valueReference : ReferenceSchema,
-   initialSelected : Boolean,
-   fhirTitle: { type: String, default: 'QuestionnaireItemAnswerOption' },
+  valueInteger: PrimitiveIntegerSchema,
+  valueDate: PrimitiveDateSchema,
+  valueTime: PrimitiveTimeSchema,
+  valueString: PrimitiveStringSchema,
+  valueCoding: CodingSchema,
+  valueReference: ReferenceSchema,
+  initialSelected: PrimitiveBooleanSchema,
+  typeName: { type: String, default: 'QuestionnaireItemAnswerOption' },
+  _type: { type: String, default: 'FHIR::QuestionnaireItemAnswerOption' },
 });
 
 class QuestionnaireItemAnswerOption extends mongoose.Document {
   constructor(object) {
     super(object, QuestionnaireItemAnswerOptionSchema);
+    this.typeName = 'QuestionnaireItemAnswerOption';
     this._type = 'FHIR::QuestionnaireItemAnswerOption';
   }
-};
-
+}
 
 module.exports.QuestionnaireItemAnswerOptionSchema = QuestionnaireItemAnswerOptionSchema;
 module.exports.QuestionnaireItemAnswerOption = QuestionnaireItemAnswerOption;

@@ -1,31 +1,26 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { MimeTypeSchema } = require('./MimeType');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { MimeTypeSchema } = require('./MimeType');
+const { PrimitiveIdSchema } = require('./PrimitiveId');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ElementDefinitionMappingSchema = ElementSchemaFunction({
-   identity : String,
-   language : MimeTypeSchema,
-   map : String,
-   comment : String,
-   fhirTitle: { type: String, default: 'ElementDefinitionMapping' },
+  identity: PrimitiveIdSchema,
+  language: MimeTypeSchema,
+  map: PrimitiveStringSchema,
+  comment: PrimitiveStringSchema,
+  typeName: { type: String, default: 'ElementDefinitionMapping' },
+  _type: { type: String, default: 'FHIR::ElementDefinitionMapping' },
 });
 
 class ElementDefinitionMapping extends mongoose.Document {
   constructor(object) {
     super(object, ElementDefinitionMappingSchema);
+    this.typeName = 'ElementDefinitionMapping';
     this._type = 'FHIR::ElementDefinitionMapping';
   }
-};
-
+}
 
 module.exports.ElementDefinitionMappingSchema = ElementDefinitionMappingSchema;
 module.exports.ElementDefinitionMapping = ElementDefinitionMapping;

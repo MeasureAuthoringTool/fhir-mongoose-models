@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { PeriodSchema } = require('./Period');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PeriodSchema } = require('./Period');
+const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
+const { ReferenceSchema } = require('./Reference');
 
 const TaskRestrictionSchema = BackboneElementSchemaFunction({
-   repetitions : Number,
-   period : PeriodSchema,
-   recipient : [ReferenceSchema],
-   fhirTitle: { type: String, default: 'TaskRestriction' },
+  repetitions: PrimitivePositiveIntSchema,
+  period: PeriodSchema,
+  recipient: [ReferenceSchema],
+  typeName: { type: String, default: 'TaskRestriction' },
+  _type: { type: String, default: 'FHIR::TaskRestriction' },
 });
 
 class TaskRestriction extends mongoose.Document {
   constructor(object) {
     super(object, TaskRestrictionSchema);
+    this.typeName = 'TaskRestriction';
     this._type = 'FHIR::TaskRestriction';
   }
-};
-
+}
 
 module.exports.TaskRestrictionSchema = TaskRestrictionSchema;
 module.exports.TaskRestriction = TaskRestriction;

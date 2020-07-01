@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { NarrativeStatusSchema } = require('./NarrativeStatus');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { NarrativeStatusSchema } = require('./NarrativeStatus');
+const { PrimitiveXhtmlSchema } = require('./PrimitiveXhtml');
 
 const NarrativeSchema = ElementSchemaFunction({
-   status : NarrativeStatusSchema,
-   div : String,
-   fhirTitle: { type: String, default: 'Narrative' },
+  status: NarrativeStatusSchema,
+  div: PrimitiveXhtmlSchema,
+  typeName: { type: String, default: 'Narrative' },
+  _type: { type: String, default: 'FHIR::Narrative' },
 });
 
 class Narrative extends mongoose.Document {
   constructor(object) {
     super(object, NarrativeSchema);
+    this.typeName = 'Narrative';
     this._type = 'FHIR::Narrative';
   }
-};
-
+}
 
 module.exports.NarrativeSchema = NarrativeSchema;
 module.exports.Narrative = Narrative;

@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { PeriodSchema } = require('./Period');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PeriodSchema } = require('./Period');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const PractitionerRoleNotAvailableSchema = BackboneElementSchemaFunction({
-   description : String,
-   during : PeriodSchema,
-   fhirTitle: { type: String, default: 'PractitionerRoleNotAvailable' },
+  description: PrimitiveStringSchema,
+  during: PeriodSchema,
+  typeName: { type: String, default: 'PractitionerRoleNotAvailable' },
+  _type: { type: String, default: 'FHIR::PractitionerRoleNotAvailable' },
 });
 
 class PractitionerRoleNotAvailable extends mongoose.Document {
   constructor(object) {
     super(object, PractitionerRoleNotAvailableSchema);
+    this.typeName = 'PractitionerRoleNotAvailable';
     this._type = 'FHIR::PractitionerRoleNotAvailable';
   }
-};
-
+}
 
 module.exports.PractitionerRoleNotAvailableSchema = PractitionerRoleNotAvailableSchema;
 module.exports.PractitionerRoleNotAvailable = PractitionerRoleNotAvailable;

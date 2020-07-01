@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { LinkageItemSchema } = require('./LinkageItem');
-const { ReferenceSchema } = require('./Reference');
 const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { LinkageItemSchema } = require('./LinkageItem');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { ReferenceSchema } = require('./Reference');
 
 const LinkageSchema = DomainResourceSchemaFunction({
-   active : Boolean,
-   author : ReferenceSchema,
-   item : [LinkageItemSchema],
-   fhirTitle: { type: String, default: 'Linkage' },
+  active: PrimitiveBooleanSchema,
+  author: ReferenceSchema,
+  item: [LinkageItemSchema],
+  typeName: { type: String, default: 'Linkage' },
+  _type: { type: String, default: 'FHIR::Linkage' },
 });
 
 class Linkage extends mongoose.Document {
   constructor(object) {
     super(object, LinkageSchema);
+    this.typeName = 'Linkage';
     this._type = 'FHIR::Linkage';
   }
-};
-
+}
 
 module.exports.LinkageSchema = LinkageSchema;
 module.exports.Linkage = Linkage;

@@ -1,33 +1,28 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { RepositoryTypeSchema } = require('./RepositoryType');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { RepositoryTypeSchema } = require('./RepositoryType');
 
 const MolecularSequenceRepositorySchema = BackboneElementSchemaFunction({
-   type : RepositoryTypeSchema,
-   url : String,
-   name : String,
-   datasetId : String,
-   variantsetId : String,
-   readsetId : String,
-   fhirTitle: { type: String, default: 'MolecularSequenceRepository' },
+  type: RepositoryTypeSchema,
+  url: PrimitiveUriSchema,
+  name: PrimitiveStringSchema,
+  datasetId: PrimitiveStringSchema,
+  variantsetId: PrimitiveStringSchema,
+  readsetId: PrimitiveStringSchema,
+  typeName: { type: String, default: 'MolecularSequenceRepository' },
+  _type: { type: String, default: 'FHIR::MolecularSequenceRepository' },
 });
 
 class MolecularSequenceRepository extends mongoose.Document {
   constructor(object) {
     super(object, MolecularSequenceRepositorySchema);
+    this.typeName = 'MolecularSequenceRepository';
     this._type = 'FHIR::MolecularSequenceRepository';
   }
-};
-
+}
 
 module.exports.MolecularSequenceRepositorySchema = MolecularSequenceRepositorySchema;
 module.exports.MolecularSequenceRepository = MolecularSequenceRepository;

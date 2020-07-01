@@ -1,35 +1,28 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
 const { IdentifierSchema } = require('./Identifier');
 const { ImmunizationRecommendationRecommendationSchema } = require('./ImmunizationRecommendationRecommendation');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
 const { ReferenceSchema } = require('./Reference');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const ImmunizationRecommendationSchema = DomainResourceSchemaFunction({
-   identifier : [IdentifierSchema],
-   patient : ReferenceSchema,
-   date : DateTime,
-   authority : ReferenceSchema,
-   recommendation : [ImmunizationRecommendationRecommendationSchema],
-   fhirTitle: { type: String, default: 'ImmunizationRecommendation' },
+  identifier: [IdentifierSchema],
+  patient: ReferenceSchema,
+  date: PrimitiveDateTimeSchema,
+  authority: ReferenceSchema,
+  recommendation: [ImmunizationRecommendationRecommendationSchema],
+  typeName: { type: String, default: 'ImmunizationRecommendation' },
+  _type: { type: String, default: 'FHIR::ImmunizationRecommendation' },
 });
 
 class ImmunizationRecommendation extends mongoose.Document {
   constructor(object) {
     super(object, ImmunizationRecommendationSchema);
+    this.typeName = 'ImmunizationRecommendation';
     this._type = 'FHIR::ImmunizationRecommendation';
   }
-};
-
+}
 
 module.exports.ImmunizationRecommendationSchema = ImmunizationRecommendationSchema;
 module.exports.ImmunizationRecommendation = ImmunizationRecommendation;

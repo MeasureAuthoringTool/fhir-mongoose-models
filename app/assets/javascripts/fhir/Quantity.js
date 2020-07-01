@@ -1,45 +1,37 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { QuantityComparatorSchema } = require('./QuantityComparator');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { QuantityComparatorSchema } = require('./QuantityComparator');
 
 const QuantitySchema = ElementSchemaFunction({
-   value : Number,
-   comparator : QuantityComparatorSchema,
-   unit : String,
-   system : String,
-   code : String,
-   fhirTitle: { type: String, default: 'Quantity' },
+  value: PrimitiveDecimalSchema,
+  comparator: QuantityComparatorSchema,
+  unit: PrimitiveStringSchema,
+  system: PrimitiveUriSchema,
+  code: PrimitiveCodeSchema,
+  typeName: { type: String, default: 'Quantity' },
+  _type: { type: String, default: 'FHIR::Quantity' },
 });
 
 class Quantity extends mongoose.Document {
   constructor(object) {
     super(object, QuantitySchema);
+    this.typeName = 'Quantity';
     this._type = 'FHIR::Quantity';
   }
-};
+}
 
-function  QuantitySchemaFunction(add: SchemaDefinition, options: SchemaOptions) {
-  const extended = new Schema({
-   value : Number,
-   comparator : QuantityComparatorSchema,
-   unit : String,
-   system : String,
-   code : String,
-    id: {
-      type: String,
-      default() {
-        return this._id ? this._id.toString() : mongoose.Types.ObjectId().toString();
-      },
-    },
+function QuantitySchemaFunction(add, options) {
+  const extended = new mongoose.Schema({
+    value: PrimitiveDecimalSchema,
+    comparator: QuantityComparatorSchema,
+    unit: PrimitiveStringSchema,
+    system: PrimitiveUriSchema,
+    code: PrimitiveCodeSchema,
   }, options);
 
   if (add) {

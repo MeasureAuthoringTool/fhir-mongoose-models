@@ -1,28 +1,21 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { TestReportSetupActionSchema } = require('./TestReportSetupAction');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { TestReportSetupActionSchema } = require('./TestReportSetupAction');
 
 const TestReportSetupSchema = BackboneElementSchemaFunction({
-   action : [TestReportSetupActionSchema],
-   fhirTitle: { type: String, default: 'TestReportSetup' },
+  action: [TestReportSetupActionSchema],
+  typeName: { type: String, default: 'TestReportSetup' },
+  _type: { type: String, default: 'FHIR::TestReportSetup' },
 });
 
 class TestReportSetup extends mongoose.Document {
   constructor(object) {
     super(object, TestReportSetupSchema);
+    this.typeName = 'TestReportSetup';
     this._type = 'FHIR::TestReportSetup';
   }
-};
-
+}
 
 module.exports.TestReportSetupSchema = TestReportSetupSchema;
 module.exports.TestReportSetup = TestReportSetup;

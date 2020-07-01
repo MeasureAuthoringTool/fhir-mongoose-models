@@ -1,31 +1,25 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { ReferenceSchema } = require('./Reference');
 
 const ImmunizationReactionSchema = BackboneElementSchemaFunction({
-   date : DateTime,
-   detail : ReferenceSchema,
-   reported : Boolean,
-   fhirTitle: { type: String, default: 'ImmunizationReaction' },
+  date: PrimitiveDateTimeSchema,
+  detail: ReferenceSchema,
+  reported: PrimitiveBooleanSchema,
+  typeName: { type: String, default: 'ImmunizationReaction' },
+  _type: { type: String, default: 'FHIR::ImmunizationReaction' },
 });
 
 class ImmunizationReaction extends mongoose.Document {
   constructor(object) {
     super(object, ImmunizationReactionSchema);
+    this.typeName = 'ImmunizationReaction';
     this._type = 'FHIR::ImmunizationReaction';
   }
-};
-
+}
 
 module.exports.ImmunizationReactionSchema = ImmunizationReactionSchema;
 module.exports.ImmunizationReaction = ImmunizationReaction;

@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { SortDirectionSchema } = require('./SortDirection');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { SortDirectionSchema } = require('./SortDirection');
 
 const DataRequirementSortSchema = ElementSchemaFunction({
-   path : String,
-   direction : SortDirectionSchema,
-   fhirTitle: { type: String, default: 'DataRequirementSort' },
+  path: PrimitiveStringSchema,
+  direction: SortDirectionSchema,
+  typeName: { type: String, default: 'DataRequirementSort' },
+  _type: { type: String, default: 'FHIR::DataRequirementSort' },
 });
 
 class DataRequirementSort extends mongoose.Document {
   constructor(object) {
     super(object, DataRequirementSortSchema);
+    this.typeName = 'DataRequirementSort';
     this._type = 'FHIR::DataRequirementSort';
   }
-};
-
+}
 
 module.exports.DataRequirementSortSchema = DataRequirementSortSchema;
 module.exports.DataRequirementSort = DataRequirementSort;

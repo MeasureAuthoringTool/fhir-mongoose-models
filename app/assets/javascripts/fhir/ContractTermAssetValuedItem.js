@@ -1,47 +1,43 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { IdentifierSchema } = require('./Identifier');
 const { MoneySchema } = require('./Money');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
 const { ReferenceSchema } = require('./Reference');
 const { SimpleQuantitySchema } = require('./SimpleQuantity');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const ContractTermAssetValuedItemSchema = BackboneElementSchemaFunction({
-   entityCodeableConcept : CodeableConceptSchema,
-   entityReference : ReferenceSchema,
-   identifier : IdentifierSchema,
-   effectiveTime : DateTime,
-   quantity : SimpleQuantitySchema,
-   unitPrice : MoneySchema,
-   factor : Number,
-   points : Number,
-   net : MoneySchema,
-   payment : String,
-   paymentDate : DateTime,
-   responsible : ReferenceSchema,
-   recipient : ReferenceSchema,
-   linkId : [String],
-   securityLabelNumber : [Number],
-   fhirTitle: { type: String, default: 'ContractTermAssetValuedItem' },
+  entityCodeableConcept: CodeableConceptSchema,
+  entityReference: ReferenceSchema,
+  identifier: IdentifierSchema,
+  effectiveTime: PrimitiveDateTimeSchema,
+  quantity: SimpleQuantitySchema,
+  unitPrice: MoneySchema,
+  factor: PrimitiveDecimalSchema,
+  points: PrimitiveDecimalSchema,
+  net: MoneySchema,
+  payment: PrimitiveStringSchema,
+  paymentDate: PrimitiveDateTimeSchema,
+  responsible: ReferenceSchema,
+  recipient: ReferenceSchema,
+  linkId: [PrimitiveStringSchema],
+  securityLabelNumber: [PrimitiveUnsignedIntSchema],
+  typeName: { type: String, default: 'ContractTermAssetValuedItem' },
+  _type: { type: String, default: 'FHIR::ContractTermAssetValuedItem' },
 });
 
 class ContractTermAssetValuedItem extends mongoose.Document {
   constructor(object) {
     super(object, ContractTermAssetValuedItemSchema);
+    this.typeName = 'ContractTermAssetValuedItem';
     this._type = 'FHIR::ContractTermAssetValuedItem';
   }
-};
-
+}
 
 module.exports.ContractTermAssetValuedItemSchema = ContractTermAssetValuedItemSchema;
 module.exports.ContractTermAssetValuedItem = ContractTermAssetValuedItem;

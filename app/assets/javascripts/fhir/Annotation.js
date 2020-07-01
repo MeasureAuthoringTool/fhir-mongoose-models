@@ -1,32 +1,27 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { ElementSchema } = require('./Element');
-const { ReferenceSchema } = require('./Reference');
 const { ElementSchemaFunction } = require('./Element');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { ReferenceSchema } = require('./Reference');
 
 const AnnotationSchema = ElementSchemaFunction({
-   authorReference : ReferenceSchema,
-   authorString : String,
-   time : DateTime,
-   text : String,
-   fhirTitle: { type: String, default: 'Annotation' },
+  authorReference: ReferenceSchema,
+  authorString: PrimitiveStringSchema,
+  time: PrimitiveDateTimeSchema,
+  text: PrimitiveMarkdownSchema,
+  typeName: { type: String, default: 'Annotation' },
+  _type: { type: String, default: 'FHIR::Annotation' },
 });
 
 class Annotation extends mongoose.Document {
   constructor(object) {
     super(object, AnnotationSchema);
+    this.typeName = 'Annotation';
     this._type = 'FHIR::Annotation';
   }
-};
-
+}
 
 module.exports.AnnotationSchema = AnnotationSchema;
 module.exports.Annotation = Annotation;

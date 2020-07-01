@@ -1,34 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { ConceptMapEquivalenceSchema } = require('./ConceptMapEquivalence');
 const { ConceptMapGroupElementTargetDependsOnSchema } = require('./ConceptMapGroupElementTargetDependsOn');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ConceptMapGroupElementTargetSchema = BackboneElementSchemaFunction({
-   code : String,
-   display : String,
-   equivalence : ConceptMapEquivalenceSchema,
-   comment : String,
-   dependsOn : [ConceptMapGroupElementTargetDependsOnSchema],
-   product : [ConceptMapGroupElementTargetDependsOnSchema],
-   fhirTitle: { type: String, default: 'ConceptMapGroupElementTarget' },
+  code: PrimitiveCodeSchema,
+  display: PrimitiveStringSchema,
+  equivalence: ConceptMapEquivalenceSchema,
+  comment: PrimitiveStringSchema,
+  dependsOn: [ConceptMapGroupElementTargetDependsOnSchema],
+  product: [ConceptMapGroupElementTargetDependsOnSchema],
+  typeName: { type: String, default: 'ConceptMapGroupElementTarget' },
+  _type: { type: String, default: 'FHIR::ConceptMapGroupElementTarget' },
 });
 
 class ConceptMapGroupElementTarget extends mongoose.Document {
   constructor(object) {
     super(object, ConceptMapGroupElementTargetSchema);
+    this.typeName = 'ConceptMapGroupElementTarget';
     this._type = 'FHIR::ConceptMapGroupElementTarget';
   }
-};
-
+}
 
 module.exports.ConceptMapGroupElementTargetSchema = ConceptMapGroupElementTargetSchema;
 module.exports.ConceptMapGroupElementTarget = ConceptMapGroupElementTarget;

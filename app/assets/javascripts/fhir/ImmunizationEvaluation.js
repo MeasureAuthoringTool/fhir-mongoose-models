@@ -1,46 +1,41 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
 const { IdentifierSchema } = require('./Identifier');
 const { ImmunizationEvaluationStatusSchema } = require('./ImmunizationEvaluationStatus');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 const { ReferenceSchema } = require('./Reference');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const ImmunizationEvaluationSchema = DomainResourceSchemaFunction({
-   identifier : [IdentifierSchema],
-   status : ImmunizationEvaluationStatusSchema,
-   patient : ReferenceSchema,
-   date : DateTime,
-   authority : ReferenceSchema,
-   targetDisease : CodeableConceptSchema,
-   immunizationEvent : ReferenceSchema,
-   doseStatus : CodeableConceptSchema,
-   doseStatusReason : [CodeableConceptSchema],
-   description : String,
-   series : String,
-   doseNumberPositiveInt : Number,
-   doseNumberString : String,
-   seriesDosesPositiveInt : Number,
-   seriesDosesString : String,
-   fhirTitle: { type: String, default: 'ImmunizationEvaluation' },
+  identifier: [IdentifierSchema],
+  status: ImmunizationEvaluationStatusSchema,
+  patient: ReferenceSchema,
+  date: PrimitiveDateTimeSchema,
+  authority: ReferenceSchema,
+  targetDisease: CodeableConceptSchema,
+  immunizationEvent: ReferenceSchema,
+  doseStatus: CodeableConceptSchema,
+  doseStatusReason: [CodeableConceptSchema],
+  description: PrimitiveStringSchema,
+  series: PrimitiveStringSchema,
+  doseNumberPositiveInt: PrimitivePositiveIntSchema,
+  doseNumberString: PrimitiveStringSchema,
+  seriesDosesPositiveInt: PrimitivePositiveIntSchema,
+  seriesDosesString: PrimitiveStringSchema,
+  typeName: { type: String, default: 'ImmunizationEvaluation' },
+  _type: { type: String, default: 'FHIR::ImmunizationEvaluation' },
 });
 
 class ImmunizationEvaluation extends mongoose.Document {
   constructor(object) {
     super(object, ImmunizationEvaluationSchema);
+    this.typeName = 'ImmunizationEvaluation';
     this._type = 'FHIR::ImmunizationEvaluation';
   }
-};
-
+}
 
 module.exports.ImmunizationEvaluationSchema = ImmunizationEvaluationSchema;
 module.exports.ImmunizationEvaluation = ImmunizationEvaluation;

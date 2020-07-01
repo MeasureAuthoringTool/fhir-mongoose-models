@@ -1,80 +1,78 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
-const FHIRDate = require('./basetypes/FHIRDate');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { ContactDetailSchema } = require('./ContactDetail');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
 const { IdentifierSchema } = require('./Identifier');
 const { MeasureGroupSchema } = require('./MeasureGroup');
 const { MeasureSupplementalDataSchema } = require('./MeasureSupplementalData');
 const { PeriodSchema } = require('./Period');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
+const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 const { PublicationStatusSchema } = require('./PublicationStatus');
 const { ReferenceSchema } = require('./Reference');
 const { RelatedArtifactSchema } = require('./RelatedArtifact');
 const { UsageContextSchema } = require('./UsageContext');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const MeasureSchema = DomainResourceSchemaFunction({
-   url : String,
-   identifier : [IdentifierSchema],
-   version : String,
-   name : String,
-   title : String,
-   subtitle : String,
-   status : PublicationStatusSchema,
-   experimental : Boolean,
-   subjectCodeableConcept : CodeableConceptSchema,
-   subjectReference : ReferenceSchema,
-   date : DateTime,
-   publisher : String,
-   contact : [ContactDetailSchema],
-   description : String,
-   useContext : [UsageContextSchema],
-   jurisdiction : [CodeableConceptSchema],
-   purpose : String,
-   usage : String,
-   copyright : String,
-   approvalDate : FHIRDate,
-   lastReviewDate : FHIRDate,
-   effectivePeriod : PeriodSchema,
-   topic : [CodeableConceptSchema],
-   author : [ContactDetailSchema],
-   editor : [ContactDetailSchema],
-   reviewer : [ContactDetailSchema],
-   endorser : [ContactDetailSchema],
-   relatedArtifact : [RelatedArtifactSchema],
-   library : [String],
-   disclaimer : String,
-   scoring : CodeableConceptSchema,
-   compositeScoring : CodeableConceptSchema,
-   type : [CodeableConceptSchema],
-   riskAdjustment : String,
-   rateAggregation : String,
-   rationale : String,
-   clinicalRecommendationStatement : String,
-   improvementNotation : CodeableConceptSchema,
-   definition : [String],
-   guidance : String,
-   group : [MeasureGroupSchema],
-   supplementalData : [MeasureSupplementalDataSchema],
-   fhirTitle: { type: String, default: 'Measure' },
+  url: PrimitiveUriSchema,
+  identifier: [IdentifierSchema],
+  version: PrimitiveStringSchema,
+  name: PrimitiveStringSchema,
+  title: PrimitiveStringSchema,
+  subtitle: PrimitiveStringSchema,
+  status: PublicationStatusSchema,
+  experimental: PrimitiveBooleanSchema,
+  subjectCodeableConcept: CodeableConceptSchema,
+  subjectReference: ReferenceSchema,
+  date: PrimitiveDateTimeSchema,
+  publisher: PrimitiveStringSchema,
+  contact: [ContactDetailSchema],
+  description: PrimitiveMarkdownSchema,
+  useContext: [UsageContextSchema],
+  jurisdiction: [CodeableConceptSchema],
+  purpose: PrimitiveMarkdownSchema,
+  usage: PrimitiveStringSchema,
+  copyright: PrimitiveMarkdownSchema,
+  approvalDate: PrimitiveDateSchema,
+  lastReviewDate: PrimitiveDateSchema,
+  effectivePeriod: PeriodSchema,
+  topic: [CodeableConceptSchema],
+  author: [ContactDetailSchema],
+  editor: [ContactDetailSchema],
+  reviewer: [ContactDetailSchema],
+  endorser: [ContactDetailSchema],
+  relatedArtifact: [RelatedArtifactSchema],
+  library: [PrimitiveCanonicalSchema],
+  disclaimer: PrimitiveMarkdownSchema,
+  scoring: CodeableConceptSchema,
+  compositeScoring: CodeableConceptSchema,
+  type: [CodeableConceptSchema],
+  riskAdjustment: PrimitiveStringSchema,
+  rateAggregation: PrimitiveStringSchema,
+  rationale: PrimitiveMarkdownSchema,
+  clinicalRecommendationStatement: PrimitiveMarkdownSchema,
+  improvementNotation: CodeableConceptSchema,
+  definition: [PrimitiveMarkdownSchema],
+  guidance: PrimitiveMarkdownSchema,
+  group: [MeasureGroupSchema],
+  supplementalData: [MeasureSupplementalDataSchema],
+  typeName: { type: String, default: 'Measure' },
+  _type: { type: String, default: 'FHIR::Measure' },
 });
 
 class Measure extends mongoose.Document {
   constructor(object) {
     super(object, MeasureSchema);
+    this.typeName = 'Measure';
     this._type = 'FHIR::Measure';
   }
-};
-
+}
 
 module.exports.MeasureSchema = MeasureSchema;
 module.exports.Measure = Measure;

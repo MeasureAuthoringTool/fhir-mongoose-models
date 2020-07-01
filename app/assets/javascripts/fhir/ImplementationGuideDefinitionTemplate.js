@@ -1,29 +1,24 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveCodeSchema } = require('./PrimitiveCode');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ImplementationGuideDefinitionTemplateSchema = BackboneElementSchemaFunction({
-   code : String,
-   source : String,
-   scope : String,
-   fhirTitle: { type: String, default: 'ImplementationGuideDefinitionTemplate' },
+  code: PrimitiveCodeSchema,
+  source: PrimitiveStringSchema,
+  scope: PrimitiveStringSchema,
+  typeName: { type: String, default: 'ImplementationGuideDefinitionTemplate' },
+  _type: { type: String, default: 'FHIR::ImplementationGuideDefinitionTemplate' },
 });
 
 class ImplementationGuideDefinitionTemplate extends mongoose.Document {
   constructor(object) {
     super(object, ImplementationGuideDefinitionTemplateSchema);
+    this.typeName = 'ImplementationGuideDefinitionTemplate';
     this._type = 'FHIR::ImplementationGuideDefinitionTemplate';
   }
-};
-
+}
 
 module.exports.ImplementationGuideDefinitionTemplateSchema = ImplementationGuideDefinitionTemplateSchema;
 module.exports.ImplementationGuideDefinitionTemplate = ImplementationGuideDefinitionTemplate;

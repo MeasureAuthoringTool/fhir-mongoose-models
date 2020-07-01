@@ -1,30 +1,25 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { ReferenceSchema } = require('./Reference');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
+const { ReferenceSchema } = require('./Reference');
 
 const CapabilityStatementImplementationSchema = BackboneElementSchemaFunction({
-   description : String,
-   url : String,
-   custodian : ReferenceSchema,
-   fhirTitle: { type: String, default: 'CapabilityStatementImplementation' },
+  description: PrimitiveStringSchema,
+  url: PrimitiveUrlSchema,
+  custodian: ReferenceSchema,
+  typeName: { type: String, default: 'CapabilityStatementImplementation' },
+  _type: { type: String, default: 'FHIR::CapabilityStatementImplementation' },
 });
 
 class CapabilityStatementImplementation extends mongoose.Document {
   constructor(object) {
     super(object, CapabilityStatementImplementationSchema);
+    this.typeName = 'CapabilityStatementImplementation';
     this._type = 'FHIR::CapabilityStatementImplementation';
   }
-};
-
+}
 
 module.exports.CapabilityStatementImplementationSchema = CapabilityStatementImplementationSchema;
 module.exports.CapabilityStatementImplementation = CapabilityStatementImplementation;

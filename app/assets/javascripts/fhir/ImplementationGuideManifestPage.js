@@ -1,29 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const ImplementationGuideManifestPageSchema = BackboneElementSchemaFunction({
-   name : String,
-   title : String,
-   anchor : [String],
-   fhirTitle: { type: String, default: 'ImplementationGuideManifestPage' },
+  name: PrimitiveStringSchema,
+  title: PrimitiveStringSchema,
+  anchor: [PrimitiveStringSchema],
+  typeName: { type: String, default: 'ImplementationGuideManifestPage' },
+  _type: { type: String, default: 'FHIR::ImplementationGuideManifestPage' },
 });
 
 class ImplementationGuideManifestPage extends mongoose.Document {
   constructor(object) {
     super(object, ImplementationGuideManifestPageSchema);
+    this.typeName = 'ImplementationGuideManifestPage';
     this._type = 'FHIR::ImplementationGuideManifestPage';
   }
-};
-
+}
 
 module.exports.ImplementationGuideManifestPageSchema = ImplementationGuideManifestPageSchema;
 module.exports.ImplementationGuideManifestPage = ImplementationGuideManifestPage;

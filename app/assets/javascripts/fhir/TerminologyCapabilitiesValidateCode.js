@@ -1,27 +1,21 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
 
 const TerminologyCapabilitiesValidateCodeSchema = BackboneElementSchemaFunction({
-   translations : Boolean,
-   fhirTitle: { type: String, default: 'TerminologyCapabilitiesValidateCode' },
+  translations: PrimitiveBooleanSchema,
+  typeName: { type: String, default: 'TerminologyCapabilitiesValidateCode' },
+  _type: { type: String, default: 'FHIR::TerminologyCapabilitiesValidateCode' },
 });
 
 class TerminologyCapabilitiesValidateCode extends mongoose.Document {
   constructor(object) {
     super(object, TerminologyCapabilitiesValidateCodeSchema);
+    this.typeName = 'TerminologyCapabilitiesValidateCode';
     this._type = 'FHIR::TerminologyCapabilitiesValidateCode';
   }
-};
-
+}
 
 module.exports.TerminologyCapabilitiesValidateCodeSchema = TerminologyCapabilitiesValidateCodeSchema;
 module.exports.TerminologyCapabilitiesValidateCode = TerminologyCapabilitiesValidateCode;

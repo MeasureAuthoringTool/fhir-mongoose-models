@@ -1,33 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { UDIEntryTypeSchema } = require('./UDIEntryType');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { UDIEntryTypeSchema } = require('./UDIEntryType');
 
 const DeviceUdiCarrierSchema = BackboneElementSchemaFunction({
-   deviceIdentifier : String,
-   issuer : String,
-   jurisdiction : String,
-   carrierAIDC : String,
-   carrierHRF : String,
-   entryType : UDIEntryTypeSchema,
-   fhirTitle: { type: String, default: 'DeviceUdiCarrier' },
+  deviceIdentifier: PrimitiveStringSchema,
+  issuer: PrimitiveUriSchema,
+  jurisdiction: PrimitiveUriSchema,
+  carrierAIDC: PrimitiveBase64BinarySchema,
+  carrierHRF: PrimitiveStringSchema,
+  entryType: UDIEntryTypeSchema,
+  typeName: { type: String, default: 'DeviceUdiCarrier' },
+  _type: { type: String, default: 'FHIR::DeviceUdiCarrier' },
 });
 
 class DeviceUdiCarrier extends mongoose.Document {
   constructor(object) {
     super(object, DeviceUdiCarrierSchema);
+    this.typeName = 'DeviceUdiCarrier';
     this._type = 'FHIR::DeviceUdiCarrier';
   }
-};
-
+}
 
 module.exports.DeviceUdiCarrierSchema = DeviceUdiCarrierSchema;
 module.exports.DeviceUdiCarrier = DeviceUdiCarrier;

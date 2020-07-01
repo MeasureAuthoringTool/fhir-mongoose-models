@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const ActionPrecheckBehaviorSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'ActionPrecheckBehavior' },
+  value: String,
+  typeName: { type: String, default: 'ActionPrecheckBehavior' },
+  _type: { type: String, default: 'FHIR::ActionPrecheckBehavior' },
 });
 
 class ActionPrecheckBehavior extends mongoose.Document {
   constructor(object) {
     super(object, ActionPrecheckBehaviorSchema);
+    this.typeName = 'ActionPrecheckBehavior';
     this._type = 'FHIR::ActionPrecheckBehavior';
   }
-};
-
+}
 
 module.exports.ActionPrecheckBehaviorSchema = ActionPrecheckBehaviorSchema;
 module.exports.ActionPrecheckBehavior = ActionPrecheckBehavior;

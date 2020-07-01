@@ -1,34 +1,29 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema } = require('./EffectEvidenceSynthesisEffectEstimatePrecisionEstimate');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
 
 const EffectEvidenceSynthesisEffectEstimateSchema = BackboneElementSchemaFunction({
-   description : String,
-   type : CodeableConceptSchema,
-   variantState : CodeableConceptSchema,
-   value : Number,
-   unitOfMeasure : CodeableConceptSchema,
-   precisionEstimate : [EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema],
-   fhirTitle: { type: String, default: 'EffectEvidenceSynthesisEffectEstimate' },
+  description: PrimitiveStringSchema,
+  type: CodeableConceptSchema,
+  variantState: CodeableConceptSchema,
+  value: PrimitiveDecimalSchema,
+  unitOfMeasure: CodeableConceptSchema,
+  precisionEstimate: [EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema],
+  typeName: { type: String, default: 'EffectEvidenceSynthesisEffectEstimate' },
+  _type: { type: String, default: 'FHIR::EffectEvidenceSynthesisEffectEstimate' },
 });
 
 class EffectEvidenceSynthesisEffectEstimate extends mongoose.Document {
   constructor(object) {
     super(object, EffectEvidenceSynthesisEffectEstimateSchema);
+    this.typeName = 'EffectEvidenceSynthesisEffectEstimate';
     this._type = 'FHIR::EffectEvidenceSynthesisEffectEstimate';
   }
-};
-
+}
 
 module.exports.EffectEvidenceSynthesisEffectEstimateSchema = EffectEvidenceSynthesisEffectEstimateSchema;
 module.exports.EffectEvidenceSynthesisEffectEstimate = EffectEvidenceSynthesisEffectEstimate;

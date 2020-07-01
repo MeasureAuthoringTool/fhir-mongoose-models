@@ -1,33 +1,27 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { ExampleScenarioProcessSchema } = require('./ExampleScenarioProcess');
 const { ExampleScenarioProcessStepAlternativeSchema } = require('./ExampleScenarioProcessStepAlternative');
 const { ExampleScenarioProcessStepOperationSchema } = require('./ExampleScenarioProcessStepOperation');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
 
 const ExampleScenarioProcessStepSchema = BackboneElementSchemaFunction({
-   process : [ExampleScenarioProcessSchema],
-   pause : Boolean,
-   operation : ExampleScenarioProcessStepOperationSchema,
-   alternative : [ExampleScenarioProcessStepAlternativeSchema],
-   fhirTitle: { type: String, default: 'ExampleScenarioProcessStep' },
+  process: [ExampleScenarioProcessSchema],
+  pause: PrimitiveBooleanSchema,
+  operation: ExampleScenarioProcessStepOperationSchema,
+  alternative: [ExampleScenarioProcessStepAlternativeSchema],
+  typeName: { type: String, default: 'ExampleScenarioProcessStep' },
+  _type: { type: String, default: 'FHIR::ExampleScenarioProcessStep' },
 });
 
 class ExampleScenarioProcessStep extends mongoose.Document {
   constructor(object) {
     super(object, ExampleScenarioProcessStepSchema);
+    this.typeName = 'ExampleScenarioProcessStep';
     this._type = 'FHIR::ExampleScenarioProcessStep';
   }
-};
-
+}
 
 module.exports.ExampleScenarioProcessStepSchema = ExampleScenarioProcessStepSchema;
 module.exports.ExampleScenarioProcessStep = ExampleScenarioProcessStep;

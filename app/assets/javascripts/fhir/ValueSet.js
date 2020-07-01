@@ -1,52 +1,49 @@
 const mongoose = require('mongoose/browser');
-const DateTime = require('./basetypes/DateTime');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { ContactDetailSchema } = require('./ContactDetail');
 const { DomainResourceSchema } = require('./DomainResource');
+const { DomainResourceSchemaFunction } = require('./DomainResource');
 const { IdentifierSchema } = require('./Identifier');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
+const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveUriSchema } = require('./PrimitiveUri');
 const { PublicationStatusSchema } = require('./PublicationStatus');
 const { UsageContextSchema } = require('./UsageContext');
 const { ValueSetComposeSchema } = require('./ValueSetCompose');
 const { ValueSetExpansionSchema } = require('./ValueSetExpansion');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const ValueSetSchema = DomainResourceSchemaFunction({
-   url : String,
-   identifier : [IdentifierSchema],
-   version : String,
-   name : String,
-   title : String,
-   status : PublicationStatusSchema,
-   experimental : Boolean,
-   date : DateTime,
-   publisher : String,
-   contact : [ContactDetailSchema],
-   description : String,
-   useContext : [UsageContextSchema],
-   jurisdiction : [CodeableConceptSchema],
-   immutable : Boolean,
-   purpose : String,
-   copyright : String,
-   compose : ValueSetComposeSchema,
-   expansion : ValueSetExpansionSchema,
-   fhirTitle: { type: String, default: 'ValueSet' },
+  url: PrimitiveUriSchema,
+  identifier: [IdentifierSchema],
+  version: PrimitiveStringSchema,
+  name: PrimitiveStringSchema,
+  title: PrimitiveStringSchema,
+  status: PublicationStatusSchema,
+  experimental: PrimitiveBooleanSchema,
+  date: PrimitiveDateTimeSchema,
+  publisher: PrimitiveStringSchema,
+  contact: [ContactDetailSchema],
+  description: PrimitiveMarkdownSchema,
+  useContext: [UsageContextSchema],
+  jurisdiction: [CodeableConceptSchema],
+  immutable: PrimitiveBooleanSchema,
+  purpose: PrimitiveMarkdownSchema,
+  copyright: PrimitiveMarkdownSchema,
+  compose: ValueSetComposeSchema,
+  expansion: ValueSetExpansionSchema,
+  typeName: { type: String, default: 'ValueSet' },
+  _type: { type: String, default: 'FHIR::ValueSet' },
 });
 
 class ValueSet extends mongoose.Document {
   constructor(object) {
     super(object, ValueSetSchema);
+    this.typeName = 'ValueSet';
     this._type = 'FHIR::ValueSet';
   }
-};
-
+}
 
 module.exports.ValueSetSchema = ValueSetSchema;
 module.exports.ValueSet = ValueSet;

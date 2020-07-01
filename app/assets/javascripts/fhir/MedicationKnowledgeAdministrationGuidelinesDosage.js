@@ -1,30 +1,23 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
 const { DosageSchema } = require('./Dosage');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const MedicationKnowledgeAdministrationGuidelinesDosageSchema = BackboneElementSchemaFunction({
-   type : CodeableConceptSchema,
-   dosage : [DosageSchema],
-   fhirTitle: { type: String, default: 'MedicationKnowledgeAdministrationGuidelinesDosage' },
+  type: CodeableConceptSchema,
+  dosage: [DosageSchema],
+  typeName: { type: String, default: 'MedicationKnowledgeAdministrationGuidelinesDosage' },
+  _type: { type: String, default: 'FHIR::MedicationKnowledgeAdministrationGuidelinesDosage' },
 });
 
 class MedicationKnowledgeAdministrationGuidelinesDosage extends mongoose.Document {
   constructor(object) {
     super(object, MedicationKnowledgeAdministrationGuidelinesDosageSchema);
+    this.typeName = 'MedicationKnowledgeAdministrationGuidelinesDosage';
     this._type = 'FHIR::MedicationKnowledgeAdministrationGuidelinesDosage';
   }
-};
-
+}
 
 module.exports.MedicationKnowledgeAdministrationGuidelinesDosageSchema = MedicationKnowledgeAdministrationGuidelinesDosageSchema;
 module.exports.MedicationKnowledgeAdministrationGuidelinesDosage = MedicationKnowledgeAdministrationGuidelinesDosage;

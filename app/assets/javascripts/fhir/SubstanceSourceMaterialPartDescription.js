@@ -1,29 +1,22 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
 const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
+const { CodeableConceptSchema } = require('./CodeableConcept');
 
 const SubstanceSourceMaterialPartDescriptionSchema = BackboneElementSchemaFunction({
-   part : CodeableConceptSchema,
-   partLocation : CodeableConceptSchema,
-   fhirTitle: { type: String, default: 'SubstanceSourceMaterialPartDescription' },
+  part: CodeableConceptSchema,
+  partLocation: CodeableConceptSchema,
+  typeName: { type: String, default: 'SubstanceSourceMaterialPartDescription' },
+  _type: { type: String, default: 'FHIR::SubstanceSourceMaterialPartDescription' },
 });
 
 class SubstanceSourceMaterialPartDescription extends mongoose.Document {
   constructor(object) {
     super(object, SubstanceSourceMaterialPartDescriptionSchema);
+    this.typeName = 'SubstanceSourceMaterialPartDescription';
     this._type = 'FHIR::SubstanceSourceMaterialPartDescription';
   }
-};
-
+}
 
 module.exports.SubstanceSourceMaterialPartDescriptionSchema = SubstanceSourceMaterialPartDescriptionSchema;
 module.exports.SubstanceSourceMaterialPartDescription = SubstanceSourceMaterialPartDescription;

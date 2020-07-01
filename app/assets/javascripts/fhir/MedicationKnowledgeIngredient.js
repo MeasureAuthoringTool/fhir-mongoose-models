@@ -1,33 +1,27 @@
 const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
+const { BackboneElementSchemaFunction } = require('./BackboneElement');
 const { CodeableConceptSchema } = require('./CodeableConcept');
+const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
 const { RatioSchema } = require('./Ratio');
 const { ReferenceSchema } = require('./Reference');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
 
 const MedicationKnowledgeIngredientSchema = BackboneElementSchemaFunction({
-   itemCodeableConcept : CodeableConceptSchema,
-   itemReference : ReferenceSchema,
-   isActive : Boolean,
-   strength : RatioSchema,
-   fhirTitle: { type: String, default: 'MedicationKnowledgeIngredient' },
+  itemCodeableConcept: CodeableConceptSchema,
+  itemReference: ReferenceSchema,
+  isActive: PrimitiveBooleanSchema,
+  strength: RatioSchema,
+  typeName: { type: String, default: 'MedicationKnowledgeIngredient' },
+  _type: { type: String, default: 'FHIR::MedicationKnowledgeIngredient' },
 });
 
 class MedicationKnowledgeIngredient extends mongoose.Document {
   constructor(object) {
     super(object, MedicationKnowledgeIngredientSchema);
+    this.typeName = 'MedicationKnowledgeIngredient';
     this._type = 'FHIR::MedicationKnowledgeIngredient';
   }
-};
-
+}
 
 module.exports.MedicationKnowledgeIngredientSchema = MedicationKnowledgeIngredientSchema;
 module.exports.MedicationKnowledgeIngredient = MedicationKnowledgeIngredient;

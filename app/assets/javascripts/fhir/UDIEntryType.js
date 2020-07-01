@@ -2,26 +2,19 @@ const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
 const { ElementSchemaFunction } = require('./Element');
 
-const [Schema] = [mongoose.Schema];
-
-const [Number, String, Boolean] = [
-  mongoose.Schema.Types.Number,
-  mongoose.Schema.Types.String,
-  mongoose.Schema.Types.Boolean,
-];
-
 const UDIEntryTypeSchema = ElementSchemaFunction({
-   value : String,
-   fhirTitle: { type: String, default: 'UDIEntryType' },
+  value: String,
+  typeName: { type: String, default: 'UDIEntryType' },
+  _type: { type: String, default: 'FHIR::UDIEntryType' },
 });
 
 class UDIEntryType extends mongoose.Document {
   constructor(object) {
     super(object, UDIEntryTypeSchema);
+    this.typeName = 'UDIEntryType';
     this._type = 'FHIR::UDIEntryType';
   }
-};
-
+}
 
 module.exports.UDIEntryTypeSchema = UDIEntryTypeSchema;
 module.exports.UDIEntryType = UDIEntryType;
