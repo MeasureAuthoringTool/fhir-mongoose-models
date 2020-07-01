@@ -23,7 +23,6 @@
   "author": "SemanticBits sb-mat-help@semanticbits.com",
   "license": "CC0-1.0",
   "dependencies": {
-    "cql-execution": "1.4.0",
     "mongoose": "^5.7.5"
   },
   "devDependencies": {
