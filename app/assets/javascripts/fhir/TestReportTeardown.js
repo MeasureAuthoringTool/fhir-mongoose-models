@@ -1,21 +1,11 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { TestReportTeardownActionSchema } = require('./TestReportTeardownAction');
+const { TestReportTeardownActionSchema } = require('./allSchemaHeaders.js');
+const { TestReportTeardownSchema } = require('./allSchemaHeaders.js');
 
-const TestReportTeardownSchema = BackboneElementSchemaFunction({
+TestReportTeardownSchema.add(BackboneElementSchema);
+TestReportTeardownSchema.remove('id');
+TestReportTeardownSchema.add({
   action: [TestReportTeardownActionSchema],
-  typeName: { type: String, default: 'TestReportTeardown' },
-  _type: { type: String, default: 'FHIR::TestReportTeardown' },
 });
 
-class TestReportTeardown extends mongoose.Document {
-  constructor(object) {
-    super(object, TestReportTeardownSchema);
-    this.typeName = 'TestReportTeardown';
-    this._type = 'FHIR::TestReportTeardown';
-  }
-}
-
 module.exports.TestReportTeardownSchema = TestReportTeardownSchema;
-module.exports.TestReportTeardown = TestReportTeardown;

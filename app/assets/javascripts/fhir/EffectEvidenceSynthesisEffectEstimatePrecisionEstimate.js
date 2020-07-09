@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema } = require('./allSchemaHeaders.js');
 
-const EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema = BackboneElementSchemaFunction({
+EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema.add(BackboneElementSchema);
+EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema.remove('id');
+EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema.add({
   type: CodeableConceptSchema,
   level: PrimitiveDecimalSchema,
   from: PrimitiveDecimalSchema,
   to: PrimitiveDecimalSchema,
-  typeName: { type: String, default: 'EffectEvidenceSynthesisEffectEstimatePrecisionEstimate' },
-  _type: { type: String, default: 'FHIR::EffectEvidenceSynthesisEffectEstimatePrecisionEstimate' },
 });
 
-class EffectEvidenceSynthesisEffectEstimatePrecisionEstimate extends mongoose.Document {
-  constructor(object) {
-    super(object, EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema);
-    this.typeName = 'EffectEvidenceSynthesisEffectEstimatePrecisionEstimate';
-    this._type = 'FHIR::EffectEvidenceSynthesisEffectEstimatePrecisionEstimate';
-  }
-}
-
 module.exports.EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema = EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSchema;
-module.exports.EffectEvidenceSynthesisEffectEstimatePrecisionEstimate = EffectEvidenceSynthesisEffectEstimatePrecisionEstimate;

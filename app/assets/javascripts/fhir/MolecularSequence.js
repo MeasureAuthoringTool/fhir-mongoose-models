@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MolecularSequenceQualitySchema } = require('./MolecularSequenceQuality');
-const { MolecularSequenceReferenceSeqSchema } = require('./MolecularSequenceReferenceSeq');
-const { MolecularSequenceRepositorySchema } = require('./MolecularSequenceRepository');
-const { MolecularSequenceStructureVariantSchema } = require('./MolecularSequenceStructureVariant');
-const { MolecularSequenceVariantSchema } = require('./MolecularSequenceVariant');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
-const { SequenceTypeSchema } = require('./SequenceType');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceQualitySchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceReferenceSeqSchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceRepositorySchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceStructureVariantSchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceVariantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SequenceTypeSchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceSchema } = require('./allSchemaHeaders.js');
 
-const MolecularSequenceSchema = DomainResourceSchemaFunction({
+MolecularSequenceSchema.add(DomainResourceSchema);
+MolecularSequenceSchema.remove('id');
+MolecularSequenceSchema.add({
   identifier: [IdentifierSchema],
   type: SequenceTypeSchema,
   coordinateSystem: PrimitiveIntegerSchema,
@@ -30,17 +31,6 @@ const MolecularSequenceSchema = DomainResourceSchemaFunction({
   repository: [MolecularSequenceRepositorySchema],
   pointer: [ReferenceSchema],
   structureVariant: [MolecularSequenceStructureVariantSchema],
-  typeName: { type: String, default: 'MolecularSequence' },
-  _type: { type: String, default: 'FHIR::MolecularSequence' },
 });
 
-class MolecularSequence extends mongoose.Document {
-  constructor(object) {
-    super(object, MolecularSequenceSchema);
-    this.typeName = 'MolecularSequence';
-    this._type = 'FHIR::MolecularSequence';
-  }
-}
-
 module.exports.MolecularSequenceSchema = MolecularSequenceSchema;
-module.exports.MolecularSequence = MolecularSequence;

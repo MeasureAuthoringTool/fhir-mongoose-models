@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { TestScriptMetadataLinkSchema } = require('./allSchemaHeaders.js');
 
-const TestScriptMetadataLinkSchema = BackboneElementSchemaFunction({
+TestScriptMetadataLinkSchema.add(BackboneElementSchema);
+TestScriptMetadataLinkSchema.remove('id');
+TestScriptMetadataLinkSchema.add({
   url: PrimitiveUriSchema,
   description: PrimitiveStringSchema,
-  typeName: { type: String, default: 'TestScriptMetadataLink' },
-  _type: { type: String, default: 'FHIR::TestScriptMetadataLink' },
 });
 
-class TestScriptMetadataLink extends mongoose.Document {
-  constructor(object) {
-    super(object, TestScriptMetadataLinkSchema);
-    this.typeName = 'TestScriptMetadataLink';
-    this._type = 'FHIR::TestScriptMetadataLink';
-  }
-}
-
 module.exports.TestScriptMetadataLinkSchema = TestScriptMetadataLinkSchema;
-module.exports.TestScriptMetadataLink = TestScriptMetadataLink;

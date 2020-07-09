@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ClaimResponseAddItemDetailSubDetailSchema } = require('./ClaimResponseAddItemDetailSubDetail');
-const { ClaimResponseItemAdjudicationSchema } = require('./ClaimResponseItemAdjudication');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { ClaimResponseAddItemDetailSubDetailSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseAddItemDetailSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponseAddItemDetailSchema = BackboneElementSchemaFunction({
+ClaimResponseAddItemDetailSchema.add(BackboneElementSchema);
+ClaimResponseAddItemDetailSchema.remove('id');
+ClaimResponseAddItemDetailSchema.add({
   productOrService: CodeableConceptSchema,
   modifier: [CodeableConceptSchema],
   quantity: SimpleQuantitySchema,
@@ -19,17 +20,6 @@ const ClaimResponseAddItemDetailSchema = BackboneElementSchemaFunction({
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ClaimResponseItemAdjudicationSchema],
   subDetail: [ClaimResponseAddItemDetailSubDetailSchema],
-  typeName: { type: String, default: 'ClaimResponseAddItemDetail' },
-  _type: { type: String, default: 'FHIR::ClaimResponseAddItemDetail' },
 });
 
-class ClaimResponseAddItemDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponseAddItemDetailSchema);
-    this.typeName = 'ClaimResponseAddItemDetail';
-    this._type = 'FHIR::ClaimResponseAddItemDetail';
-  }
-}
-
 module.exports.ClaimResponseAddItemDetailSchema = ClaimResponseAddItemDetailSchema;
-module.exports.ClaimResponseAddItemDetail = ClaimResponseAddItemDetail;

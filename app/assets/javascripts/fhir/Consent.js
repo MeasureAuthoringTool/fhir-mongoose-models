@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ConsentPolicySchema } = require('./ConsentPolicy');
-const { ConsentProvisionSchema } = require('./ConsentProvision');
-const { ConsentStateSchema } = require('./ConsentState');
-const { ConsentVerificationSchema } = require('./ConsentVerification');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ConsentPolicySchema } = require('./allSchemaHeaders.js');
+const { ConsentProvisionSchema } = require('./allSchemaHeaders.js');
+const { ConsentStateSchema } = require('./allSchemaHeaders.js');
+const { ConsentVerificationSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ConsentSchema } = require('./allSchemaHeaders.js');
 
-const ConsentSchema = DomainResourceSchemaFunction({
+ConsentSchema.add(DomainResourceSchema);
+ConsentSchema.remove('id');
+ConsentSchema.add({
   identifier: [IdentifierSchema],
   status: ConsentStateSchema,
   scope: CodeableConceptSchema,
@@ -26,17 +27,6 @@ const ConsentSchema = DomainResourceSchemaFunction({
   policyRule: CodeableConceptSchema,
   verification: [ConsentVerificationSchema],
   provision: ConsentProvisionSchema,
-  typeName: { type: String, default: 'Consent' },
-  _type: { type: String, default: 'FHIR::Consent' },
 });
 
-class Consent extends mongoose.Document {
-  constructor(object) {
-    super(object, ConsentSchema);
-    this.typeName = 'Consent';
-    this._type = 'FHIR::Consent';
-  }
-}
-
 module.exports.ConsentSchema = ConsentSchema;
-module.exports.Consent = Consent;

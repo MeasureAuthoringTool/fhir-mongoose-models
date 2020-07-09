@@ -1,21 +1,22 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveTimeSchema } = require('./PrimitiveTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuantitySchema } = require('./Quantity');
-const { QuestionnaireResponseItemSchema } = require('./QuestionnaireResponseItem');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseItemSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseItemAnswerSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireResponseItemAnswerSchema = BackboneElementSchemaFunction({
+QuestionnaireResponseItemAnswerSchema.add(BackboneElementSchema);
+QuestionnaireResponseItemAnswerSchema.remove('id');
+QuestionnaireResponseItemAnswerSchema.add({
   valueBoolean: PrimitiveBooleanSchema,
   valueDecimal: PrimitiveDecimalSchema,
   valueInteger: PrimitiveIntegerSchema,
@@ -29,17 +30,6 @@ const QuestionnaireResponseItemAnswerSchema = BackboneElementSchemaFunction({
   valueQuantity: QuantitySchema,
   valueReference: ReferenceSchema,
   item: [QuestionnaireResponseItemSchema],
-  typeName: { type: String, default: 'QuestionnaireResponseItemAnswer' },
-  _type: { type: String, default: 'FHIR::QuestionnaireResponseItemAnswer' },
 });
 
-class QuestionnaireResponseItemAnswer extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireResponseItemAnswerSchema);
-    this.typeName = 'QuestionnaireResponseItemAnswer';
-    this._type = 'FHIR::QuestionnaireResponseItemAnswer';
-  }
-}
-
 module.exports.QuestionnaireResponseItemAnswerSchema = QuestionnaireResponseItemAnswerSchema;
-module.exports.QuestionnaireResponseItemAnswer = QuestionnaireResponseItemAnswer;

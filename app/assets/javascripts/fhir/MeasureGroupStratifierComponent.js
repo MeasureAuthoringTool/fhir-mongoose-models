@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ExpressionSchema } = require('./Expression');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { MeasureGroupStratifierComponentSchema } = require('./allSchemaHeaders.js');
 
-const MeasureGroupStratifierComponentSchema = BackboneElementSchemaFunction({
+MeasureGroupStratifierComponentSchema.add(BackboneElementSchema);
+MeasureGroupStratifierComponentSchema.remove('id');
+MeasureGroupStratifierComponentSchema.add({
   code: CodeableConceptSchema,
   description: PrimitiveStringSchema,
   criteria: ExpressionSchema,
-  typeName: { type: String, default: 'MeasureGroupStratifierComponent' },
-  _type: { type: String, default: 'FHIR::MeasureGroupStratifierComponent' },
 });
 
-class MeasureGroupStratifierComponent extends mongoose.Document {
-  constructor(object) {
-    super(object, MeasureGroupStratifierComponentSchema);
-    this.typeName = 'MeasureGroupStratifierComponent';
-    this._type = 'FHIR::MeasureGroupStratifierComponent';
-  }
-}
-
 module.exports.MeasureGroupStratifierComponentSchema = MeasureGroupStratifierComponentSchema;
-module.exports.MeasureGroupStratifierComponent = MeasureGroupStratifierComponent;

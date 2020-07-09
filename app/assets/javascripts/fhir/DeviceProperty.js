@@ -1,24 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { QuantitySchema } = require('./Quantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { DevicePropertySchema } = require('./allSchemaHeaders.js');
 
-const DevicePropertySchema = BackboneElementSchemaFunction({
+DevicePropertySchema.add(BackboneElementSchema);
+DevicePropertySchema.remove('id');
+DevicePropertySchema.add({
   type: CodeableConceptSchema,
   valueQuantity: [QuantitySchema],
   valueCode: [CodeableConceptSchema],
-  typeName: { type: String, default: 'DeviceProperty' },
-  _type: { type: String, default: 'FHIR::DeviceProperty' },
 });
 
-class DeviceProperty extends mongoose.Document {
-  constructor(object) {
-    super(object, DevicePropertySchema);
-    this.typeName = 'DeviceProperty';
-    this._type = 'FHIR::DeviceProperty';
-  }
-}
-
 module.exports.DevicePropertySchema = DevicePropertySchema;
-module.exports.DeviceProperty = DeviceProperty;

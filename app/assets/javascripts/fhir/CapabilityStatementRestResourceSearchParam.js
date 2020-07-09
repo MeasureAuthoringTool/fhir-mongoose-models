@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { SearchParamTypeSchema } = require('./SearchParamType');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SearchParamTypeSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceSearchParamSchema } = require('./allSchemaHeaders.js');
 
-const CapabilityStatementRestResourceSearchParamSchema = BackboneElementSchemaFunction({
+CapabilityStatementRestResourceSearchParamSchema.add(BackboneElementSchema);
+CapabilityStatementRestResourceSearchParamSchema.remove('id');
+CapabilityStatementRestResourceSearchParamSchema.add({
   name: PrimitiveStringSchema,
   definition: PrimitiveCanonicalSchema,
   type: SearchParamTypeSchema,
   documentation: PrimitiveMarkdownSchema,
-  typeName: { type: String, default: 'CapabilityStatementRestResourceSearchParam' },
-  _type: { type: String, default: 'FHIR::CapabilityStatementRestResourceSearchParam' },
 });
 
-class CapabilityStatementRestResourceSearchParam extends mongoose.Document {
-  constructor(object) {
-    super(object, CapabilityStatementRestResourceSearchParamSchema);
-    this.typeName = 'CapabilityStatementRestResourceSearchParam';
-    this._type = 'FHIR::CapabilityStatementRestResourceSearchParam';
-  }
-}
-
 module.exports.CapabilityStatementRestResourceSearchParamSchema = CapabilityStatementRestResourceSearchParamSchema;
-module.exports.CapabilityStatementRestResourceSearchParam = CapabilityStatementRestResourceSearchParam;

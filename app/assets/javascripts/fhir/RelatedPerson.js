@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { AdministrativeGenderSchema } = require('./AdministrativeGender');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { AdministrativeGenderSchema } = require('./allSchemaHeaders.js');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { HumanNameSchema } = require('./HumanName');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedPersonCommunicationSchema } = require('./RelatedPersonCommunication');
+const { HumanNameSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedPersonCommunicationSchema } = require('./allSchemaHeaders.js');
+const { RelatedPersonSchema } = require('./allSchemaHeaders.js');
 
-const RelatedPersonSchema = DomainResourceSchemaFunction({
+RelatedPersonSchema.add(DomainResourceSchema);
+RelatedPersonSchema.remove('id');
+RelatedPersonSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   patient: ReferenceSchema,
@@ -27,17 +28,6 @@ const RelatedPersonSchema = DomainResourceSchemaFunction({
   photo: [AttachmentSchema],
   period: PeriodSchema,
   communication: [RelatedPersonCommunicationSchema],
-  typeName: { type: String, default: 'RelatedPerson' },
-  _type: { type: String, default: 'FHIR::RelatedPerson' },
 });
 
-class RelatedPerson extends mongoose.Document {
-  constructor(object) {
-    super(object, RelatedPersonSchema);
-    this.typeName = 'RelatedPerson';
-    this._type = 'FHIR::RelatedPerson';
-  }
-}
-
 module.exports.RelatedPersonSchema = RelatedPersonSchema;
-module.exports.RelatedPerson = RelatedPerson;

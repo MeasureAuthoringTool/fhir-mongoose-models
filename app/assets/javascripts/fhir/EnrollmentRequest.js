@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EnrollmentRequestStatusSchema } = require('./EnrollmentRequestStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { EnrollmentRequestStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { EnrollmentRequestSchema } = require('./allSchemaHeaders.js');
 
-const EnrollmentRequestSchema = DomainResourceSchemaFunction({
+EnrollmentRequestSchema.add(DomainResourceSchema);
+EnrollmentRequestSchema.remove('id');
+EnrollmentRequestSchema.add({
   identifier: [IdentifierSchema],
   status: EnrollmentRequestStatusSchema,
   created: PrimitiveDateTimeSchema,
@@ -14,17 +15,6 @@ const EnrollmentRequestSchema = DomainResourceSchemaFunction({
   provider: ReferenceSchema,
   candidate: ReferenceSchema,
   coverage: ReferenceSchema,
-  typeName: { type: String, default: 'EnrollmentRequest' },
-  _type: { type: String, default: 'FHIR::EnrollmentRequest' },
 });
 
-class EnrollmentRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, EnrollmentRequestSchema);
-    this.typeName = 'EnrollmentRequest';
-    this._type = 'FHIR::EnrollmentRequest';
-  }
-}
-
 module.exports.EnrollmentRequestSchema = EnrollmentRequestSchema;
-module.exports.EnrollmentRequest = EnrollmentRequest;

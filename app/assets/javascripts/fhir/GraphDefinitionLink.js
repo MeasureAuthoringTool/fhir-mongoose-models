@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { GraphDefinitionLinkTargetSchema } = require('./GraphDefinitionLinkTarget');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { GraphDefinitionLinkTargetSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { GraphDefinitionLinkSchema } = require('./allSchemaHeaders.js');
 
-const GraphDefinitionLinkSchema = BackboneElementSchemaFunction({
+GraphDefinitionLinkSchema.add(BackboneElementSchema);
+GraphDefinitionLinkSchema.remove('id');
+GraphDefinitionLinkSchema.add({
   path: PrimitiveStringSchema,
   sliceName: PrimitiveStringSchema,
   min: PrimitiveIntegerSchema,
   max: PrimitiveStringSchema,
   description: PrimitiveStringSchema,
   target: [GraphDefinitionLinkTargetSchema],
-  typeName: { type: String, default: 'GraphDefinitionLink' },
-  _type: { type: String, default: 'FHIR::GraphDefinitionLink' },
 });
 
-class GraphDefinitionLink extends mongoose.Document {
-  constructor(object) {
-    super(object, GraphDefinitionLinkSchema);
-    this.typeName = 'GraphDefinitionLink';
-    this._type = 'FHIR::GraphDefinitionLink';
-  }
-}
-
 module.exports.GraphDefinitionLinkSchema = GraphDefinitionLinkSchema;
-module.exports.GraphDefinitionLink = GraphDefinitionLink;

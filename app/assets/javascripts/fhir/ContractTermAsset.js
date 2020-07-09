@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { ContractTermAssetContextSchema } = require('./ContractTermAssetContext');
-const { ContractTermAssetValuedItemSchema } = require('./ContractTermAssetValuedItem');
-const { ContractTermOfferAnswerSchema } = require('./ContractTermOfferAnswer');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ContractTermAssetContextSchema } = require('./allSchemaHeaders.js');
+const { ContractTermAssetValuedItemSchema } = require('./allSchemaHeaders.js');
+const { ContractTermOfferAnswerSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ContractTermAssetSchema } = require('./allSchemaHeaders.js');
 
-const ContractTermAssetSchema = BackboneElementSchemaFunction({
+ContractTermAssetSchema.add(BackboneElementSchema);
+ContractTermAssetSchema.remove('id');
+ContractTermAssetSchema.add({
   scope: CodeableConceptSchema,
   type: [CodeableConceptSchema],
   typeReference: [ReferenceSchema],
@@ -27,17 +28,6 @@ const ContractTermAssetSchema = BackboneElementSchemaFunction({
   answer: [ContractTermOfferAnswerSchema],
   securityLabelNumber: [PrimitiveUnsignedIntSchema],
   valuedItem: [ContractTermAssetValuedItemSchema],
-  typeName: { type: String, default: 'ContractTermAsset' },
-  _type: { type: String, default: 'FHIR::ContractTermAsset' },
 });
 
-class ContractTermAsset extends mongoose.Document {
-  constructor(object) {
-    super(object, ContractTermAssetSchema);
-    this.typeName = 'ContractTermAsset';
-    this._type = 'FHIR::ContractTermAsset';
-  }
-}
-
 module.exports.ContractTermAssetSchema = ContractTermAssetSchema;
-module.exports.ContractTermAsset = ContractTermAsset;

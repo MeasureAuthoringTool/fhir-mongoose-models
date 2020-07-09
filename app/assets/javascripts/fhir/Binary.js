@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { MimeTypeSchema } = require('./MimeType');
-const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
-const { ReferenceSchema } = require('./Reference');
+const { MimeTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBase64BinarySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
 const { ResourceSchema } = require('./Resource');
-const { ResourceSchemaFunction } = require('./Resource');
+const { BinarySchema } = require('./allSchemaHeaders.js');
 
-const BinarySchema = ResourceSchemaFunction({
+BinarySchema.add(ResourceSchema);
+BinarySchema.remove('id');
+BinarySchema.add({
   contentType: MimeTypeSchema,
   securityContext: ReferenceSchema,
   data: PrimitiveBase64BinarySchema,
-  typeName: { type: String, default: 'Binary' },
-  _type: { type: String, default: 'FHIR::Binary' },
 });
 
-class Binary extends mongoose.Document {
-  constructor(object) {
-    super(object, BinarySchema);
-    this.typeName = 'Binary';
-    this._type = 'FHIR::Binary';
-  }
-}
-
 module.exports.BinarySchema = BinarySchema;
-module.exports.Binary = Binary;

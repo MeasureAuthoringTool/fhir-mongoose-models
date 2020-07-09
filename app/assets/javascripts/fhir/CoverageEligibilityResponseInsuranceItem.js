@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CoverageEligibilityResponseInsuranceItemBenefitSchema } = require('./CoverageEligibilityResponseInsuranceItemBenefit');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityResponseInsuranceItemBenefitSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityResponseInsuranceItemSchema } = require('./allSchemaHeaders.js');
 
-const CoverageEligibilityResponseInsuranceItemSchema = BackboneElementSchemaFunction({
+CoverageEligibilityResponseInsuranceItemSchema.add(BackboneElementSchema);
+CoverageEligibilityResponseInsuranceItemSchema.remove('id');
+CoverageEligibilityResponseInsuranceItemSchema.add({
   category: CodeableConceptSchema,
   productOrService: CodeableConceptSchema,
   modifier: [CodeableConceptSchema],
@@ -23,17 +24,6 @@ const CoverageEligibilityResponseInsuranceItemSchema = BackboneElementSchemaFunc
   authorizationRequired: PrimitiveBooleanSchema,
   authorizationSupporting: [CodeableConceptSchema],
   authorizationUrl: PrimitiveUriSchema,
-  typeName: { type: String, default: 'CoverageEligibilityResponseInsuranceItem' },
-  _type: { type: String, default: 'FHIR::CoverageEligibilityResponseInsuranceItem' },
 });
 
-class CoverageEligibilityResponseInsuranceItem extends mongoose.Document {
-  constructor(object) {
-    super(object, CoverageEligibilityResponseInsuranceItemSchema);
-    this.typeName = 'CoverageEligibilityResponseInsuranceItem';
-    this._type = 'FHIR::CoverageEligibilityResponseInsuranceItem';
-  }
-}
-
 module.exports.CoverageEligibilityResponseInsuranceItemSchema = CoverageEligibilityResponseInsuranceItemSchema;
-module.exports.CoverageEligibilityResponseInsuranceItem = CoverageEligibilityResponseInsuranceItem;

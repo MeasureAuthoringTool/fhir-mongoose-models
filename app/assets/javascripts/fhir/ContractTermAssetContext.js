@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ContractTermAssetContextSchema } = require('./allSchemaHeaders.js');
 
-const ContractTermAssetContextSchema = BackboneElementSchemaFunction({
+ContractTermAssetContextSchema.add(BackboneElementSchema);
+ContractTermAssetContextSchema.remove('id');
+ContractTermAssetContextSchema.add({
   reference: ReferenceSchema,
   code: [CodeableConceptSchema],
   text: PrimitiveStringSchema,
-  typeName: { type: String, default: 'ContractTermAssetContext' },
-  _type: { type: String, default: 'FHIR::ContractTermAssetContext' },
 });
 
-class ContractTermAssetContext extends mongoose.Document {
-  constructor(object) {
-    super(object, ContractTermAssetContextSchema);
-    this.typeName = 'ContractTermAssetContext';
-    this._type = 'FHIR::ContractTermAssetContext';
-  }
-}
-
 module.exports.ContractTermAssetContextSchema = ContractTermAssetContextSchema;
-module.exports.ContractTermAssetContext = ContractTermAssetContext;

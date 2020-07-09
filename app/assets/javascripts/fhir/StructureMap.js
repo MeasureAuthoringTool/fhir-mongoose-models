@@ -1,21 +1,22 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { StructureMapGroupSchema } = require('./StructureMapGroup');
-const { StructureMapStructureSchema } = require('./StructureMapStructure');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { StructureMapGroupSchema } = require('./allSchemaHeaders.js');
+const { StructureMapStructureSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { StructureMapSchema } = require('./allSchemaHeaders.js');
 
-const StructureMapSchema = DomainResourceSchemaFunction({
+StructureMapSchema.add(DomainResourceSchema);
+StructureMapSchema.remove('id');
+StructureMapSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -34,17 +35,6 @@ const StructureMapSchema = DomainResourceSchemaFunction({
   structure: [StructureMapStructureSchema],
   import: [PrimitiveCanonicalSchema],
   group: [StructureMapGroupSchema],
-  typeName: { type: String, default: 'StructureMap' },
-  _type: { type: String, default: 'FHIR::StructureMap' },
 });
 
-class StructureMap extends mongoose.Document {
-  constructor(object) {
-    super(object, StructureMapSchema);
-    this.typeName = 'StructureMap';
-    this._type = 'FHIR::StructureMap';
-  }
-}
-
 module.exports.StructureMapSchema = StructureMapSchema;
-module.exports.StructureMap = StructureMap;

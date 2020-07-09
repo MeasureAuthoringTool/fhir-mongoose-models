@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DurationSchema } = require('./Duration');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { RatioSchema } = require('./Ratio');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { GoalTargetSchema } = require('./allSchemaHeaders.js');
 
-const GoalTargetSchema = BackboneElementSchemaFunction({
+GoalTargetSchema.add(BackboneElementSchema);
+GoalTargetSchema.remove('id');
+GoalTargetSchema.add({
   measure: CodeableConceptSchema,
   detailQuantity: QuantitySchema,
   detailRange: RangeSchema,
@@ -22,17 +23,6 @@ const GoalTargetSchema = BackboneElementSchemaFunction({
   detailRatio: RatioSchema,
   dueDate: PrimitiveDateSchema,
   dueDuration: DurationSchema,
-  typeName: { type: String, default: 'GoalTarget' },
-  _type: { type: String, default: 'FHIR::GoalTarget' },
 });
 
-class GoalTarget extends mongoose.Document {
-  constructor(object) {
-    super(object, GoalTargetSchema);
-    this.typeName = 'GoalTarget';
-    this._type = 'FHIR::GoalTarget';
-  }
-}
-
 module.exports.GoalTargetSchema = GoalTargetSchema;
-module.exports.GoalTarget = GoalTarget;

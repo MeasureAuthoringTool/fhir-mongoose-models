@@ -1,21 +1,22 @@
-const mongoose = require('mongoose/browser');
-const { AgeSchema } = require('./Age');
-const { AllergyIntoleranceCategorySchema } = require('./AllergyIntoleranceCategory');
-const { AllergyIntoleranceCriticalitySchema } = require('./AllergyIntoleranceCriticality');
-const { AllergyIntoleranceReactionSchema } = require('./AllergyIntoleranceReaction');
-const { AllergyIntoleranceTypeSchema } = require('./AllergyIntoleranceType');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AgeSchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceCategorySchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceCriticalitySchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceReactionSchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceTypeSchema } = require('./allSchemaHeaders.js');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceSchema } = require('./allSchemaHeaders.js');
 
-const AllergyIntoleranceSchema = DomainResourceSchemaFunction({
+AllergyIntoleranceSchema.add(DomainResourceSchema);
+AllergyIntoleranceSchema.remove('id');
+AllergyIntoleranceSchema.add({
   identifier: [IdentifierSchema],
   clinicalStatus: CodeableConceptSchema,
   verificationStatus: CodeableConceptSchema,
@@ -36,17 +37,6 @@ const AllergyIntoleranceSchema = DomainResourceSchemaFunction({
   lastOccurrence: PrimitiveDateTimeSchema,
   note: [AnnotationSchema],
   reaction: [AllergyIntoleranceReactionSchema],
-  typeName: { type: String, default: 'AllergyIntolerance' },
-  _type: { type: String, default: 'FHIR::AllergyIntolerance' },
 });
 
-class AllergyIntolerance extends mongoose.Document {
-  constructor(object) {
-    super(object, AllergyIntoleranceSchema);
-    this.typeName = 'AllergyIntolerance';
-    this._type = 'FHIR::AllergyIntolerance';
-  }
-}
-
 module.exports.AllergyIntoleranceSchema = AllergyIntoleranceSchema;
-module.exports.AllergyIntolerance = AllergyIntolerance;

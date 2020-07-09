@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { StatusSchema } = require('./Status');
-const { TimingSchema } = require('./Timing');
-const { VerificationResultAttestationSchema } = require('./VerificationResultAttestation');
-const { VerificationResultPrimarySourceSchema } = require('./VerificationResultPrimarySource');
-const { VerificationResultValidatorSchema } = require('./VerificationResultValidator');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { StatusSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { VerificationResultAttestationSchema } = require('./allSchemaHeaders.js');
+const { VerificationResultPrimarySourceSchema } = require('./allSchemaHeaders.js');
+const { VerificationResultValidatorSchema } = require('./allSchemaHeaders.js');
+const { VerificationResultSchema } = require('./allSchemaHeaders.js');
 
-const VerificationResultSchema = DomainResourceSchemaFunction({
+VerificationResultSchema.add(DomainResourceSchema);
+VerificationResultSchema.remove('id');
+VerificationResultSchema.add({
   target: [ReferenceSchema],
   targetLocation: [PrimitiveStringSchema],
   need: CodeableConceptSchema,
@@ -27,17 +28,6 @@ const VerificationResultSchema = DomainResourceSchemaFunction({
   primarySource: [VerificationResultPrimarySourceSchema],
   attestation: VerificationResultAttestationSchema,
   validator: [VerificationResultValidatorSchema],
-  typeName: { type: String, default: 'VerificationResult' },
-  _type: { type: String, default: 'FHIR::VerificationResult' },
 });
 
-class VerificationResult extends mongoose.Document {
-  constructor(object) {
-    super(object, VerificationResultSchema);
-    this.typeName = 'VerificationResult';
-    this._type = 'FHIR::VerificationResult';
-  }
-}
-
 module.exports.VerificationResultSchema = VerificationResultSchema;
-module.exports.VerificationResult = VerificationResult;

@@ -1,30 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { SubstanceAmountReferenceRangeSchema } = require('./SubstanceAmountReferenceRange');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { SubstanceAmountReferenceRangeSchema } = require('./allSchemaHeaders.js');
+const { SubstanceAmountSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceAmountSchema = BackboneElementSchemaFunction({
+SubstanceAmountSchema.add(BackboneElementSchema);
+SubstanceAmountSchema.remove('id');
+SubstanceAmountSchema.add({
   amountQuantity: QuantitySchema,
   amountRange: RangeSchema,
   amountString: PrimitiveStringSchema,
   amountType: CodeableConceptSchema,
   amountText: PrimitiveStringSchema,
   referenceRange: SubstanceAmountReferenceRangeSchema,
-  typeName: { type: String, default: 'SubstanceAmount' },
-  _type: { type: String, default: 'FHIR::SubstanceAmount' },
 });
 
-class SubstanceAmount extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceAmountSchema);
-    this.typeName = 'SubstanceAmount';
-    this._type = 'FHIR::SubstanceAmount';
-  }
-}
-
 module.exports.SubstanceAmountSchema = SubstanceAmountSchema;
-module.exports.SubstanceAmount = SubstanceAmount;

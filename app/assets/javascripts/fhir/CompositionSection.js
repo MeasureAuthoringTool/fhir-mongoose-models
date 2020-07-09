@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { NarrativeSchema } = require('./Narrative');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SectionModeSchema } = require('./SectionMode');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { NarrativeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SectionModeSchema } = require('./allSchemaHeaders.js');
+const { CompositionSectionSchema } = require('./allSchemaHeaders.js');
 
-const CompositionSectionSchema = BackboneElementSchemaFunction({
+CompositionSectionSchema.add(BackboneElementSchema);
+CompositionSectionSchema.remove('id');
+CompositionSectionSchema.add({
   title: PrimitiveStringSchema,
   code: CodeableConceptSchema,
   author: [ReferenceSchema],
@@ -18,17 +19,6 @@ const CompositionSectionSchema = BackboneElementSchemaFunction({
   entry: [ReferenceSchema],
   emptyReason: CodeableConceptSchema,
   section: [CompositionSectionSchema],
-  typeName: { type: String, default: 'CompositionSection' },
-  _type: { type: String, default: 'FHIR::CompositionSection' },
 });
 
-class CompositionSection extends mongoose.Document {
-  constructor(object) {
-    super(object, CompositionSectionSchema);
-    this.typeName = 'CompositionSection';
-    this._type = 'FHIR::CompositionSection';
-  }
-}
-
 module.exports.CompositionSectionSchema = CompositionSectionSchema;
-module.exports.CompositionSection = CompositionSection;

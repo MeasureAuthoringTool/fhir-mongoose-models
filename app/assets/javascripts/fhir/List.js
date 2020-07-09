@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ListEntrySchema } = require('./ListEntry');
-const { ListModeSchema } = require('./ListMode');
-const { ListStatusSchema } = require('./ListStatus');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ListEntrySchema } = require('./allSchemaHeaders.js');
+const { ListModeSchema } = require('./allSchemaHeaders.js');
+const { ListStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ListSchema } = require('./allSchemaHeaders.js');
 
-const ListSchema = DomainResourceSchemaFunction({
+ListSchema.add(DomainResourceSchema);
+ListSchema.remove('id');
+ListSchema.add({
   identifier: [IdentifierSchema],
   status: ListStatusSchema,
   mode: ListModeSchema,
@@ -25,17 +26,6 @@ const ListSchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   entry: [ListEntrySchema],
   emptyReason: CodeableConceptSchema,
-  typeName: { type: String, default: 'List' },
-  _type: { type: String, default: 'FHIR::List' },
 });
 
-class List extends mongoose.Document {
-  constructor(object) {
-    super(object, ListSchema);
-    this.typeName = 'List';
-    this._type = 'FHIR::List';
-  }
-}
-
 module.exports.ListSchema = ListSchema;
-module.exports.List = List;

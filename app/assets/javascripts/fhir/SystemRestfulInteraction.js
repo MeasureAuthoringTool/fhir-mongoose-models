@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { SystemRestfulInteractionSchema } = require('./allSchemaHeaders.js');
 
-const SystemRestfulInteractionSchema = ElementSchemaFunction({
+SystemRestfulInteractionSchema.add(ElementSchema);
+SystemRestfulInteractionSchema.remove('id');
+SystemRestfulInteractionSchema.add({
   value: String,
-  typeName: { type: String, default: 'SystemRestfulInteraction' },
-  _type: { type: String, default: 'FHIR::SystemRestfulInteraction' },
 });
 
-class SystemRestfulInteraction extends mongoose.Document {
-  constructor(object) {
-    super(object, SystemRestfulInteractionSchema);
-    this.typeName = 'SystemRestfulInteraction';
-    this._type = 'FHIR::SystemRestfulInteraction';
-  }
-}
-
 module.exports.SystemRestfulInteractionSchema = SystemRestfulInteractionSchema;
-module.exports.SystemRestfulInteraction = SystemRestfulInteraction;

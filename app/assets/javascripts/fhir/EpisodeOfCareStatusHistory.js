@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { EpisodeOfCareStatusSchema } = require('./EpisodeOfCareStatus');
-const { PeriodSchema } = require('./Period');
+const { EpisodeOfCareStatusSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { EpisodeOfCareStatusHistorySchema } = require('./allSchemaHeaders.js');
 
-const EpisodeOfCareStatusHistorySchema = BackboneElementSchemaFunction({
+EpisodeOfCareStatusHistorySchema.add(BackboneElementSchema);
+EpisodeOfCareStatusHistorySchema.remove('id');
+EpisodeOfCareStatusHistorySchema.add({
   status: EpisodeOfCareStatusSchema,
   period: PeriodSchema,
-  typeName: { type: String, default: 'EpisodeOfCareStatusHistory' },
-  _type: { type: String, default: 'FHIR::EpisodeOfCareStatusHistory' },
 });
 
-class EpisodeOfCareStatusHistory extends mongoose.Document {
-  constructor(object) {
-    super(object, EpisodeOfCareStatusHistorySchema);
-    this.typeName = 'EpisodeOfCareStatusHistory';
-    this._type = 'FHIR::EpisodeOfCareStatusHistory';
-  }
-}
-
 module.exports.EpisodeOfCareStatusHistorySchema = EpisodeOfCareStatusHistorySchema;
-module.exports.EpisodeOfCareStatusHistory = EpisodeOfCareStatusHistory;

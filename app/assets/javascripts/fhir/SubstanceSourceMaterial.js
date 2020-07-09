@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { SubstanceSourceMaterialFractionDescriptionSchema } = require('./SubstanceSourceMaterialFractionDescription');
-const { SubstanceSourceMaterialOrganismSchema } = require('./SubstanceSourceMaterialOrganism');
-const { SubstanceSourceMaterialPartDescriptionSchema } = require('./SubstanceSourceMaterialPartDescription');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialFractionDescriptionSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialOrganismSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialPartDescriptionSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSourceMaterialSchema = DomainResourceSchemaFunction({
+SubstanceSourceMaterialSchema.add(DomainResourceSchema);
+SubstanceSourceMaterialSchema.remove('id');
+SubstanceSourceMaterialSchema.add({
   sourceMaterialClass: CodeableConceptSchema,
   sourceMaterialType: CodeableConceptSchema,
   sourceMaterialState: CodeableConceptSchema,
@@ -22,17 +23,6 @@ const SubstanceSourceMaterialSchema = DomainResourceSchemaFunction({
   fractionDescription: [SubstanceSourceMaterialFractionDescriptionSchema],
   organism: SubstanceSourceMaterialOrganismSchema,
   partDescription: [SubstanceSourceMaterialPartDescriptionSchema],
-  typeName: { type: String, default: 'SubstanceSourceMaterial' },
-  _type: { type: String, default: 'FHIR::SubstanceSourceMaterial' },
 });
 
-class SubstanceSourceMaterial extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSourceMaterialSchema);
-    this.typeName = 'SubstanceSourceMaterial';
-    this._type = 'FHIR::SubstanceSourceMaterial';
-  }
-}
-
 module.exports.SubstanceSourceMaterialSchema = SubstanceSourceMaterialSchema;
-module.exports.SubstanceSourceMaterial = SubstanceSourceMaterial;

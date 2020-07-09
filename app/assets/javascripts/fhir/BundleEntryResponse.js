@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ResourceSchema } = require('./Resource');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ResourceSchema } = require('./allSchemaHeaders.js');
+const { BundleEntryResponseSchema } = require('./allSchemaHeaders.js');
 
-const BundleEntryResponseSchema = BackboneElementSchemaFunction({
+BundleEntryResponseSchema.add(BackboneElementSchema);
+BundleEntryResponseSchema.remove('id');
+BundleEntryResponseSchema.add({
   status: PrimitiveStringSchema,
   location: PrimitiveUriSchema,
   etag: PrimitiveStringSchema,
   lastModified: PrimitiveInstantSchema,
   outcome: ResourceSchema,
-  typeName: { type: String, default: 'BundleEntryResponse' },
-  _type: { type: String, default: 'FHIR::BundleEntryResponse' },
 });
 
-class BundleEntryResponse extends mongoose.Document {
-  constructor(object) {
-    super(object, BundleEntryResponseSchema);
-    this.typeName = 'BundleEntryResponse';
-    this._type = 'FHIR::BundleEntryResponse';
-  }
-}
-
 module.exports.BundleEntryResponseSchema = BundleEntryResponseSchema;
-module.exports.BundleEntryResponse = BundleEntryResponse;

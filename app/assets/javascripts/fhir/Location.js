@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { ContactPointSchema } = require('./ContactPoint');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { LocationHoursOfOperationSchema } = require('./LocationHoursOfOperation');
-const { LocationModeSchema } = require('./LocationMode');
-const { LocationPositionSchema } = require('./LocationPosition');
-const { LocationStatusSchema } = require('./LocationStatus');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { LocationHoursOfOperationSchema } = require('./allSchemaHeaders.js');
+const { LocationModeSchema } = require('./allSchemaHeaders.js');
+const { LocationPositionSchema } = require('./allSchemaHeaders.js');
+const { LocationStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { LocationSchema } = require('./allSchemaHeaders.js');
 
-const LocationSchema = DomainResourceSchemaFunction({
+LocationSchema.add(DomainResourceSchema);
+LocationSchema.remove('id');
+LocationSchema.add({
   identifier: [IdentifierSchema],
   status: LocationStatusSchema,
   operationalStatus: CodingSchema,
@@ -31,17 +32,6 @@ const LocationSchema = DomainResourceSchemaFunction({
   hoursOfOperation: [LocationHoursOfOperationSchema],
   availabilityExceptions: PrimitiveStringSchema,
   endpoint: [ReferenceSchema],
-  typeName: { type: String, default: 'Location' },
-  _type: { type: String, default: 'FHIR::Location' },
 });
 
-class Location extends mongoose.Document {
-  constructor(object) {
-    super(object, LocationSchema);
-    this.typeName = 'Location';
-    this._type = 'FHIR::Location';
-  }
-}
-
 module.exports.LocationSchema = LocationSchema;
-module.exports.Location = Location;

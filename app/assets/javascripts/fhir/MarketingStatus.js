@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { MarketingStatusSchema } = require('./allSchemaHeaders.js');
 
-const MarketingStatusSchema = BackboneElementSchemaFunction({
+MarketingStatusSchema.add(BackboneElementSchema);
+MarketingStatusSchema.remove('id');
+MarketingStatusSchema.add({
   country: CodeableConceptSchema,
   jurisdiction: CodeableConceptSchema,
   status: CodeableConceptSchema,
   dateRange: PeriodSchema,
   restoreDate: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'MarketingStatus' },
-  _type: { type: String, default: 'FHIR::MarketingStatus' },
 });
 
-class MarketingStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, MarketingStatusSchema);
-    this.typeName = 'MarketingStatus';
-    this._type = 'FHIR::MarketingStatus';
-  }
-}
-
 module.exports.MarketingStatusSchema = MarketingStatusSchema;
-module.exports.MarketingStatus = MarketingStatus;

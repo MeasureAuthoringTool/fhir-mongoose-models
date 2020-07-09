@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { FlagStatusSchema } = require('./FlagStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { ReferenceSchema } = require('./Reference');
+const { FlagStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { FlagSchema } = require('./allSchemaHeaders.js');
 
-const FlagSchema = DomainResourceSchemaFunction({
+FlagSchema.add(DomainResourceSchema);
+FlagSchema.remove('id');
+FlagSchema.add({
   identifier: [IdentifierSchema],
   status: FlagStatusSchema,
   category: [CodeableConceptSchema],
@@ -16,17 +17,6 @@ const FlagSchema = DomainResourceSchemaFunction({
   period: PeriodSchema,
   encounter: ReferenceSchema,
   author: ReferenceSchema,
-  typeName: { type: String, default: 'Flag' },
-  _type: { type: String, default: 'FHIR::Flag' },
 });
 
-class Flag extends mongoose.Document {
-  constructor(object) {
-    super(object, FlagSchema);
-    this.typeName = 'Flag';
-    this._type = 'FHIR::Flag';
-  }
-}
-
 module.exports.FlagSchema = FlagSchema;
-module.exports.Flag = Flag;

@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { FHIRAllTypesSchema } = require('./FHIRAllTypes');
-const { ParameterUseSchema } = require('./ParameterUse');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveCodeSchema } = require('./PrimitiveCode');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { FHIRAllTypesSchema } = require('./allSchemaHeaders.js');
+const { ParameterUseSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCodeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ParameterDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const ParameterDefinitionSchema = ElementSchemaFunction({
+ParameterDefinitionSchema.add(ElementSchema);
+ParameterDefinitionSchema.remove('id');
+ParameterDefinitionSchema.add({
   name: PrimitiveCodeSchema,
   use: ParameterUseSchema,
   min: PrimitiveIntegerSchema,
@@ -16,17 +17,6 @@ const ParameterDefinitionSchema = ElementSchemaFunction({
   documentation: PrimitiveStringSchema,
   type: FHIRAllTypesSchema,
   profile: PrimitiveCanonicalSchema,
-  typeName: { type: String, default: 'ParameterDefinition' },
-  _type: { type: String, default: 'FHIR::ParameterDefinition' },
 });
 
-class ParameterDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, ParameterDefinitionSchema);
-    this.typeName = 'ParameterDefinition';
-    this._type = 'FHIR::ParameterDefinition';
-  }
-}
-
 module.exports.ParameterDefinitionSchema = ParameterDefinitionSchema;
-module.exports.ParameterDefinition = ParameterDefinition;

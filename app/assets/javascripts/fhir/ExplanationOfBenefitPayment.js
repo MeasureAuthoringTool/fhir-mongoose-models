@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitPaymentSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitPaymentSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitPaymentSchema.add(BackboneElementSchema);
+ExplanationOfBenefitPaymentSchema.remove('id');
+ExplanationOfBenefitPaymentSchema.add({
   type: CodeableConceptSchema,
   adjustment: MoneySchema,
   adjustmentReason: CodeableConceptSchema,
   date: PrimitiveDateSchema,
   amount: MoneySchema,
   identifier: IdentifierSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitPayment' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitPayment' },
 });
 
-class ExplanationOfBenefitPayment extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitPaymentSchema);
-    this.typeName = 'ExplanationOfBenefitPayment';
-    this._type = 'FHIR::ExplanationOfBenefitPayment';
-  }
-}
-
 module.exports.ExplanationOfBenefitPaymentSchema = ExplanationOfBenefitPaymentSchema;
-module.exports.ExplanationOfBenefitPayment = ExplanationOfBenefitPayment;

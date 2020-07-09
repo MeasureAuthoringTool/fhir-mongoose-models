@@ -1,24 +1,25 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
-const { DeviceDefinitionCapabilitySchema } = require('./DeviceDefinitionCapability');
-const { DeviceDefinitionDeviceNameSchema } = require('./DeviceDefinitionDeviceName');
-const { DeviceDefinitionMaterialSchema } = require('./DeviceDefinitionMaterial');
-const { DeviceDefinitionPropertySchema } = require('./DeviceDefinitionProperty');
-const { DeviceDefinitionSpecializationSchema } = require('./DeviceDefinitionSpecialization');
-const { DeviceDefinitionUdiDeviceIdentifierSchema } = require('./DeviceDefinitionUdiDeviceIdentifier');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionCapabilitySchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionDeviceNameSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionMaterialSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionPropertySchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionSpecializationSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionUdiDeviceIdentifierSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ProdCharacteristicSchema } = require('./ProdCharacteristic');
-const { ProductShelfLifeSchema } = require('./ProductShelfLife');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ProdCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { ProductShelfLifeSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const DeviceDefinitionSchema = DomainResourceSchemaFunction({
+DeviceDefinitionSchema.add(DomainResourceSchema);
+DeviceDefinitionSchema.remove('id');
+DeviceDefinitionSchema.add({
   identifier: [IdentifierSchema],
   udiDeviceIdentifier: [DeviceDefinitionUdiDeviceIdentifierSchema],
   manufacturerString: PrimitiveStringSchema,
@@ -42,17 +43,6 @@ const DeviceDefinitionSchema = DomainResourceSchemaFunction({
   quantity: QuantitySchema,
   parentDevice: ReferenceSchema,
   material: [DeviceDefinitionMaterialSchema],
-  typeName: { type: String, default: 'DeviceDefinition' },
-  _type: { type: String, default: 'FHIR::DeviceDefinition' },
 });
 
-class DeviceDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceDefinitionSchema);
-    this.typeName = 'DeviceDefinition';
-    this._type = 'FHIR::DeviceDefinition';
-  }
-}
-
 module.exports.DeviceDefinitionSchema = DeviceDefinitionSchema;
-module.exports.DeviceDefinition = DeviceDefinition;

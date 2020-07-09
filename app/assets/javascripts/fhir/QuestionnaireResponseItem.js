@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuestionnaireResponseItemAnswerSchema } = require('./QuestionnaireResponseItemAnswer');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseItemAnswerSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseItemSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireResponseItemSchema = BackboneElementSchemaFunction({
+QuestionnaireResponseItemSchema.add(BackboneElementSchema);
+QuestionnaireResponseItemSchema.remove('id');
+QuestionnaireResponseItemSchema.add({
   linkId: PrimitiveStringSchema,
   definition: PrimitiveUriSchema,
   text: PrimitiveStringSchema,
   answer: [QuestionnaireResponseItemAnswerSchema],
   item: [QuestionnaireResponseItemSchema],
-  typeName: { type: String, default: 'QuestionnaireResponseItem' },
-  _type: { type: String, default: 'FHIR::QuestionnaireResponseItem' },
 });
 
-class QuestionnaireResponseItem extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireResponseItemSchema);
-    this.typeName = 'QuestionnaireResponseItem';
-    this._type = 'FHIR::QuestionnaireResponseItem';
-  }
-}
-
 module.exports.QuestionnaireResponseItemSchema = QuestionnaireResponseItemSchema;
-module.exports.QuestionnaireResponseItem = QuestionnaireResponseItem;

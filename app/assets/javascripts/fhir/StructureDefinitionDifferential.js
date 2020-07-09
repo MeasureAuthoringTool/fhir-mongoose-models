@@ -1,21 +1,11 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ElementDefinitionSchema } = require('./ElementDefinition');
+const { ElementDefinitionSchema } = require('./allSchemaHeaders.js');
+const { StructureDefinitionDifferentialSchema } = require('./allSchemaHeaders.js');
 
-const StructureDefinitionDifferentialSchema = BackboneElementSchemaFunction({
+StructureDefinitionDifferentialSchema.add(BackboneElementSchema);
+StructureDefinitionDifferentialSchema.remove('id');
+StructureDefinitionDifferentialSchema.add({
   element: [ElementDefinitionSchema],
-  typeName: { type: String, default: 'StructureDefinitionDifferential' },
-  _type: { type: String, default: 'FHIR::StructureDefinitionDifferential' },
 });
 
-class StructureDefinitionDifferential extends mongoose.Document {
-  constructor(object) {
-    super(object, StructureDefinitionDifferentialSchema);
-    this.typeName = 'StructureDefinitionDifferential';
-    this._type = 'FHIR::StructureDefinitionDifferential';
-  }
-}
-
 module.exports.StructureDefinitionDifferentialSchema = StructureDefinitionDifferentialSchema;
-module.exports.StructureDefinitionDifferential = StructureDefinitionDifferential;

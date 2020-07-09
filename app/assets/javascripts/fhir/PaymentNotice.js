@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MoneySchema } = require('./Money');
-const { PaymentNoticeStatusSchema } = require('./PaymentNoticeStatus');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PaymentNoticeStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { PaymentNoticeSchema } = require('./allSchemaHeaders.js');
 
-const PaymentNoticeSchema = DomainResourceSchemaFunction({
+PaymentNoticeSchema.add(DomainResourceSchema);
+PaymentNoticeSchema.remove('id');
+PaymentNoticeSchema.add({
   identifier: [IdentifierSchema],
   status: PaymentNoticeStatusSchema,
   request: ReferenceSchema,
@@ -22,17 +23,6 @@ const PaymentNoticeSchema = DomainResourceSchemaFunction({
   recipient: ReferenceSchema,
   amount: MoneySchema,
   paymentStatus: CodeableConceptSchema,
-  typeName: { type: String, default: 'PaymentNotice' },
-  _type: { type: String, default: 'FHIR::PaymentNotice' },
 });
 
-class PaymentNotice extends mongoose.Document {
-  constructor(object) {
-    super(object, PaymentNoticeSchema);
-    this.typeName = 'PaymentNotice';
-    this._type = 'FHIR::PaymentNotice';
-  }
-}
-
 module.exports.PaymentNoticeSchema = PaymentNoticeSchema;
-module.exports.PaymentNotice = PaymentNotice;

@@ -1,22 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalCharacteristicsSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPharmaceuticalCharacteristicsSchema = BackboneElementSchemaFunction({
+MedicinalProductPharmaceuticalCharacteristicsSchema.add(BackboneElementSchema);
+MedicinalProductPharmaceuticalCharacteristicsSchema.remove('id');
+MedicinalProductPharmaceuticalCharacteristicsSchema.add({
   code: CodeableConceptSchema,
   status: CodeableConceptSchema,
-  typeName: { type: String, default: 'MedicinalProductPharmaceuticalCharacteristics' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPharmaceuticalCharacteristics' },
 });
 
-class MedicinalProductPharmaceuticalCharacteristics extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPharmaceuticalCharacteristicsSchema);
-    this.typeName = 'MedicinalProductPharmaceuticalCharacteristics';
-    this._type = 'FHIR::MedicinalProductPharmaceuticalCharacteristics';
-  }
-}
-
 module.exports.MedicinalProductPharmaceuticalCharacteristicsSchema = MedicinalProductPharmaceuticalCharacteristicsSchema;
-module.exports.MedicinalProductPharmaceuticalCharacteristics = MedicinalProductPharmaceuticalCharacteristics;

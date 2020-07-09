@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { MessageHeaderDestinationSchema } = require('./MessageHeaderDestination');
-const { MessageHeaderResponseSchema } = require('./MessageHeaderResponse');
-const { MessageHeaderSourceSchema } = require('./MessageHeaderSource');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { MessageHeaderDestinationSchema } = require('./allSchemaHeaders.js');
+const { MessageHeaderResponseSchema } = require('./allSchemaHeaders.js');
+const { MessageHeaderSourceSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MessageHeaderSchema } = require('./allSchemaHeaders.js');
 
-const MessageHeaderSchema = DomainResourceSchemaFunction({
+MessageHeaderSchema.add(DomainResourceSchema);
+MessageHeaderSchema.remove('id');
+MessageHeaderSchema.add({
   eventCoding: CodingSchema,
   eventUri: PrimitiveUriSchema,
   destination: [MessageHeaderDestinationSchema],
@@ -23,17 +24,6 @@ const MessageHeaderSchema = DomainResourceSchemaFunction({
   response: MessageHeaderResponseSchema,
   focus: [ReferenceSchema],
   definition: PrimitiveCanonicalSchema,
-  typeName: { type: String, default: 'MessageHeader' },
-  _type: { type: String, default: 'FHIR::MessageHeader' },
 });
 
-class MessageHeader extends mongoose.Document {
-  constructor(object) {
-    super(object, MessageHeaderSchema);
-    this.typeName = 'MessageHeader';
-    this._type = 'FHIR::MessageHeader';
-  }
-}
-
 module.exports.MessageHeaderSchema = MessageHeaderSchema;
-module.exports.MessageHeader = MessageHeader;

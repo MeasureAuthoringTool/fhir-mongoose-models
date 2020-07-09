@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationMoietySchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationMoietySchema = BackboneElementSchemaFunction({
+SubstanceSpecificationMoietySchema.add(BackboneElementSchema);
+SubstanceSpecificationMoietySchema.remove('id');
+SubstanceSpecificationMoietySchema.add({
   role: CodeableConceptSchema,
   identifier: IdentifierSchema,
   name: PrimitiveStringSchema,
@@ -15,17 +16,6 @@ const SubstanceSpecificationMoietySchema = BackboneElementSchemaFunction({
   molecularFormula: PrimitiveStringSchema,
   amountQuantity: QuantitySchema,
   amountString: PrimitiveStringSchema,
-  typeName: { type: String, default: 'SubstanceSpecificationMoiety' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationMoiety' },
 });
 
-class SubstanceSpecificationMoiety extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationMoietySchema);
-    this.typeName = 'SubstanceSpecificationMoiety';
-    this._type = 'FHIR::SubstanceSpecificationMoiety';
-  }
-}
-
 module.exports.SubstanceSpecificationMoietySchema = SubstanceSpecificationMoietySchema;
-module.exports.SubstanceSpecificationMoiety = SubstanceSpecificationMoiety;

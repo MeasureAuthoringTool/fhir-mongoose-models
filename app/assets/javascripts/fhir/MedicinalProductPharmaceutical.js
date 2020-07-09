@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MedicinalProductPharmaceuticalCharacteristicsSchema } = require('./MedicinalProductPharmaceuticalCharacteristics');
-const { MedicinalProductPharmaceuticalRouteOfAdministrationSchema } = require('./MedicinalProductPharmaceuticalRouteOfAdministration');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalCharacteristicsSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalRouteOfAdministrationSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPharmaceuticalSchema = DomainResourceSchemaFunction({
+MedicinalProductPharmaceuticalSchema.add(DomainResourceSchema);
+MedicinalProductPharmaceuticalSchema.remove('id');
+MedicinalProductPharmaceuticalSchema.add({
   identifier: [IdentifierSchema],
   administrableDoseForm: CodeableConceptSchema,
   unitOfPresentation: CodeableConceptSchema,
@@ -15,17 +16,6 @@ const MedicinalProductPharmaceuticalSchema = DomainResourceSchemaFunction({
   device: [ReferenceSchema],
   characteristics: [MedicinalProductPharmaceuticalCharacteristicsSchema],
   routeOfAdministration: [MedicinalProductPharmaceuticalRouteOfAdministrationSchema],
-  typeName: { type: String, default: 'MedicinalProductPharmaceutical' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPharmaceutical' },
 });
 
-class MedicinalProductPharmaceutical extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPharmaceuticalSchema);
-    this.typeName = 'MedicinalProductPharmaceutical';
-    this._type = 'FHIR::MedicinalProductPharmaceutical';
-  }
-}
-
 module.exports.MedicinalProductPharmaceuticalSchema = MedicinalProductPharmaceuticalSchema;
-module.exports.MedicinalProductPharmaceutical = MedicinalProductPharmaceutical;

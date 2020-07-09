@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SignatureSchema } = require('./Signature');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SignatureSchema } = require('./allSchemaHeaders.js');
+const { VerificationResultAttestationSchema } = require('./allSchemaHeaders.js');
 
-const VerificationResultAttestationSchema = BackboneElementSchemaFunction({
+VerificationResultAttestationSchema.add(BackboneElementSchema);
+VerificationResultAttestationSchema.remove('id');
+VerificationResultAttestationSchema.add({
   who: ReferenceSchema,
   onBehalfOf: ReferenceSchema,
   communicationMethod: CodeableConceptSchema,
@@ -16,17 +17,6 @@ const VerificationResultAttestationSchema = BackboneElementSchemaFunction({
   proxyIdentityCertificate: PrimitiveStringSchema,
   proxySignature: SignatureSchema,
   sourceSignature: SignatureSchema,
-  typeName: { type: String, default: 'VerificationResultAttestation' },
-  _type: { type: String, default: 'FHIR::VerificationResultAttestation' },
 });
 
-class VerificationResultAttestation extends mongoose.Document {
-  constructor(object) {
-    super(object, VerificationResultAttestationSchema);
-    this.typeName = 'VerificationResultAttestation';
-    this._type = 'FHIR::VerificationResultAttestation';
-  }
-}
-
 module.exports.VerificationResultAttestationSchema = VerificationResultAttestationSchema;
-module.exports.VerificationResultAttestation = VerificationResultAttestation;

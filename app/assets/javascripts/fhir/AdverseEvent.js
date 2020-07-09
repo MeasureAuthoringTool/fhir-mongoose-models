@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { AdverseEventActualitySchema } = require('./AdverseEventActuality');
-const { AdverseEventSuspectEntitySchema } = require('./AdverseEventSuspectEntity');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AdverseEventActualitySchema } = require('./allSchemaHeaders.js');
+const { AdverseEventSuspectEntitySchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AdverseEventSchema } = require('./allSchemaHeaders.js');
 
-const AdverseEventSchema = DomainResourceSchemaFunction({
+AdverseEventSchema.add(DomainResourceSchema);
+AdverseEventSchema.remove('id');
+AdverseEventSchema.add({
   identifier: IdentifierSchema,
   actuality: AdverseEventActualitySchema,
   category: [CodeableConceptSchema],
@@ -29,17 +30,6 @@ const AdverseEventSchema = DomainResourceSchemaFunction({
   subjectMedicalHistory: [ReferenceSchema],
   referenceDocument: [ReferenceSchema],
   study: [ReferenceSchema],
-  typeName: { type: String, default: 'AdverseEvent' },
-  _type: { type: String, default: 'FHIR::AdverseEvent' },
 });
 
-class AdverseEvent extends mongoose.Document {
-  constructor(object) {
-    super(object, AdverseEventSchema);
-    this.typeName = 'AdverseEvent';
-    this._type = 'FHIR::AdverseEvent';
-  }
-}
-
 module.exports.AdverseEventSchema = AdverseEventSchema;
-module.exports.AdverseEvent = AdverseEvent;

@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitCareTeamSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitCareTeamSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitCareTeamSchema.add(BackboneElementSchema);
+ExplanationOfBenefitCareTeamSchema.remove('id');
+ExplanationOfBenefitCareTeamSchema.add({
   sequence: PrimitivePositiveIntSchema,
   provider: ReferenceSchema,
   responsible: PrimitiveBooleanSchema,
   role: CodeableConceptSchema,
   qualification: CodeableConceptSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitCareTeam' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitCareTeam' },
 });
 
-class ExplanationOfBenefitCareTeam extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitCareTeamSchema);
-    this.typeName = 'ExplanationOfBenefitCareTeam';
-    this._type = 'FHIR::ExplanationOfBenefitCareTeam';
-  }
-}
-
 module.exports.ExplanationOfBenefitCareTeamSchema = ExplanationOfBenefitCareTeamSchema;
-module.exports.ExplanationOfBenefitCareTeam = ExplanationOfBenefitCareTeam;

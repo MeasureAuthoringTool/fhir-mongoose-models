@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { InsurancePlanCoverageBenefitLimitSchema } = require('./InsurancePlanCoverageBenefitLimit');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanCoverageBenefitLimitSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanCoverageBenefitSchema } = require('./allSchemaHeaders.js');
 
-const InsurancePlanCoverageBenefitSchema = BackboneElementSchemaFunction({
+InsurancePlanCoverageBenefitSchema.add(BackboneElementSchema);
+InsurancePlanCoverageBenefitSchema.remove('id');
+InsurancePlanCoverageBenefitSchema.add({
   type: CodeableConceptSchema,
   requirement: PrimitiveStringSchema,
   limit: [InsurancePlanCoverageBenefitLimitSchema],
-  typeName: { type: String, default: 'InsurancePlanCoverageBenefit' },
-  _type: { type: String, default: 'FHIR::InsurancePlanCoverageBenefit' },
 });
 
-class InsurancePlanCoverageBenefit extends mongoose.Document {
-  constructor(object) {
-    super(object, InsurancePlanCoverageBenefitSchema);
-    this.typeName = 'InsurancePlanCoverageBenefit';
-    this._type = 'FHIR::InsurancePlanCoverageBenefit';
-  }
-}
-
 module.exports.InsurancePlanCoverageBenefitSchema = InsurancePlanCoverageBenefitSchema;
-module.exports.InsurancePlanCoverageBenefit = InsurancePlanCoverageBenefit;

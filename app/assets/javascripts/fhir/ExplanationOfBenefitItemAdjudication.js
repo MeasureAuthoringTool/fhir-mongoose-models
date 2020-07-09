@@ -1,26 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemAdjudicationSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitItemAdjudicationSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitItemAdjudicationSchema.add(BackboneElementSchema);
+ExplanationOfBenefitItemAdjudicationSchema.remove('id');
+ExplanationOfBenefitItemAdjudicationSchema.add({
   category: CodeableConceptSchema,
   reason: CodeableConceptSchema,
   amount: MoneySchema,
   value: PrimitiveDecimalSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitItemAdjudication' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitItemAdjudication' },
 });
 
-class ExplanationOfBenefitItemAdjudication extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitItemAdjudicationSchema);
-    this.typeName = 'ExplanationOfBenefitItemAdjudication';
-    this._type = 'FHIR::ExplanationOfBenefitItemAdjudication';
-  }
-}
-
 module.exports.ExplanationOfBenefitItemAdjudicationSchema = ExplanationOfBenefitItemAdjudicationSchema;
-module.exports.ExplanationOfBenefitItemAdjudication = ExplanationOfBenefitItemAdjudication;

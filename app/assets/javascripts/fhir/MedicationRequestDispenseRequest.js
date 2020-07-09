@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { DurationSchema } = require('./Duration');
-const { MedicationRequestDispenseRequestInitialFillSchema } = require('./MedicationRequestDispenseRequestInitialFill');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestDispenseRequestInitialFillSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestDispenseRequestSchema } = require('./allSchemaHeaders.js');
 
-const MedicationRequestDispenseRequestSchema = BackboneElementSchemaFunction({
+MedicationRequestDispenseRequestSchema.add(BackboneElementSchema);
+MedicationRequestDispenseRequestSchema.remove('id');
+MedicationRequestDispenseRequestSchema.add({
   initialFill: MedicationRequestDispenseRequestInitialFillSchema,
   dispenseInterval: DurationSchema,
   validityPeriod: PeriodSchema,
@@ -16,17 +17,6 @@ const MedicationRequestDispenseRequestSchema = BackboneElementSchemaFunction({
   quantity: SimpleQuantitySchema,
   expectedSupplyDuration: DurationSchema,
   performer: ReferenceSchema,
-  typeName: { type: String, default: 'MedicationRequestDispenseRequest' },
-  _type: { type: String, default: 'FHIR::MedicationRequestDispenseRequest' },
 });
 
-class MedicationRequestDispenseRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationRequestDispenseRequestSchema);
-    this.typeName = 'MedicationRequestDispenseRequest';
-    this._type = 'FHIR::MedicationRequestDispenseRequest';
-  }
-}
-
 module.exports.MedicationRequestDispenseRequestSchema = MedicationRequestDispenseRequestSchema;
-module.exports.MedicationRequestDispenseRequest = MedicationRequestDispenseRequest;

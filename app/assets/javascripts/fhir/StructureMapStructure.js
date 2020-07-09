@@ -1,26 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { StructureMapModelModeSchema } = require('./StructureMapModelMode');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { StructureMapModelModeSchema } = require('./allSchemaHeaders.js');
+const { StructureMapStructureSchema } = require('./allSchemaHeaders.js');
 
-const StructureMapStructureSchema = BackboneElementSchemaFunction({
+StructureMapStructureSchema.add(BackboneElementSchema);
+StructureMapStructureSchema.remove('id');
+StructureMapStructureSchema.add({
   url: PrimitiveCanonicalSchema,
   mode: StructureMapModelModeSchema,
   alias: PrimitiveStringSchema,
   documentation: PrimitiveStringSchema,
-  typeName: { type: String, default: 'StructureMapStructure' },
-  _type: { type: String, default: 'FHIR::StructureMapStructure' },
 });
 
-class StructureMapStructure extends mongoose.Document {
-  constructor(object) {
-    super(object, StructureMapStructureSchema);
-    this.typeName = 'StructureMapStructure';
-    this._type = 'FHIR::StructureMapStructure';
-  }
-}
-
 module.exports.StructureMapStructureSchema = StructureMapStructureSchema;
-module.exports.StructureMapStructure = StructureMapStructure;

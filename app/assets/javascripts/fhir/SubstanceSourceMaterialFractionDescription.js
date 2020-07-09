@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialFractionDescriptionSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSourceMaterialFractionDescriptionSchema = BackboneElementSchemaFunction({
+SubstanceSourceMaterialFractionDescriptionSchema.add(BackboneElementSchema);
+SubstanceSourceMaterialFractionDescriptionSchema.remove('id');
+SubstanceSourceMaterialFractionDescriptionSchema.add({
   fraction: PrimitiveStringSchema,
   materialType: CodeableConceptSchema,
-  typeName: { type: String, default: 'SubstanceSourceMaterialFractionDescription' },
-  _type: { type: String, default: 'FHIR::SubstanceSourceMaterialFractionDescription' },
 });
 
-class SubstanceSourceMaterialFractionDescription extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSourceMaterialFractionDescriptionSchema);
-    this.typeName = 'SubstanceSourceMaterialFractionDescription';
-    this._type = 'FHIR::SubstanceSourceMaterialFractionDescription';
-  }
-}
-
 module.exports.SubstanceSourceMaterialFractionDescriptionSchema = SubstanceSourceMaterialFractionDescriptionSchema;
-module.exports.SubstanceSourceMaterialFractionDescription = SubstanceSourceMaterialFractionDescription;

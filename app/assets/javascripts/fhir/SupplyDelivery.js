@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
-const { SupplyDeliveryStatusSchema } = require('./SupplyDeliveryStatus');
-const { SupplyDeliverySuppliedItemSchema } = require('./SupplyDeliverySuppliedItem');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SupplyDeliveryStatusSchema } = require('./allSchemaHeaders.js');
+const { SupplyDeliverySuppliedItemSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { SupplyDeliverySchema } = require('./allSchemaHeaders.js');
 
-const SupplyDeliverySchema = DomainResourceSchemaFunction({
+SupplyDeliverySchema.add(DomainResourceSchema);
+SupplyDeliverySchema.remove('id');
+SupplyDeliverySchema.add({
   identifier: [IdentifierSchema],
   basedOn: [ReferenceSchema],
   partOf: [ReferenceSchema],
@@ -24,17 +25,6 @@ const SupplyDeliverySchema = DomainResourceSchemaFunction({
   supplier: ReferenceSchema,
   destination: ReferenceSchema,
   receiver: [ReferenceSchema],
-  typeName: { type: String, default: 'SupplyDelivery' },
-  _type: { type: String, default: 'FHIR::SupplyDelivery' },
 });
 
-class SupplyDelivery extends mongoose.Document {
-  constructor(object) {
-    super(object, SupplyDeliverySchema);
-    this.typeName = 'SupplyDelivery';
-    this._type = 'FHIR::SupplyDelivery';
-  }
-}
-
 module.exports.SupplyDeliverySchema = SupplyDeliverySchema;
-module.exports.SupplyDelivery = SupplyDelivery;

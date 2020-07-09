@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema = BackboneElementSchemaFunction({
+MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema.add(BackboneElementSchema);
+MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema.remove('id');
+MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema.add({
   tissue: CodeableConceptSchema,
   value: QuantitySchema,
   supportingInformation: PrimitiveStringSchema,
-  typeName: { type: String, default: 'MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod' },
 });
 
-class MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema);
-    this.typeName = 'MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod';
-    this._type = 'FHIR::MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod';
-  }
-}
-
 module.exports.MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema = MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodSchema;
-module.exports.MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod = MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriod;

@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ImmunizationRecommendationRecommendationDateCriterionSchema } = require('./ImmunizationRecommendationRecommendationDateCriterion');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ImmunizationRecommendationRecommendationDateCriterionSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ImmunizationRecommendationRecommendationSchema } = require('./allSchemaHeaders.js');
 
-const ImmunizationRecommendationRecommendationSchema = BackboneElementSchemaFunction({
+ImmunizationRecommendationRecommendationSchema.add(BackboneElementSchema);
+ImmunizationRecommendationRecommendationSchema.remove('id');
+ImmunizationRecommendationRecommendationSchema.add({
   vaccineCode: [CodeableConceptSchema],
   targetDisease: CodeableConceptSchema,
   contraindicatedVaccineCode: [CodeableConceptSchema],
@@ -22,17 +23,6 @@ const ImmunizationRecommendationRecommendationSchema = BackboneElementSchemaFunc
   seriesDosesString: PrimitiveStringSchema,
   supportingImmunization: [ReferenceSchema],
   supportingPatientInformation: [ReferenceSchema],
-  typeName: { type: String, default: 'ImmunizationRecommendationRecommendation' },
-  _type: { type: String, default: 'FHIR::ImmunizationRecommendationRecommendation' },
 });
 
-class ImmunizationRecommendationRecommendation extends mongoose.Document {
-  constructor(object) {
-    super(object, ImmunizationRecommendationRecommendationSchema);
-    this.typeName = 'ImmunizationRecommendationRecommendation';
-    this._type = 'FHIR::ImmunizationRecommendationRecommendation';
-  }
-}
-
 module.exports.ImmunizationRecommendationRecommendationSchema = ImmunizationRecommendationRecommendationSchema;
-module.exports.ImmunizationRecommendationRecommendation = ImmunizationRecommendationRecommendation;

@@ -1,22 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
 
-const PeriodSchema = ElementSchemaFunction({
+PeriodSchema.add(ElementSchema);
+PeriodSchema.remove('id');
+PeriodSchema.add({
   start: PrimitiveDateTimeSchema,
   end: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'Period' },
-  _type: { type: String, default: 'FHIR::Period' },
 });
 
-class Period extends mongoose.Document {
-  constructor(object) {
-    super(object, PeriodSchema);
-    this.typeName = 'Period';
-    this._type = 'FHIR::Period';
-  }
-}
-
 module.exports.PeriodSchema = PeriodSchema;
-module.exports.Period = Period;

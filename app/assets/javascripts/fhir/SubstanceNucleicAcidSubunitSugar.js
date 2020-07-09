@@ -1,24 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceNucleicAcidSubunitSugarSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceNucleicAcidSubunitSugarSchema = BackboneElementSchemaFunction({
+SubstanceNucleicAcidSubunitSugarSchema.add(BackboneElementSchema);
+SubstanceNucleicAcidSubunitSugarSchema.remove('id');
+SubstanceNucleicAcidSubunitSugarSchema.add({
   identifier: IdentifierSchema,
   name: PrimitiveStringSchema,
   residueSite: PrimitiveStringSchema,
-  typeName: { type: String, default: 'SubstanceNucleicAcidSubunitSugar' },
-  _type: { type: String, default: 'FHIR::SubstanceNucleicAcidSubunitSugar' },
 });
 
-class SubstanceNucleicAcidSubunitSugar extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceNucleicAcidSubunitSugarSchema);
-    this.typeName = 'SubstanceNucleicAcidSubunitSugar';
-    this._type = 'FHIR::SubstanceNucleicAcidSubunitSugar';
-  }
-}
-
 module.exports.SubstanceNucleicAcidSubunitSugarSchema = SubstanceNucleicAcidSubunitSugarSchema;
-module.exports.SubstanceNucleicAcidSubunitSugar = SubstanceNucleicAcidSubunitSugar;

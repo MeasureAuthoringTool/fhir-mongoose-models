@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CommunicationPayloadSchema } = require('./CommunicationPayload');
-const { CommunicationPrioritySchema } = require('./CommunicationPriority');
-const { CommunicationStatusSchema } = require('./CommunicationStatus');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CommunicationPayloadSchema } = require('./allSchemaHeaders.js');
+const { CommunicationPrioritySchema } = require('./allSchemaHeaders.js');
+const { CommunicationStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CommunicationSchema } = require('./allSchemaHeaders.js');
 
-const CommunicationSchema = DomainResourceSchemaFunction({
+CommunicationSchema.add(DomainResourceSchema);
+CommunicationSchema.remove('id');
+CommunicationSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -36,17 +37,6 @@ const CommunicationSchema = DomainResourceSchemaFunction({
   reasonReference: [ReferenceSchema],
   payload: [CommunicationPayloadSchema],
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'Communication' },
-  _type: { type: String, default: 'FHIR::Communication' },
 });
 
-class Communication extends mongoose.Document {
-  constructor(object) {
-    super(object, CommunicationSchema);
-    this.typeName = 'Communication';
-    this._type = 'FHIR::Communication';
-  }
-}
-
 module.exports.CommunicationSchema = CommunicationSchema;
-module.exports.Communication = Communication;

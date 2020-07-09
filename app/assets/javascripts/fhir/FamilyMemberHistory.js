@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { AgeSchema } = require('./Age');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AgeSchema } = require('./allSchemaHeaders.js');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { FamilyHistoryStatusSchema } = require('./FamilyHistoryStatus');
-const { FamilyMemberHistoryConditionSchema } = require('./FamilyMemberHistoryCondition');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
+const { FamilyHistoryStatusSchema } = require('./allSchemaHeaders.js');
+const { FamilyMemberHistoryConditionSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { FamilyMemberHistorySchema } = require('./allSchemaHeaders.js');
 
-const FamilyMemberHistorySchema = DomainResourceSchemaFunction({
+FamilyMemberHistorySchema.add(DomainResourceSchema);
+FamilyMemberHistorySchema.remove('id');
+FamilyMemberHistorySchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -44,17 +45,6 @@ const FamilyMemberHistorySchema = DomainResourceSchemaFunction({
   reasonReference: [ReferenceSchema],
   note: [AnnotationSchema],
   condition: [FamilyMemberHistoryConditionSchema],
-  typeName: { type: String, default: 'FamilyMemberHistory' },
-  _type: { type: String, default: 'FHIR::FamilyMemberHistory' },
 });
 
-class FamilyMemberHistory extends mongoose.Document {
-  constructor(object) {
-    super(object, FamilyMemberHistorySchema);
-    this.typeName = 'FamilyMemberHistory';
-    this._type = 'FHIR::FamilyMemberHistory';
-  }
-}
-
 module.exports.FamilyMemberHistorySchema = FamilyMemberHistorySchema;
-module.exports.FamilyMemberHistory = FamilyMemberHistory;

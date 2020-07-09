@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { InvoiceLineItemPriceComponentSchema } = require('./InvoiceLineItemPriceComponent');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { InvoiceLineItemPriceComponentSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { InvoiceLineItemSchema } = require('./allSchemaHeaders.js');
 
-const InvoiceLineItemSchema = BackboneElementSchemaFunction({
+InvoiceLineItemSchema.add(BackboneElementSchema);
+InvoiceLineItemSchema.remove('id');
+InvoiceLineItemSchema.add({
   sequence: PrimitivePositiveIntSchema,
   chargeItemReference: ReferenceSchema,
   chargeItemCodeableConcept: CodeableConceptSchema,
   priceComponent: [InvoiceLineItemPriceComponentSchema],
-  typeName: { type: String, default: 'InvoiceLineItem' },
-  _type: { type: String, default: 'FHIR::InvoiceLineItem' },
 });
 
-class InvoiceLineItem extends mongoose.Document {
-  constructor(object) {
-    super(object, InvoiceLineItemSchema);
-    this.typeName = 'InvoiceLineItem';
-    this._type = 'FHIR::InvoiceLineItem';
-  }
-}
-
 module.exports.InvoiceLineItemSchema = InvoiceLineItemSchema;
-module.exports.InvoiceLineItem = InvoiceLineItem;

@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { NutritiionOrderIntentSchema } = require('./NutritiionOrderIntent');
-const { NutritionOrderEnteralFormulaSchema } = require('./NutritionOrderEnteralFormula');
-const { NutritionOrderOralDietSchema } = require('./NutritionOrderOralDiet');
-const { NutritionOrderStatusSchema } = require('./NutritionOrderStatus');
-const { NutritionOrderSupplementSchema } = require('./NutritionOrderSupplement');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { NutritiionOrderIntentSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderEnteralFormulaSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderOralDietSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderStatusSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderSupplementSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderSchema } = require('./allSchemaHeaders.js');
 
-const NutritionOrderSchema = DomainResourceSchemaFunction({
+NutritionOrderSchema.add(DomainResourceSchema);
+NutritionOrderSchema.remove('id');
+NutritionOrderSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -32,17 +33,6 @@ const NutritionOrderSchema = DomainResourceSchemaFunction({
   supplement: [NutritionOrderSupplementSchema],
   enteralFormula: NutritionOrderEnteralFormulaSchema,
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'NutritionOrder' },
-  _type: { type: String, default: 'FHIR::NutritionOrder' },
 });
 
-class NutritionOrder extends mongoose.Document {
-  constructor(object) {
-    super(object, NutritionOrderSchema);
-    this.typeName = 'NutritionOrder';
-    this._type = 'FHIR::NutritionOrder';
-  }
-}
-
 module.exports.NutritionOrderSchema = NutritionOrderSchema;
-module.exports.NutritionOrder = NutritionOrder;

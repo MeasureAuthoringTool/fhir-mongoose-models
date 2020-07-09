@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { AssertionDirectionTypeSchema } = require('./AssertionDirectionType');
-const { AssertionOperatorTypeSchema } = require('./AssertionOperatorType');
-const { AssertionResponseTypesSchema } = require('./AssertionResponseTypes');
+const { AssertionDirectionTypeSchema } = require('./allSchemaHeaders.js');
+const { AssertionOperatorTypeSchema } = require('./allSchemaHeaders.js');
+const { AssertionResponseTypesSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { FHIRDefinedTypeSchema } = require('./FHIRDefinedType');
-const { MimeTypeSchema } = require('./MimeType');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { TestScriptRequestMethodCodeSchema } = require('./TestScriptRequestMethodCode');
+const { FHIRDefinedTypeSchema } = require('./allSchemaHeaders.js');
+const { MimeTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { TestScriptRequestMethodCodeSchema } = require('./allSchemaHeaders.js');
+const { TestScriptSetupActionAssertSchema } = require('./allSchemaHeaders.js');
 
-const TestScriptSetupActionAssertSchema = BackboneElementSchemaFunction({
+TestScriptSetupActionAssertSchema.add(BackboneElementSchema);
+TestScriptSetupActionAssertSchema.remove('id');
+TestScriptSetupActionAssertSchema.add({
   label: PrimitiveStringSchema,
   description: PrimitiveStringSchema,
   direction: AssertionDirectionTypeSchema,
@@ -34,17 +35,6 @@ const TestScriptSetupActionAssertSchema = BackboneElementSchemaFunction({
   validateProfileId: PrimitiveIdSchema,
   value: PrimitiveStringSchema,
   warningOnly: PrimitiveBooleanSchema,
-  typeName: { type: String, default: 'TestScriptSetupActionAssert' },
-  _type: { type: String, default: 'FHIR::TestScriptSetupActionAssert' },
 });
 
-class TestScriptSetupActionAssert extends mongoose.Document {
-  constructor(object) {
-    super(object, TestScriptSetupActionAssertSchema);
-    this.typeName = 'TestScriptSetupActionAssert';
-    this._type = 'FHIR::TestScriptSetupActionAssert';
-  }
-}
-
 module.exports.TestScriptSetupActionAssertSchema = TestScriptSetupActionAssertSchema;
-module.exports.TestScriptSetupActionAssert = TestScriptSetupActionAssert;

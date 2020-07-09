@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { FHIRSubstanceStatusSchema } = require('./allSchemaHeaders.js');
 
-const FHIRSubstanceStatusSchema = ElementSchemaFunction({
+FHIRSubstanceStatusSchema.add(ElementSchema);
+FHIRSubstanceStatusSchema.remove('id');
+FHIRSubstanceStatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'FHIRSubstanceStatus' },
-  _type: { type: String, default: 'FHIR::FHIRSubstanceStatus' },
 });
 
-class FHIRSubstanceStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, FHIRSubstanceStatusSchema);
-    this.typeName = 'FHIRSubstanceStatus';
-    this._type = 'FHIR::FHIRSubstanceStatus';
-  }
-}
-
 module.exports.FHIRSubstanceStatusSchema = FHIRSubstanceStatusSchema;
-module.exports.FHIRSubstanceStatus = FHIRSubstanceStatus;

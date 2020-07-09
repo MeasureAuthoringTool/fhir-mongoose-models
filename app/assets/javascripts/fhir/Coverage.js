@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CoverageClassSchema } = require('./CoverageClass');
-const { CoverageCostToBeneficiarySchema } = require('./CoverageCostToBeneficiary');
-const { CoverageStatusSchema } = require('./CoverageStatus');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CoverageClassSchema } = require('./allSchemaHeaders.js');
+const { CoverageCostToBeneficiarySchema } = require('./allSchemaHeaders.js');
+const { CoverageStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CoverageSchema } = require('./allSchemaHeaders.js');
 
-const CoverageSchema = DomainResourceSchemaFunction({
+CoverageSchema.add(DomainResourceSchema);
+CoverageSchema.remove('id');
+CoverageSchema.add({
   identifier: [IdentifierSchema],
   status: CoverageStatusSchema,
   type: CodeableConceptSchema,
@@ -30,17 +31,6 @@ const CoverageSchema = DomainResourceSchemaFunction({
   costToBeneficiary: [CoverageCostToBeneficiarySchema],
   subrogation: PrimitiveBooleanSchema,
   contract: [ReferenceSchema],
-  typeName: { type: String, default: 'Coverage' },
-  _type: { type: String, default: 'FHIR::Coverage' },
 });
 
-class Coverage extends mongoose.Document {
-  constructor(object) {
-    super(object, CoverageSchema);
-    this.typeName = 'Coverage';
-    this._type = 'FHIR::Coverage';
-  }
-}
-
 module.exports.CoverageSchema = CoverageSchema;
-module.exports.Coverage = Coverage;

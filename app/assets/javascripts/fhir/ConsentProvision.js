@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { ConsentProvisionActorSchema } = require('./ConsentProvisionActor');
-const { ConsentProvisionDataSchema } = require('./ConsentProvisionData');
-const { ConsentProvisionTypeSchema } = require('./ConsentProvisionType');
-const { PeriodSchema } = require('./Period');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ConsentProvisionActorSchema } = require('./allSchemaHeaders.js');
+const { ConsentProvisionDataSchema } = require('./allSchemaHeaders.js');
+const { ConsentProvisionTypeSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { ConsentProvisionSchema } = require('./allSchemaHeaders.js');
 
-const ConsentProvisionSchema = BackboneElementSchemaFunction({
+ConsentProvisionSchema.add(BackboneElementSchema);
+ConsentProvisionSchema.remove('id');
+ConsentProvisionSchema.add({
   type: ConsentProvisionTypeSchema,
   period: PeriodSchema,
   actor: [ConsentProvisionActorSchema],
@@ -20,17 +21,6 @@ const ConsentProvisionSchema = BackboneElementSchemaFunction({
   dataPeriod: PeriodSchema,
   data: [ConsentProvisionDataSchema],
   provision: [ConsentProvisionSchema],
-  typeName: { type: String, default: 'ConsentProvision' },
-  _type: { type: String, default: 'FHIR::ConsentProvision' },
 });
 
-class ConsentProvision extends mongoose.Document {
-  constructor(object) {
-    super(object, ConsentProvisionSchema);
-    this.typeName = 'ConsentProvision';
-    this._type = 'FHIR::ConsentProvision';
-  }
-}
-
 module.exports.ConsentProvisionSchema = ConsentProvisionSchema;
-module.exports.ConsentProvision = ConsentProvision;

@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { EligibilityResponseStatusSchema } = require('./allSchemaHeaders.js');
 
-const EligibilityResponseStatusSchema = ElementSchemaFunction({
+EligibilityResponseStatusSchema.add(ElementSchema);
+EligibilityResponseStatusSchema.remove('id');
+EligibilityResponseStatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'EligibilityResponseStatus' },
-  _type: { type: String, default: 'FHIR::EligibilityResponseStatus' },
 });
 
-class EligibilityResponseStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, EligibilityResponseStatusSchema);
-    this.typeName = 'EligibilityResponseStatus';
-    this._type = 'FHIR::EligibilityResponseStatus';
-  }
-}
-
 module.exports.EligibilityResponseStatusSchema = EligibilityResponseStatusSchema;
-module.exports.EligibilityResponseStatus = EligibilityResponseStatus;

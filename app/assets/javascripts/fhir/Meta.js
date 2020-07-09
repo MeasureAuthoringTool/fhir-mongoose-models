@@ -1,30 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { CodingSchema } = require('./Coding');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { MetaSchema } = require('./allSchemaHeaders.js');
 
-const MetaSchema = ElementSchemaFunction({
+MetaSchema.add(ElementSchema);
+MetaSchema.remove('id');
+MetaSchema.add({
   versionId: PrimitiveIdSchema,
   lastUpdated: PrimitiveInstantSchema,
   source: PrimitiveUriSchema,
   profile: [PrimitiveCanonicalSchema],
   security: [CodingSchema],
   tag: [CodingSchema],
-  typeName: { type: String, default: 'Meta' },
-  _type: { type: String, default: 'FHIR::Meta' },
 });
 
-class Meta extends mongoose.Document {
-  constructor(object) {
-    super(object, MetaSchema);
-    this.typeName = 'Meta';
-    this._type = 'FHIR::Meta';
-  }
-}
-
 module.exports.MetaSchema = MetaSchema;
-module.exports.Meta = Meta;

@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceNucleicAcidSubunitLinkageSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceNucleicAcidSubunitLinkageSchema = BackboneElementSchemaFunction({
+SubstanceNucleicAcidSubunitLinkageSchema.add(BackboneElementSchema);
+SubstanceNucleicAcidSubunitLinkageSchema.remove('id');
+SubstanceNucleicAcidSubunitLinkageSchema.add({
   connectivity: PrimitiveStringSchema,
   identifier: IdentifierSchema,
   name: PrimitiveStringSchema,
   residueSite: PrimitiveStringSchema,
-  typeName: { type: String, default: 'SubstanceNucleicAcidSubunitLinkage' },
-  _type: { type: String, default: 'FHIR::SubstanceNucleicAcidSubunitLinkage' },
 });
 
-class SubstanceNucleicAcidSubunitLinkage extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceNucleicAcidSubunitLinkageSchema);
-    this.typeName = 'SubstanceNucleicAcidSubunitLinkage';
-    this._type = 'FHIR::SubstanceNucleicAcidSubunitLinkage';
-  }
-}
-
 module.exports.SubstanceNucleicAcidSubunitLinkageSchema = SubstanceNucleicAcidSubunitLinkageSchema;
-module.exports.SubstanceNucleicAcidSubunitLinkage = SubstanceNucleicAcidSubunitLinkage;

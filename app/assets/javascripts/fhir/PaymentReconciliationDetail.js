@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { PaymentReconciliationDetailSchema } = require('./allSchemaHeaders.js');
 
-const PaymentReconciliationDetailSchema = BackboneElementSchemaFunction({
+PaymentReconciliationDetailSchema.add(BackboneElementSchema);
+PaymentReconciliationDetailSchema.remove('id');
+PaymentReconciliationDetailSchema.add({
   identifier: IdentifierSchema,
   predecessor: IdentifierSchema,
   type: CodeableConceptSchema,
@@ -18,17 +19,6 @@ const PaymentReconciliationDetailSchema = BackboneElementSchemaFunction({
   responsible: ReferenceSchema,
   payee: ReferenceSchema,
   amount: MoneySchema,
-  typeName: { type: String, default: 'PaymentReconciliationDetail' },
-  _type: { type: String, default: 'FHIR::PaymentReconciliationDetail' },
 });
 
-class PaymentReconciliationDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, PaymentReconciliationDetailSchema);
-    this.typeName = 'PaymentReconciliationDetail';
-    this._type = 'FHIR::PaymentReconciliationDetail';
-  }
-}
-
 module.exports.PaymentReconciliationDetailSchema = PaymentReconciliationDetailSchema;
-module.exports.PaymentReconciliationDetail = PaymentReconciliationDetail;

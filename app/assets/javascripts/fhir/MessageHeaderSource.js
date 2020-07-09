@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ContactPointSchema } = require('./ContactPoint');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUrlSchema } = require('./allSchemaHeaders.js');
+const { MessageHeaderSourceSchema } = require('./allSchemaHeaders.js');
 
-const MessageHeaderSourceSchema = BackboneElementSchemaFunction({
+MessageHeaderSourceSchema.add(BackboneElementSchema);
+MessageHeaderSourceSchema.remove('id');
+MessageHeaderSourceSchema.add({
   name: PrimitiveStringSchema,
   software: PrimitiveStringSchema,
   version: PrimitiveStringSchema,
   contact: ContactPointSchema,
   endpoint: PrimitiveUrlSchema,
-  typeName: { type: String, default: 'MessageHeaderSource' },
-  _type: { type: String, default: 'FHIR::MessageHeaderSource' },
 });
 
-class MessageHeaderSource extends mongoose.Document {
-  constructor(object) {
-    super(object, MessageHeaderSourceSchema);
-    this.typeName = 'MessageHeaderSource';
-    this._type = 'FHIR::MessageHeaderSource';
-  }
-}
-
 module.exports.MessageHeaderSourceSchema = MessageHeaderSourceSchema;
-module.exports.MessageHeaderSource = MessageHeaderSource;

@@ -1,22 +1,23 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { ExampleScenarioActorSchema } = require('./ExampleScenarioActor');
-const { ExampleScenarioInstanceSchema } = require('./ExampleScenarioInstance');
-const { ExampleScenarioProcessSchema } = require('./ExampleScenarioProcess');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { ExampleScenarioActorSchema } = require('./allSchemaHeaders.js');
+const { ExampleScenarioInstanceSchema } = require('./allSchemaHeaders.js');
+const { ExampleScenarioProcessSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ExampleScenarioSchema } = require('./allSchemaHeaders.js');
 
-const ExampleScenarioSchema = DomainResourceSchemaFunction({
+ExampleScenarioSchema.add(DomainResourceSchema);
+ExampleScenarioSchema.remove('id');
+ExampleScenarioSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -34,17 +35,6 @@ const ExampleScenarioSchema = DomainResourceSchemaFunction({
   instance: [ExampleScenarioInstanceSchema],
   process: [ExampleScenarioProcessSchema],
   workflow: [PrimitiveCanonicalSchema],
-  typeName: { type: String, default: 'ExampleScenario' },
-  _type: { type: String, default: 'FHIR::ExampleScenario' },
 });
 
-class ExampleScenario extends mongoose.Document {
-  constructor(object) {
-    super(object, ExampleScenarioSchema);
-    this.typeName = 'ExampleScenario';
-    this._type = 'FHIR::ExampleScenario';
-  }
-}
-
 module.exports.ExampleScenarioSchema = ExampleScenarioSchema;
-module.exports.ExampleScenario = ExampleScenario;

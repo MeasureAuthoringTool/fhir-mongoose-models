@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { TestReportParticipantSchema } = require('./TestReportParticipant');
-const { TestReportResultSchema } = require('./TestReportResult');
-const { TestReportSetupSchema } = require('./TestReportSetup');
-const { TestReportStatusSchema } = require('./TestReportStatus');
-const { TestReportTeardownSchema } = require('./TestReportTeardown');
-const { TestReportTestSchema } = require('./TestReportTest');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TestReportParticipantSchema } = require('./allSchemaHeaders.js');
+const { TestReportResultSchema } = require('./allSchemaHeaders.js');
+const { TestReportSetupSchema } = require('./allSchemaHeaders.js');
+const { TestReportStatusSchema } = require('./allSchemaHeaders.js');
+const { TestReportTeardownSchema } = require('./allSchemaHeaders.js');
+const { TestReportTestSchema } = require('./allSchemaHeaders.js');
+const { TestReportSchema } = require('./allSchemaHeaders.js');
 
-const TestReportSchema = DomainResourceSchemaFunction({
+TestReportSchema.add(DomainResourceSchema);
+TestReportSchema.remove('id');
+TestReportSchema.add({
   identifier: IdentifierSchema,
   name: PrimitiveStringSchema,
   status: TestReportStatusSchema,
@@ -26,17 +27,6 @@ const TestReportSchema = DomainResourceSchemaFunction({
   setup: TestReportSetupSchema,
   test: [TestReportTestSchema],
   teardown: TestReportTeardownSchema,
-  typeName: { type: String, default: 'TestReport' },
-  _type: { type: String, default: 'FHIR::TestReport' },
 });
 
-class TestReport extends mongoose.Document {
-  constructor(object) {
-    super(object, TestReportSchema);
-    this.typeName = 'TestReport';
-    this._type = 'FHIR::TestReport';
-  }
-}
-
 module.exports.TestReportSchema = TestReportSchema;
-module.exports.TestReport = TestReport;

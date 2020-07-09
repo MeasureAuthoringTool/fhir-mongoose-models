@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseTotalSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponseTotalSchema = BackboneElementSchemaFunction({
+ClaimResponseTotalSchema.add(BackboneElementSchema);
+ClaimResponseTotalSchema.remove('id');
+ClaimResponseTotalSchema.add({
   category: CodeableConceptSchema,
   amount: MoneySchema,
-  typeName: { type: String, default: 'ClaimResponseTotal' },
-  _type: { type: String, default: 'FHIR::ClaimResponseTotal' },
 });
 
-class ClaimResponseTotal extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponseTotalSchema);
-    this.typeName = 'ClaimResponseTotal';
-    this._type = 'FHIR::ClaimResponseTotal';
-  }
-}
-
 module.exports.ClaimResponseTotalSchema = ClaimResponseTotalSchema;
-module.exports.ClaimResponseTotal = ClaimResponseTotal;

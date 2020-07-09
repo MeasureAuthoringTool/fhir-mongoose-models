@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { ProdCharacteristicSchema } = require('./ProdCharacteristic');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
+const { ProdCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductManufacturedSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductManufacturedSchema = DomainResourceSchemaFunction({
+MedicinalProductManufacturedSchema.add(DomainResourceSchema);
+MedicinalProductManufacturedSchema.remove('id');
+MedicinalProductManufacturedSchema.add({
   manufacturedDoseForm: CodeableConceptSchema,
   unitOfPresentation: CodeableConceptSchema,
   quantity: QuantitySchema,
@@ -14,17 +15,6 @@ const MedicinalProductManufacturedSchema = DomainResourceSchemaFunction({
   ingredient: [ReferenceSchema],
   physicalCharacteristics: ProdCharacteristicSchema,
   otherCharacteristics: [CodeableConceptSchema],
-  typeName: { type: String, default: 'MedicinalProductManufactured' },
-  _type: { type: String, default: 'FHIR::MedicinalProductManufactured' },
 });
 
-class MedicinalProductManufactured extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductManufacturedSchema);
-    this.typeName = 'MedicinalProductManufactured';
-    this._type = 'FHIR::MedicinalProductManufactured';
-  }
-}
-
 module.exports.MedicinalProductManufacturedSchema = MedicinalProductManufacturedSchema;
-module.exports.MedicinalProductManufactured = MedicinalProductManufactured;

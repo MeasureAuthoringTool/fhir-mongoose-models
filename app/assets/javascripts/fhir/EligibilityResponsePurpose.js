@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { EligibilityResponsePurposeSchema } = require('./allSchemaHeaders.js');
 
-const EligibilityResponsePurposeSchema = ElementSchemaFunction({
+EligibilityResponsePurposeSchema.add(ElementSchema);
+EligibilityResponsePurposeSchema.remove('id');
+EligibilityResponsePurposeSchema.add({
   value: String,
-  typeName: { type: String, default: 'EligibilityResponsePurpose' },
-  _type: { type: String, default: 'FHIR::EligibilityResponsePurpose' },
 });
 
-class EligibilityResponsePurpose extends mongoose.Document {
-  constructor(object) {
-    super(object, EligibilityResponsePurposeSchema);
-    this.typeName = 'EligibilityResponsePurpose';
-    this._type = 'FHIR::EligibilityResponsePurpose';
-  }
-}
-
 module.exports.EligibilityResponsePurposeSchema = EligibilityResponsePurposeSchema;
-module.exports.EligibilityResponsePurpose = EligibilityResponsePurpose;

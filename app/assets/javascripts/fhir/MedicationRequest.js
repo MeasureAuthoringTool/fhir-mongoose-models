@@ -1,22 +1,23 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { DosageSchema } = require('./Dosage');
-const { IdentifierSchema } = require('./Identifier');
-const { MedicationRequestDispenseRequestSchema } = require('./MedicationRequestDispenseRequest');
-const { MedicationRequestIntentSchema } = require('./MedicationRequestIntent');
-const { MedicationRequestPrioritySchema } = require('./MedicationRequestPriority');
-const { MedicationRequestStatusSchema } = require('./MedicationRequestStatus');
-const { MedicationRequestSubstitutionSchema } = require('./MedicationRequestSubstitution');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { DosageSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestDispenseRequestSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestIntentSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestStatusSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestSubstitutionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestSchema } = require('./allSchemaHeaders.js');
 
-const MedicationRequestSchema = DomainResourceSchemaFunction({
+MedicationRequestSchema.add(DomainResourceSchema);
+MedicationRequestSchema.remove('id');
+MedicationRequestSchema.add({
   identifier: [IdentifierSchema],
   status: MedicationRequestStatusSchema,
   statusReason: CodeableConceptSchema,
@@ -51,17 +52,6 @@ const MedicationRequestSchema = DomainResourceSchemaFunction({
   priorPrescription: ReferenceSchema,
   detectedIssue: [ReferenceSchema],
   eventHistory: [ReferenceSchema],
-  typeName: { type: String, default: 'MedicationRequest' },
-  _type: { type: String, default: 'FHIR::MedicationRequest' },
 });
 
-class MedicationRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationRequestSchema);
-    this.typeName = 'MedicationRequest';
-    this._type = 'FHIR::MedicationRequest';
-  }
-}
-
 module.exports.MedicationRequestSchema = MedicationRequestSchema;
-module.exports.MedicationRequest = MedicationRequest;

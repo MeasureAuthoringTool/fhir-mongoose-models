@@ -1,27 +1,28 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
-const { TestScriptDestinationSchema } = require('./TestScriptDestination');
-const { TestScriptFixtureSchema } = require('./TestScriptFixture');
-const { TestScriptMetadataSchema } = require('./TestScriptMetadata');
-const { TestScriptOriginSchema } = require('./TestScriptOrigin');
-const { TestScriptSetupSchema } = require('./TestScriptSetup');
-const { TestScriptTeardownSchema } = require('./TestScriptTeardown');
-const { TestScriptTestSchema } = require('./TestScriptTest');
-const { TestScriptVariableSchema } = require('./TestScriptVariable');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TestScriptDestinationSchema } = require('./allSchemaHeaders.js');
+const { TestScriptFixtureSchema } = require('./allSchemaHeaders.js');
+const { TestScriptMetadataSchema } = require('./allSchemaHeaders.js');
+const { TestScriptOriginSchema } = require('./allSchemaHeaders.js');
+const { TestScriptSetupSchema } = require('./allSchemaHeaders.js');
+const { TestScriptTeardownSchema } = require('./allSchemaHeaders.js');
+const { TestScriptTestSchema } = require('./allSchemaHeaders.js');
+const { TestScriptVariableSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { TestScriptSchema } = require('./allSchemaHeaders.js');
 
-const TestScriptSchema = DomainResourceSchemaFunction({
+TestScriptSchema.add(DomainResourceSchema);
+TestScriptSchema.remove('id');
+TestScriptSchema.add({
   url: PrimitiveUriSchema,
   identifier: IdentifierSchema,
   version: PrimitiveStringSchema,
@@ -46,17 +47,6 @@ const TestScriptSchema = DomainResourceSchemaFunction({
   setup: TestScriptSetupSchema,
   test: [TestScriptTestSchema],
   teardown: TestScriptTeardownSchema,
-  typeName: { type: String, default: 'TestScript' },
-  _type: { type: String, default: 'FHIR::TestScript' },
 });
 
-class TestScript extends mongoose.Document {
-  constructor(object) {
-    super(object, TestScriptSchema);
-    this.typeName = 'TestScript';
-    this._type = 'FHIR::TestScript';
-  }
-}
-
 module.exports.TestScriptSchema = TestScriptSchema;
-module.exports.TestScript = TestScript;

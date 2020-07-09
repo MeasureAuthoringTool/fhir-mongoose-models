@@ -1,26 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductCollectionSchema } = require('./allSchemaHeaders.js');
 
-const BiologicallyDerivedProductCollectionSchema = BackboneElementSchemaFunction({
+BiologicallyDerivedProductCollectionSchema.add(BackboneElementSchema);
+BiologicallyDerivedProductCollectionSchema.remove('id');
+BiologicallyDerivedProductCollectionSchema.add({
   collector: ReferenceSchema,
   source: ReferenceSchema,
   collectedDateTime: PrimitiveDateTimeSchema,
   collectedPeriod: PeriodSchema,
-  typeName: { type: String, default: 'BiologicallyDerivedProductCollection' },
-  _type: { type: String, default: 'FHIR::BiologicallyDerivedProductCollection' },
 });
 
-class BiologicallyDerivedProductCollection extends mongoose.Document {
-  constructor(object) {
-    super(object, BiologicallyDerivedProductCollectionSchema);
-    this.typeName = 'BiologicallyDerivedProductCollection';
-    this._type = 'FHIR::BiologicallyDerivedProductCollection';
-  }
-}
-
 module.exports.BiologicallyDerivedProductCollectionSchema = BiologicallyDerivedProductCollectionSchema;
-module.exports.BiologicallyDerivedProductCollection = BiologicallyDerivedProductCollection;

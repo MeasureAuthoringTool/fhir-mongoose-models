@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CarePlanActivitySchema } = require('./CarePlanActivity');
-const { CarePlanIntentSchema } = require('./CarePlanIntent');
-const { CarePlanStatusSchema } = require('./CarePlanStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CarePlanActivitySchema } = require('./allSchemaHeaders.js');
+const { CarePlanIntentSchema } = require('./allSchemaHeaders.js');
+const { CarePlanStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CarePlanSchema } = require('./allSchemaHeaders.js');
 
-const CarePlanSchema = DomainResourceSchemaFunction({
+CarePlanSchema.add(DomainResourceSchema);
+CarePlanSchema.remove('id');
+CarePlanSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -38,17 +39,6 @@ const CarePlanSchema = DomainResourceSchemaFunction({
   goal: [ReferenceSchema],
   activity: [CarePlanActivitySchema],
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'CarePlan' },
-  _type: { type: String, default: 'FHIR::CarePlan' },
 });
 
-class CarePlan extends mongoose.Document {
-  constructor(object) {
-    super(object, CarePlanSchema);
-    this.typeName = 'CarePlan';
-    this._type = 'FHIR::CarePlan';
-  }
-}
-
 module.exports.CarePlanSchema = CarePlanSchema;
-module.exports.CarePlan = CarePlan;

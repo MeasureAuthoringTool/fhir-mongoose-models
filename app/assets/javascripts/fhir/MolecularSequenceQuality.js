@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MolecularSequenceQualityRocSchema } = require('./MolecularSequenceQualityRoc');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { QualityTypeSchema } = require('./QualityType');
-const { QuantitySchema } = require('./Quantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceQualityRocSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { QualityTypeSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { MolecularSequenceQualitySchema } = require('./allSchemaHeaders.js');
 
-const MolecularSequenceQualitySchema = BackboneElementSchemaFunction({
+MolecularSequenceQualitySchema.add(BackboneElementSchema);
+MolecularSequenceQualitySchema.remove('id');
+MolecularSequenceQualitySchema.add({
   type: QualityTypeSchema,
   standardSequence: CodeableConceptSchema,
   start: PrimitiveIntegerSchema,
@@ -24,17 +25,6 @@ const MolecularSequenceQualitySchema = BackboneElementSchemaFunction({
   recall: PrimitiveDecimalSchema,
   fScore: PrimitiveDecimalSchema,
   roc: MolecularSequenceQualityRocSchema,
-  typeName: { type: String, default: 'MolecularSequenceQuality' },
-  _type: { type: String, default: 'FHIR::MolecularSequenceQuality' },
 });
 
-class MolecularSequenceQuality extends mongoose.Document {
-  constructor(object) {
-    super(object, MolecularSequenceQualitySchema);
-    this.typeName = 'MolecularSequenceQuality';
-    this._type = 'FHIR::MolecularSequenceQuality';
-  }
-}
-
 module.exports.MolecularSequenceQualitySchema = MolecularSequenceQualitySchema;
-module.exports.MolecularSequenceQuality = MolecularSequenceQuality;

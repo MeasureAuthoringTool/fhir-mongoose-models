@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { EncounterLocationStatusSchema } = require('./allSchemaHeaders.js');
 
-const EncounterLocationStatusSchema = ElementSchemaFunction({
+EncounterLocationStatusSchema.add(ElementSchema);
+EncounterLocationStatusSchema.remove('id');
+EncounterLocationStatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'EncounterLocationStatus' },
-  _type: { type: String, default: 'FHIR::EncounterLocationStatus' },
 });
 
-class EncounterLocationStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, EncounterLocationStatusSchema);
-    this.typeName = 'EncounterLocationStatus';
-    this._type = 'FHIR::EncounterLocationStatus';
-  }
-}
-
 module.exports.EncounterLocationStatusSchema = EncounterLocationStatusSchema;
-module.exports.EncounterLocationStatus = EncounterLocationStatus;

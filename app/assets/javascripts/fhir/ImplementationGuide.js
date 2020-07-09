@@ -1,24 +1,25 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { FHIRVersionSchema } = require('./FHIRVersion');
-const { ImplementationGuideDefinitionSchema } = require('./ImplementationGuideDefinition');
-const { ImplementationGuideDependsOnSchema } = require('./ImplementationGuideDependsOn');
-const { ImplementationGuideGlobalSchema } = require('./ImplementationGuideGlobal');
-const { ImplementationGuideManifestSchema } = require('./ImplementationGuideManifest');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { SPDXLicenseSchema } = require('./SPDXLicense');
-const { UsageContextSchema } = require('./UsageContext');
+const { FHIRVersionSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideDefinitionSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideDependsOnSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideGlobalSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideManifestSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { SPDXLicenseSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideSchema } = require('./allSchemaHeaders.js');
 
-const ImplementationGuideSchema = DomainResourceSchemaFunction({
+ImplementationGuideSchema.add(DomainResourceSchema);
+ImplementationGuideSchema.remove('id');
+ImplementationGuideSchema.add({
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -39,17 +40,6 @@ const ImplementationGuideSchema = DomainResourceSchemaFunction({
   global: [ImplementationGuideGlobalSchema],
   definition: ImplementationGuideDefinitionSchema,
   manifest: ImplementationGuideManifestSchema,
-  typeName: { type: String, default: 'ImplementationGuide' },
-  _type: { type: String, default: 'FHIR::ImplementationGuide' },
 });
 
-class ImplementationGuide extends mongoose.Document {
-  constructor(object) {
-    super(object, ImplementationGuideSchema);
-    this.typeName = 'ImplementationGuide';
-    this._type = 'FHIR::ImplementationGuide';
-  }
-}
-
 module.exports.ImplementationGuideSchema = ImplementationGuideSchema;
-module.exports.ImplementationGuide = ImplementationGuide;

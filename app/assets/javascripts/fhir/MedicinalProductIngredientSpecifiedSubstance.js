@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MedicinalProductIngredientSpecifiedSubstanceStrengthSchema } = require('./MedicinalProductIngredientSpecifiedSubstanceStrength');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductIngredientSpecifiedSubstanceStrengthSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductIngredientSpecifiedSubstanceSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductIngredientSpecifiedSubstanceSchema = BackboneElementSchemaFunction({
+MedicinalProductIngredientSpecifiedSubstanceSchema.add(BackboneElementSchema);
+MedicinalProductIngredientSpecifiedSubstanceSchema.remove('id');
+MedicinalProductIngredientSpecifiedSubstanceSchema.add({
   code: CodeableConceptSchema,
   group: CodeableConceptSchema,
   confidentiality: CodeableConceptSchema,
   strength: [MedicinalProductIngredientSpecifiedSubstanceStrengthSchema],
-  typeName: { type: String, default: 'MedicinalProductIngredientSpecifiedSubstance' },
-  _type: { type: String, default: 'FHIR::MedicinalProductIngredientSpecifiedSubstance' },
 });
 
-class MedicinalProductIngredientSpecifiedSubstance extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductIngredientSpecifiedSubstanceSchema);
-    this.typeName = 'MedicinalProductIngredientSpecifiedSubstance';
-    this._type = 'FHIR::MedicinalProductIngredientSpecifiedSubstance';
-  }
-}
-
 module.exports.MedicinalProductIngredientSpecifiedSubstanceSchema = MedicinalProductIngredientSpecifiedSubstanceSchema;
-module.exports.MedicinalProductIngredientSpecifiedSubstance = MedicinalProductIngredientSpecifiedSubstance;

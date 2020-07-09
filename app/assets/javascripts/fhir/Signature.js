@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
-const { CodingSchema } = require('./Coding');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { MimeTypeSchema } = require('./MimeType');
-const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { ReferenceSchema } = require('./Reference');
+const { MimeTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBase64BinarySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SignatureSchema } = require('./allSchemaHeaders.js');
 
-const SignatureSchema = ElementSchemaFunction({
+SignatureSchema.add(ElementSchema);
+SignatureSchema.remove('id');
+SignatureSchema.add({
   type: [CodingSchema],
   when: PrimitiveInstantSchema,
   who: ReferenceSchema,
@@ -15,17 +16,6 @@ const SignatureSchema = ElementSchemaFunction({
   targetFormat: MimeTypeSchema,
   sigFormat: MimeTypeSchema,
   data: PrimitiveBase64BinarySchema,
-  typeName: { type: String, default: 'Signature' },
-  _type: { type: String, default: 'FHIR::Signature' },
 });
 
-class Signature extends mongoose.Document {
-  constructor(object) {
-    super(object, SignatureSchema);
-    this.typeName = 'Signature';
-    this._type = 'FHIR::Signature';
-  }
-}
-
 module.exports.SignatureSchema = SignatureSchema;
-module.exports.Signature = Signature;

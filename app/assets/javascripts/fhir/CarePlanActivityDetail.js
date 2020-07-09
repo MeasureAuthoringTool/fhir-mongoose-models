@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CarePlanActivityKindSchema } = require('./CarePlanActivityKind');
-const { CarePlanActivityStatusSchema } = require('./CarePlanActivityStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
-const { TimingSchema } = require('./Timing');
+const { CarePlanActivityKindSchema } = require('./allSchemaHeaders.js');
+const { CarePlanActivityStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { CarePlanActivityDetailSchema } = require('./allSchemaHeaders.js');
 
-const CarePlanActivityDetailSchema = BackboneElementSchemaFunction({
+CarePlanActivityDetailSchema.add(BackboneElementSchema);
+CarePlanActivityDetailSchema.remove('id');
+CarePlanActivityDetailSchema.add({
   kind: CarePlanActivityKindSchema,
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -34,17 +35,6 @@ const CarePlanActivityDetailSchema = BackboneElementSchemaFunction({
   dailyAmount: SimpleQuantitySchema,
   quantity: SimpleQuantitySchema,
   description: PrimitiveStringSchema,
-  typeName: { type: String, default: 'CarePlanActivityDetail' },
-  _type: { type: String, default: 'FHIR::CarePlanActivityDetail' },
 });
 
-class CarePlanActivityDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, CarePlanActivityDetailSchema);
-    this.typeName = 'CarePlanActivityDetail';
-    this._type = 'FHIR::CarePlanActivityDetail';
-  }
-}
-
 module.exports.CarePlanActivityDetailSchema = CarePlanActivityDetailSchema;
-module.exports.CarePlanActivityDetail = CarePlanActivityDetail;

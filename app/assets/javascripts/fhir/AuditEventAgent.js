@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { AuditEventAgentNetworkSchema } = require('./AuditEventAgentNetwork');
+const { AuditEventAgentNetworkSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AuditEventAgentSchema } = require('./allSchemaHeaders.js');
 
-const AuditEventAgentSchema = BackboneElementSchemaFunction({
+AuditEventAgentSchema.add(BackboneElementSchema);
+AuditEventAgentSchema.remove('id');
+AuditEventAgentSchema.add({
   type: CodeableConceptSchema,
   role: [CodeableConceptSchema],
   who: ReferenceSchema,
@@ -21,17 +22,6 @@ const AuditEventAgentSchema = BackboneElementSchemaFunction({
   media: CodingSchema,
   network: AuditEventAgentNetworkSchema,
   purposeOfUse: [CodeableConceptSchema],
-  typeName: { type: String, default: 'AuditEventAgent' },
-  _type: { type: String, default: 'FHIR::AuditEventAgent' },
 });
 
-class AuditEventAgent extends mongoose.Document {
-  constructor(object) {
-    super(object, AuditEventAgentSchema);
-    this.typeName = 'AuditEventAgent';
-    this._type = 'FHIR::AuditEventAgent';
-  }
-}
-
 module.exports.AuditEventAgentSchema = AuditEventAgentSchema;
-module.exports.AuditEventAgent = AuditEventAgent;

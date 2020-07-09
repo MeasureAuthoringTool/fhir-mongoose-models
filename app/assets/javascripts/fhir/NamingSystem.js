@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { NamingSystemTypeSchema } = require('./NamingSystemType');
-const { NamingSystemUniqueIdSchema } = require('./NamingSystemUniqueId');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { NamingSystemTypeSchema } = require('./allSchemaHeaders.js');
+const { NamingSystemUniqueIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { NamingSystemSchema } = require('./allSchemaHeaders.js');
 
-const NamingSystemSchema = DomainResourceSchemaFunction({
+NamingSystemSchema.add(DomainResourceSchema);
+NamingSystemSchema.remove('id');
+NamingSystemSchema.add({
   name: PrimitiveStringSchema,
   status: PublicationStatusSchema,
   kind: NamingSystemTypeSchema,
@@ -25,17 +26,6 @@ const NamingSystemSchema = DomainResourceSchemaFunction({
   jurisdiction: [CodeableConceptSchema],
   usage: PrimitiveStringSchema,
   uniqueId: [NamingSystemUniqueIdSchema],
-  typeName: { type: String, default: 'NamingSystem' },
-  _type: { type: String, default: 'FHIR::NamingSystem' },
 });
 
-class NamingSystem extends mongoose.Document {
-  constructor(object) {
-    super(object, NamingSystemSchema);
-    this.typeName = 'NamingSystem';
-    this._type = 'FHIR::NamingSystem';
-  }
-}
-
 module.exports.NamingSystemSchema = NamingSystemSchema;
-module.exports.NamingSystem = NamingSystem;

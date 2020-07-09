@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ResearchElementTypeSchema } = require('./allSchemaHeaders.js');
 
-const ResearchElementTypeSchema = ElementSchemaFunction({
+ResearchElementTypeSchema.add(ElementSchema);
+ResearchElementTypeSchema.remove('id');
+ResearchElementTypeSchema.add({
   value: String,
-  typeName: { type: String, default: 'ResearchElementType' },
-  _type: { type: String, default: 'FHIR::ResearchElementType' },
 });
 
-class ResearchElementType extends mongoose.Document {
-  constructor(object) {
-    super(object, ResearchElementTypeSchema);
-    this.typeName = 'ResearchElementType';
-    this._type = 'FHIR::ResearchElementType';
-  }
-}
-
 module.exports.ResearchElementTypeSchema = ResearchElementTypeSchema;
-module.exports.ResearchElementType = ResearchElementType;

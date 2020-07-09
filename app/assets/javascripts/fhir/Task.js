@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
-const { TaskInputSchema } = require('./TaskInput');
-const { TaskIntentSchema } = require('./TaskIntent');
-const { TaskOutputSchema } = require('./TaskOutput');
-const { TaskPrioritySchema } = require('./TaskPriority');
-const { TaskRestrictionSchema } = require('./TaskRestriction');
-const { TaskStatusSchema } = require('./TaskStatus');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TaskInputSchema } = require('./allSchemaHeaders.js');
+const { TaskIntentSchema } = require('./allSchemaHeaders.js');
+const { TaskOutputSchema } = require('./allSchemaHeaders.js');
+const { TaskPrioritySchema } = require('./allSchemaHeaders.js');
+const { TaskRestrictionSchema } = require('./allSchemaHeaders.js');
+const { TaskStatusSchema } = require('./allSchemaHeaders.js');
+const { TaskSchema } = require('./allSchemaHeaders.js');
 
-const TaskSchema = DomainResourceSchemaFunction({
+TaskSchema.add(DomainResourceSchema);
+TaskSchema.remove('id');
+TaskSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: PrimitiveCanonicalSchema,
   instantiatesUri: PrimitiveUriSchema,
@@ -49,17 +50,6 @@ const TaskSchema = DomainResourceSchemaFunction({
   restriction: TaskRestrictionSchema,
   input: [TaskInputSchema],
   output: [TaskOutputSchema],
-  typeName: { type: String, default: 'Task' },
-  _type: { type: String, default: 'FHIR::Task' },
 });
 
-class Task extends mongoose.Document {
-  constructor(object) {
-    super(object, TaskSchema);
-    this.typeName = 'Task';
-    this._type = 'FHIR::Task';
-  }
-}
-
 module.exports.TaskSchema = TaskSchema;
-module.exports.Task = Task;

@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PatientCommunicationSchema } = require('./allSchemaHeaders.js');
 
-const PatientCommunicationSchema = BackboneElementSchemaFunction({
+PatientCommunicationSchema.add(BackboneElementSchema);
+PatientCommunicationSchema.remove('id');
+PatientCommunicationSchema.add({
   language: CodeableConceptSchema,
   preferred: PrimitiveBooleanSchema,
-  typeName: { type: String, default: 'PatientCommunication' },
-  _type: { type: String, default: 'FHIR::PatientCommunication' },
 });
 
-class PatientCommunication extends mongoose.Document {
-  constructor(object) {
-    super(object, PatientCommunicationSchema);
-    this.typeName = 'PatientCommunication';
-    this._type = 'FHIR::PatientCommunication';
-  }
-}
-
 module.exports.PatientCommunicationSchema = PatientCommunicationSchema;
-module.exports.PatientCommunication = PatientCommunication;

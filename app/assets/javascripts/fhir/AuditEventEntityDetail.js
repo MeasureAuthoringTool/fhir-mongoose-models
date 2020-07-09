@@ -1,24 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveBase64BinarySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { AuditEventEntityDetailSchema } = require('./allSchemaHeaders.js');
 
-const AuditEventEntityDetailSchema = BackboneElementSchemaFunction({
+AuditEventEntityDetailSchema.add(BackboneElementSchema);
+AuditEventEntityDetailSchema.remove('id');
+AuditEventEntityDetailSchema.add({
   type: PrimitiveStringSchema,
   valueString: PrimitiveStringSchema,
   valueBase64Binary: PrimitiveBase64BinarySchema,
-  typeName: { type: String, default: 'AuditEventEntityDetail' },
-  _type: { type: String, default: 'FHIR::AuditEventEntityDetail' },
 });
 
-class AuditEventEntityDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, AuditEventEntityDetailSchema);
-    this.typeName = 'AuditEventEntityDetail';
-    this._type = 'FHIR::AuditEventEntityDetail';
-  }
-}
-
 module.exports.AuditEventEntityDetailSchema = AuditEventEntityDetailSchema;
-module.exports.AuditEventEntityDetail = AuditEventEntityDetail;

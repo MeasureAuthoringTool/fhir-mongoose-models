@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PractitionerRoleAvailableTimeSchema } = require('./PractitionerRoleAvailableTime');
-const { PractitionerRoleNotAvailableSchema } = require('./PractitionerRoleNotAvailable');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PractitionerRoleAvailableTimeSchema } = require('./allSchemaHeaders.js');
+const { PractitionerRoleNotAvailableSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { PractitionerRoleSchema } = require('./allSchemaHeaders.js');
 
-const PractitionerRoleSchema = DomainResourceSchemaFunction({
+PractitionerRoleSchema.add(DomainResourceSchema);
+PractitionerRoleSchema.remove('id');
+PractitionerRoleSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   period: PeriodSchema,
@@ -26,17 +27,6 @@ const PractitionerRoleSchema = DomainResourceSchemaFunction({
   notAvailable: [PractitionerRoleNotAvailableSchema],
   availabilityExceptions: PrimitiveStringSchema,
   endpoint: [ReferenceSchema],
-  typeName: { type: String, default: 'PractitionerRole' },
-  _type: { type: String, default: 'FHIR::PractitionerRole' },
 });
 
-class PractitionerRole extends mongoose.Document {
-  constructor(object) {
-    super(object, PractitionerRoleSchema);
-    this.typeName = 'PractitionerRole';
-    this._type = 'FHIR::PractitionerRole';
-  }
-}
-
 module.exports.PractitionerRoleSchema = PractitionerRoleSchema;
-module.exports.PractitionerRole = PractitionerRole;

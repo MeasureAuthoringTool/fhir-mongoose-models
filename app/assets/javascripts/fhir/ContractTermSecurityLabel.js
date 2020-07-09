@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ContractTermSecurityLabelSchema } = require('./allSchemaHeaders.js');
 
-const ContractTermSecurityLabelSchema = BackboneElementSchemaFunction({
+ContractTermSecurityLabelSchema.add(BackboneElementSchema);
+ContractTermSecurityLabelSchema.remove('id');
+ContractTermSecurityLabelSchema.add({
   number: [PrimitiveUnsignedIntSchema],
   classification: CodingSchema,
   category: [CodingSchema],
   control: [CodingSchema],
-  typeName: { type: String, default: 'ContractTermSecurityLabel' },
-  _type: { type: String, default: 'FHIR::ContractTermSecurityLabel' },
 });
 
-class ContractTermSecurityLabel extends mongoose.Document {
-  constructor(object) {
-    super(object, ContractTermSecurityLabelSchema);
-    this.typeName = 'ContractTermSecurityLabel';
-    this._type = 'FHIR::ContractTermSecurityLabel';
-  }
-}
-
 module.exports.ContractTermSecurityLabelSchema = ContractTermSecurityLabelSchema;
-module.exports.ContractTermSecurityLabel = ContractTermSecurityLabel;

@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { SubstanceAmountSchema } = require('./SubstanceAmount');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { SubstanceAmountSchema } = require('./allSchemaHeaders.js');
+const { SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema } = require('./allSchemaHeaders.js');
 
-const SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema = BackboneElementSchemaFunction({
+SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema.add(BackboneElementSchema);
+SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema.remove('id');
+SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema.add({
   degree: CodeableConceptSchema,
   amount: SubstanceAmountSchema,
-  typeName: { type: String, default: 'SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation' },
-  _type: { type: String, default: 'FHIR::SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation' },
 });
 
-class SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema);
-    this.typeName = 'SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation';
-    this._type = 'FHIR::SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation';
-  }
-}
-
 module.exports.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema = SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSchema;
-module.exports.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation = SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation;

@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { CodingSchema } = require('./Coding');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 
-const CodeableConceptSchema = ElementSchemaFunction({
+CodeableConceptSchema.add(ElementSchema);
+CodeableConceptSchema.remove('id');
+CodeableConceptSchema.add({
   coding: [CodingSchema],
   text: PrimitiveStringSchema,
-  typeName: { type: String, default: 'CodeableConcept' },
-  _type: { type: String, default: 'FHIR::CodeableConcept' },
 });
 
-class CodeableConcept extends mongoose.Document {
-  constructor(object) {
-    super(object, CodeableConceptSchema);
-    this.typeName = 'CodeableConcept';
-    this._type = 'FHIR::CodeableConcept';
-  }
-}
-
 module.exports.CodeableConceptSchema = CodeableConceptSchema;
-module.exports.CodeableConcept = CodeableConcept;

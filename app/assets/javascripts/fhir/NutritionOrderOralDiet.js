@@ -1,30 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { NutritionOrderOralDietNutrientSchema } = require('./NutritionOrderOralDietNutrient');
-const { NutritionOrderOralDietTextureSchema } = require('./NutritionOrderOralDietTexture');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { TimingSchema } = require('./Timing');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderOralDietNutrientSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderOralDietTextureSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderOralDietSchema } = require('./allSchemaHeaders.js');
 
-const NutritionOrderOralDietSchema = BackboneElementSchemaFunction({
+NutritionOrderOralDietSchema.add(BackboneElementSchema);
+NutritionOrderOralDietSchema.remove('id');
+NutritionOrderOralDietSchema.add({
   type: [CodeableConceptSchema],
   schedule: [TimingSchema],
   nutrient: [NutritionOrderOralDietNutrientSchema],
   texture: [NutritionOrderOralDietTextureSchema],
   fluidConsistencyType: [CodeableConceptSchema],
   instruction: PrimitiveStringSchema,
-  typeName: { type: String, default: 'NutritionOrderOralDiet' },
-  _type: { type: String, default: 'FHIR::NutritionOrderOralDiet' },
 });
 
-class NutritionOrderOralDiet extends mongoose.Document {
-  constructor(object) {
-    super(object, NutritionOrderOralDietSchema);
-    this.typeName = 'NutritionOrderOralDiet';
-    this._type = 'FHIR::NutritionOrderOralDiet';
-  }
-}
-
 module.exports.NutritionOrderOralDietSchema = NutritionOrderOralDietSchema;
-module.exports.NutritionOrderOralDiet = NutritionOrderOralDiet;

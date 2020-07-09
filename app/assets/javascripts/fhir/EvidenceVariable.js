@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EvidenceVariableCharacteristicSchema } = require('./EvidenceVariableCharacteristic');
-const { EvidenceVariableTypeSchema } = require('./EvidenceVariableType');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { UsageContextSchema } = require('./UsageContext');
+const { EvidenceVariableCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { EvidenceVariableTypeSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { EvidenceVariableSchema } = require('./allSchemaHeaders.js');
 
-const EvidenceVariableSchema = DomainResourceSchemaFunction({
+EvidenceVariableSchema.add(DomainResourceSchema);
+EvidenceVariableSchema.remove('id');
+EvidenceVariableSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -45,17 +46,6 @@ const EvidenceVariableSchema = DomainResourceSchemaFunction({
   relatedArtifact: [RelatedArtifactSchema],
   type: EvidenceVariableTypeSchema,
   characteristic: [EvidenceVariableCharacteristicSchema],
-  typeName: { type: String, default: 'EvidenceVariable' },
-  _type: { type: String, default: 'FHIR::EvidenceVariable' },
 });
 
-class EvidenceVariable extends mongoose.Document {
-  constructor(object) {
-    super(object, EvidenceVariableSchema);
-    this.typeName = 'EvidenceVariable';
-    this._type = 'FHIR::EvidenceVariable';
-  }
-}
-
 module.exports.EvidenceVariableSchema = EvidenceVariableSchema;
-module.exports.EvidenceVariable = EvidenceVariable;

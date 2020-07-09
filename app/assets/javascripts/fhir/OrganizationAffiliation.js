@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { OrganizationAffiliationSchema } = require('./allSchemaHeaders.js');
 
-const OrganizationAffiliationSchema = DomainResourceSchemaFunction({
+OrganizationAffiliationSchema.add(DomainResourceSchema);
+OrganizationAffiliationSchema.remove('id');
+OrganizationAffiliationSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   period: PeriodSchema,
@@ -21,17 +22,6 @@ const OrganizationAffiliationSchema = DomainResourceSchemaFunction({
   healthcareService: [ReferenceSchema],
   telecom: [ContactPointSchema],
   endpoint: [ReferenceSchema],
-  typeName: { type: String, default: 'OrganizationAffiliation' },
-  _type: { type: String, default: 'FHIR::OrganizationAffiliation' },
 });
 
-class OrganizationAffiliation extends mongoose.Document {
-  constructor(object) {
-    super(object, OrganizationAffiliationSchema);
-    this.typeName = 'OrganizationAffiliation';
-    this._type = 'FHIR::OrganizationAffiliation';
-  }
-}
-
 module.exports.OrganizationAffiliationSchema = OrganizationAffiliationSchema;
-module.exports.OrganizationAffiliation = OrganizationAffiliation;

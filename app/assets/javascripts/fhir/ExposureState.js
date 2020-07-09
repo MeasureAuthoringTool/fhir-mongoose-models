@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ExposureStateSchema } = require('./allSchemaHeaders.js');
 
-const ExposureStateSchema = ElementSchemaFunction({
+ExposureStateSchema.add(ElementSchema);
+ExposureStateSchema.remove('id');
+ExposureStateSchema.add({
   value: String,
-  typeName: { type: String, default: 'ExposureState' },
-  _type: { type: String, default: 'FHIR::ExposureState' },
 });
 
-class ExposureState extends mongoose.Document {
-  constructor(object) {
-    super(object, ExposureStateSchema);
-    this.typeName = 'ExposureState';
-    this._type = 'FHIR::ExposureState';
-  }
-}
-
 module.exports.ExposureStateSchema = ExposureStateSchema;
-module.exports.ExposureState = ExposureState;

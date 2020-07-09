@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { GraphDefinitionLinkSchema } = require('./GraphDefinitionLink');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ResourceTypeSchema } = require('./ResourceType');
-const { UsageContextSchema } = require('./UsageContext');
+const { GraphDefinitionLinkSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ResourceTypeSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { GraphDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const GraphDefinitionSchema = DomainResourceSchemaFunction({
+GraphDefinitionSchema.add(DomainResourceSchema);
+GraphDefinitionSchema.remove('id');
+GraphDefinitionSchema.add({
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -30,17 +31,6 @@ const GraphDefinitionSchema = DomainResourceSchemaFunction({
   start: ResourceTypeSchema,
   profile: PrimitiveCanonicalSchema,
   link: [GraphDefinitionLinkSchema],
-  typeName: { type: String, default: 'GraphDefinition' },
-  _type: { type: String, default: 'FHIR::GraphDefinition' },
 });
 
-class GraphDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, GraphDefinitionSchema);
-    this.typeName = 'GraphDefinition';
-    this._type = 'FHIR::GraphDefinition';
-  }
-}
-
 module.exports.GraphDefinitionSchema = GraphDefinitionSchema;
-module.exports.GraphDefinition = GraphDefinition;

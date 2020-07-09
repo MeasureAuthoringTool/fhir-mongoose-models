@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ActionConditionKindSchema } = require('./ActionConditionKind');
+const { ActionConditionKindSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ExpressionSchema } = require('./Expression');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { RequestGroupActionConditionSchema } = require('./allSchemaHeaders.js');
 
-const RequestGroupActionConditionSchema = BackboneElementSchemaFunction({
+RequestGroupActionConditionSchema.add(BackboneElementSchema);
+RequestGroupActionConditionSchema.remove('id');
+RequestGroupActionConditionSchema.add({
   kind: ActionConditionKindSchema,
   expression: ExpressionSchema,
-  typeName: { type: String, default: 'RequestGroupActionCondition' },
-  _type: { type: String, default: 'FHIR::RequestGroupActionCondition' },
 });
 
-class RequestGroupActionCondition extends mongoose.Document {
-  constructor(object) {
-    super(object, RequestGroupActionConditionSchema);
-    this.typeName = 'RequestGroupActionCondition';
-    this._type = 'FHIR::RequestGroupActionCondition';
-  }
-}
-
 module.exports.RequestGroupActionConditionSchema = RequestGroupActionConditionSchema;
-module.exports.RequestGroupActionCondition = RequestGroupActionCondition;

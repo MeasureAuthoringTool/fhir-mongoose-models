@@ -1,26 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { QuantitySchema } = require('./Quantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ProductShelfLifeSchema } = require('./allSchemaHeaders.js');
 
-const ProductShelfLifeSchema = BackboneElementSchemaFunction({
+ProductShelfLifeSchema.add(BackboneElementSchema);
+ProductShelfLifeSchema.remove('id');
+ProductShelfLifeSchema.add({
   identifier: IdentifierSchema,
   type: CodeableConceptSchema,
   period: QuantitySchema,
   specialPrecautionsForStorage: [CodeableConceptSchema],
-  typeName: { type: String, default: 'ProductShelfLife' },
-  _type: { type: String, default: 'FHIR::ProductShelfLife' },
 });
 
-class ProductShelfLife extends mongoose.Document {
-  constructor(object) {
-    super(object, ProductShelfLifeSchema);
-    this.typeName = 'ProductShelfLife';
-    this._type = 'FHIR::ProductShelfLife';
-  }
-}
-
 module.exports.ProductShelfLifeSchema = ProductShelfLifeSchema;
-module.exports.ProductShelfLife = ProductShelfLife;

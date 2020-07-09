@@ -1,25 +1,26 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodeSystemConceptSchema } = require('./CodeSystemConcept');
-const { CodeSystemContentModeSchema } = require('./CodeSystemContentMode');
-const { CodeSystemFilterSchema } = require('./CodeSystemFilter');
-const { CodeSystemHierarchyMeaningSchema } = require('./CodeSystemHierarchyMeaning');
-const { CodeSystemPropertySchema } = require('./CodeSystemProperty');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemConceptSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemContentModeSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemFilterSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemHierarchyMeaningSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemPropertySchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemSchema } = require('./allSchemaHeaders.js');
 
-const CodeSystemSchema = DomainResourceSchemaFunction({
+CodeSystemSchema.add(DomainResourceSchema);
+CodeSystemSchema.remove('id');
+CodeSystemSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -46,17 +47,6 @@ const CodeSystemSchema = DomainResourceSchemaFunction({
   filter: [CodeSystemFilterSchema],
   property: [CodeSystemPropertySchema],
   concept: [CodeSystemConceptSchema],
-  typeName: { type: String, default: 'CodeSystem' },
-  _type: { type: String, default: 'FHIR::CodeSystem' },
 });
 
-class CodeSystem extends mongoose.Document {
-  constructor(object) {
-    super(object, CodeSystemSchema);
-    this.typeName = 'CodeSystem';
-    this._type = 'FHIR::CodeSystem';
-  }
-}
-
 module.exports.CodeSystemSchema = CodeSystemSchema;
-module.exports.CodeSystem = CodeSystem;

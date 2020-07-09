@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ListStatusSchema } = require('./allSchemaHeaders.js');
 
-const ListStatusSchema = ElementSchemaFunction({
+ListStatusSchema.add(ElementSchema);
+ListStatusSchema.remove('id');
+ListStatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'ListStatus' },
-  _type: { type: String, default: 'FHIR::ListStatus' },
 });
 
-class ListStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, ListStatusSchema);
-    this.typeName = 'ListStatus';
-    this._type = 'FHIR::ListStatus';
-  }
-}
-
 module.exports.ListStatusSchema = ListStatusSchema;
-module.exports.ListStatus = ListStatus;

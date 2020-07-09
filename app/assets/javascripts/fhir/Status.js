@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { StatusSchema } = require('./allSchemaHeaders.js');
 
-const StatusSchema = ElementSchemaFunction({
+StatusSchema.add(ElementSchema);
+StatusSchema.remove('id');
+StatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'Status' },
-  _type: { type: String, default: 'FHIR::Status' },
 });
 
-class Status extends mongoose.Document {
-  constructor(object) {
-    super(object, StatusSchema);
-    this.typeName = 'Status';
-    this._type = 'FHIR::Status';
-  }
-}
-
 module.exports.StatusSchema = StatusSchema;
-module.exports.Status = Status;

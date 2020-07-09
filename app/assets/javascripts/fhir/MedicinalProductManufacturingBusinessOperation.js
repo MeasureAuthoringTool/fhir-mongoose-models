@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductManufacturingBusinessOperationSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductManufacturingBusinessOperationSchema = BackboneElementSchemaFunction({
+MedicinalProductManufacturingBusinessOperationSchema.add(BackboneElementSchema);
+MedicinalProductManufacturingBusinessOperationSchema.remove('id');
+MedicinalProductManufacturingBusinessOperationSchema.add({
   operationType: CodeableConceptSchema,
   authorisationReferenceNumber: IdentifierSchema,
   effectiveDate: PrimitiveDateTimeSchema,
   confidentialityIndicator: CodeableConceptSchema,
   manufacturer: [ReferenceSchema],
   regulator: ReferenceSchema,
-  typeName: { type: String, default: 'MedicinalProductManufacturingBusinessOperation' },
-  _type: { type: String, default: 'FHIR::MedicinalProductManufacturingBusinessOperation' },
 });
 
-class MedicinalProductManufacturingBusinessOperation extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductManufacturingBusinessOperationSchema);
-    this.typeName = 'MedicinalProductManufacturingBusinessOperation';
-    this._type = 'FHIR::MedicinalProductManufacturingBusinessOperation';
-  }
-}
-
 module.exports.MedicinalProductManufacturingBusinessOperationSchema = MedicinalProductManufacturingBusinessOperationSchema;
-module.exports.MedicinalProductManufacturingBusinessOperation = MedicinalProductManufacturingBusinessOperation;

@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
+const { AddressSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ClaimResponseAddItemDetailSchema } = require('./ClaimResponseAddItemDetail');
-const { ClaimResponseItemAdjudicationSchema } = require('./ClaimResponseItemAdjudication');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { ClaimResponseAddItemDetailSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseAddItemSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponseAddItemSchema = BackboneElementSchemaFunction({
+ClaimResponseAddItemSchema.add(BackboneElementSchema);
+ClaimResponseAddItemSchema.remove('id');
+ClaimResponseAddItemSchema.add({
   itemSequence: [PrimitivePositiveIntSchema],
   detailSequence: [PrimitivePositiveIntSchema],
   subdetailSequence: [PrimitivePositiveIntSchema],
@@ -35,17 +36,6 @@ const ClaimResponseAddItemSchema = BackboneElementSchemaFunction({
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ClaimResponseItemAdjudicationSchema],
   detail: [ClaimResponseAddItemDetailSchema],
-  typeName: { type: String, default: 'ClaimResponseAddItem' },
-  _type: { type: String, default: 'FHIR::ClaimResponseAddItem' },
 });
 
-class ClaimResponseAddItem extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponseAddItemSchema);
-    this.typeName = 'ClaimResponseAddItem';
-    this._type = 'FHIR::ClaimResponseAddItem';
-  }
-}
-
 module.exports.ClaimResponseAddItemSchema = ClaimResponseAddItemSchema;
-module.exports.ClaimResponseAddItem = ClaimResponseAddItem;

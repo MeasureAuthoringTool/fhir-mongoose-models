@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSchema } = require('./RiskEvidenceSynthesisRiskEstimatePrecisionEstimate');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSchema } = require('./allSchemaHeaders.js');
+const { RiskEvidenceSynthesisRiskEstimateSchema } = require('./allSchemaHeaders.js');
 
-const RiskEvidenceSynthesisRiskEstimateSchema = BackboneElementSchemaFunction({
+RiskEvidenceSynthesisRiskEstimateSchema.add(BackboneElementSchema);
+RiskEvidenceSynthesisRiskEstimateSchema.remove('id');
+RiskEvidenceSynthesisRiskEstimateSchema.add({
   description: PrimitiveStringSchema,
   type: CodeableConceptSchema,
   value: PrimitiveDecimalSchema,
@@ -15,17 +16,6 @@ const RiskEvidenceSynthesisRiskEstimateSchema = BackboneElementSchemaFunction({
   denominatorCount: PrimitiveIntegerSchema,
   numeratorCount: PrimitiveIntegerSchema,
   precisionEstimate: [RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSchema],
-  typeName: { type: String, default: 'RiskEvidenceSynthesisRiskEstimate' },
-  _type: { type: String, default: 'FHIR::RiskEvidenceSynthesisRiskEstimate' },
 });
 
-class RiskEvidenceSynthesisRiskEstimate extends mongoose.Document {
-  constructor(object) {
-    super(object, RiskEvidenceSynthesisRiskEstimateSchema);
-    this.typeName = 'RiskEvidenceSynthesisRiskEstimate';
-    this._type = 'FHIR::RiskEvidenceSynthesisRiskEstimate';
-  }
-}
-
 module.exports.RiskEvidenceSynthesisRiskEstimateSchema = RiskEvidenceSynthesisRiskEstimateSchema;
-module.exports.RiskEvidenceSynthesisRiskEstimate = RiskEvidenceSynthesisRiskEstimate;

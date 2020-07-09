@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
-const { AllergyIntoleranceSeveritySchema } = require('./AllergyIntoleranceSeverity');
-const { AnnotationSchema } = require('./Annotation');
+const { AllergyIntoleranceSeveritySchema } = require('./allSchemaHeaders.js');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { AllergyIntoleranceReactionSchema } = require('./allSchemaHeaders.js');
 
-const AllergyIntoleranceReactionSchema = BackboneElementSchemaFunction({
+AllergyIntoleranceReactionSchema.add(BackboneElementSchema);
+AllergyIntoleranceReactionSchema.remove('id');
+AllergyIntoleranceReactionSchema.add({
   substance: CodeableConceptSchema,
   manifestation: [CodeableConceptSchema],
   description: PrimitiveStringSchema,
@@ -15,17 +16,6 @@ const AllergyIntoleranceReactionSchema = BackboneElementSchemaFunction({
   severity: AllergyIntoleranceSeveritySchema,
   exposureRoute: CodeableConceptSchema,
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'AllergyIntoleranceReaction' },
-  _type: { type: String, default: 'FHIR::AllergyIntoleranceReaction' },
 });
 
-class AllergyIntoleranceReaction extends mongoose.Document {
-  constructor(object) {
-    super(object, AllergyIntoleranceReactionSchema);
-    this.typeName = 'AllergyIntoleranceReaction';
-    this._type = 'FHIR::AllergyIntoleranceReaction';
-  }
-}
-
 module.exports.AllergyIntoleranceReactionSchema = AllergyIntoleranceReactionSchema;
-module.exports.AllergyIntoleranceReaction = AllergyIntoleranceReaction;

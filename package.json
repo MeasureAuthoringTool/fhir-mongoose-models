@@ -17,6 +17,7 @@
     "dist_test": "browserify app/assets/javascripts/index.js > tmp/dist/index.js",
     "lint": "npx eslint 'app/assets/javascripts/**/*.js' --ext .js",
     "test": "npx jest",
+    "generate": "npx generateMongooseTypes -o ../fhir-mongoose-models/app/assets/javascripts",
     "coverage": "npx jest --coverage"
   },
   "keywords": [],

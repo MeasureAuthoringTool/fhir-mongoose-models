@@ -1,34 +1,35 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { ExplanationOfBenefitAccidentSchema } = require('./ExplanationOfBenefitAccident');
-const { ExplanationOfBenefitAddItemSchema } = require('./ExplanationOfBenefitAddItem');
-const { ExplanationOfBenefitBenefitBalanceSchema } = require('./ExplanationOfBenefitBenefitBalance');
-const { ExplanationOfBenefitCareTeamSchema } = require('./ExplanationOfBenefitCareTeam');
-const { ExplanationOfBenefitDiagnosisSchema } = require('./ExplanationOfBenefitDiagnosis');
-const { ExplanationOfBenefitInsuranceSchema } = require('./ExplanationOfBenefitInsurance');
-const { ExplanationOfBenefitItemSchema } = require('./ExplanationOfBenefitItem');
-const { ExplanationOfBenefitItemAdjudicationSchema } = require('./ExplanationOfBenefitItemAdjudication');
-const { ExplanationOfBenefitPayeeSchema } = require('./ExplanationOfBenefitPayee');
-const { ExplanationOfBenefitPaymentSchema } = require('./ExplanationOfBenefitPayment');
-const { ExplanationOfBenefitProcedureSchema } = require('./ExplanationOfBenefitProcedure');
-const { ExplanationOfBenefitProcessNoteSchema } = require('./ExplanationOfBenefitProcessNote');
-const { ExplanationOfBenefitRelatedSchema } = require('./ExplanationOfBenefitRelated');
-const { ExplanationOfBenefitStatusSchema } = require('./ExplanationOfBenefitStatus');
-const { ExplanationOfBenefitSupportingInfoSchema } = require('./ExplanationOfBenefitSupportingInfo');
-const { ExplanationOfBenefitTotalSchema } = require('./ExplanationOfBenefitTotal');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { RemittanceOutcomeSchema } = require('./RemittanceOutcome');
-const { UseSchema } = require('./Use');
+const { ExplanationOfBenefitAccidentSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitAddItemSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitBenefitBalanceSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitCareTeamSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitDiagnosisSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitInsuranceSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitPayeeSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitPaymentSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitProcedureSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitProcessNoteSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitRelatedSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitStatusSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitSupportingInfoSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitTotalSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RemittanceOutcomeSchema } = require('./allSchemaHeaders.js');
+const { UseSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitSchema = DomainResourceSchemaFunction({
+ExplanationOfBenefitSchema.add(DomainResourceSchema);
+ExplanationOfBenefitSchema.remove('id');
+ExplanationOfBenefitSchema.add({
   identifier: [IdentifierSchema],
   status: ExplanationOfBenefitStatusSchema,
   type: CodeableConceptSchema,
@@ -72,17 +73,6 @@ const ExplanationOfBenefitSchema = DomainResourceSchemaFunction({
   processNote: [ExplanationOfBenefitProcessNoteSchema],
   benefitPeriod: PeriodSchema,
   benefitBalance: [ExplanationOfBenefitBenefitBalanceSchema],
-  typeName: { type: String, default: 'ExplanationOfBenefit' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefit' },
 });
 
-class ExplanationOfBenefit extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitSchema);
-    this.typeName = 'ExplanationOfBenefit';
-    this._type = 'FHIR::ExplanationOfBenefit';
-  }
-}
-
 module.exports.ExplanationOfBenefitSchema = ExplanationOfBenefitSchema;
-module.exports.ExplanationOfBenefit = ExplanationOfBenefit;

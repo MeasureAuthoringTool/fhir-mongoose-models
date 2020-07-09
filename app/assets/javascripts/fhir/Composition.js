@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CompositionAttesterSchema } = require('./CompositionAttester');
-const { CompositionEventSchema } = require('./CompositionEvent');
-const { CompositionRelatesToSchema } = require('./CompositionRelatesTo');
-const { CompositionSectionSchema } = require('./CompositionSection');
-const { CompositionStatusSchema } = require('./CompositionStatus');
-const { DocumentConfidentialitySchema } = require('./DocumentConfidentiality');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CompositionAttesterSchema } = require('./allSchemaHeaders.js');
+const { CompositionEventSchema } = require('./allSchemaHeaders.js');
+const { CompositionRelatesToSchema } = require('./allSchemaHeaders.js');
+const { CompositionSectionSchema } = require('./allSchemaHeaders.js');
+const { CompositionStatusSchema } = require('./allSchemaHeaders.js');
+const { DocumentConfidentialitySchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CompositionSchema } = require('./allSchemaHeaders.js');
 
-const CompositionSchema = DomainResourceSchemaFunction({
+CompositionSchema.add(DomainResourceSchema);
+CompositionSchema.remove('id');
+CompositionSchema.add({
   identifier: IdentifierSchema,
   status: CompositionStatusSchema,
   type: CodeableConceptSchema,
@@ -29,17 +30,6 @@ const CompositionSchema = DomainResourceSchemaFunction({
   relatesTo: [CompositionRelatesToSchema],
   event: [CompositionEventSchema],
   section: [CompositionSectionSchema],
-  typeName: { type: String, default: 'Composition' },
-  _type: { type: String, default: 'FHIR::Composition' },
 });
 
-class Composition extends mongoose.Document {
-  constructor(object) {
-    super(object, CompositionSchema);
-    this.typeName = 'Composition';
-    this._type = 'FHIR::Composition';
-  }
-}
-
 module.exports.CompositionSchema = CompositionSchema;
-module.exports.Composition = Composition;

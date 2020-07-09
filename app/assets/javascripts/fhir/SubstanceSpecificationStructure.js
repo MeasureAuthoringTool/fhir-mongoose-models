@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SubstanceSpecificationStructureIsotopeSchema } = require('./SubstanceSpecificationStructureIsotope');
-const { SubstanceSpecificationStructureIsotopeMolecularWeightSchema } = require('./SubstanceSpecificationStructureIsotopeMolecularWeight');
-const { SubstanceSpecificationStructureRepresentationSchema } = require('./SubstanceSpecificationStructureRepresentation');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureIsotopeSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureIsotopeMolecularWeightSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureRepresentationSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationStructureSchema = BackboneElementSchemaFunction({
+SubstanceSpecificationStructureSchema.add(BackboneElementSchema);
+SubstanceSpecificationStructureSchema.remove('id');
+SubstanceSpecificationStructureSchema.add({
   stereochemistry: CodeableConceptSchema,
   opticalActivity: CodeableConceptSchema,
   molecularFormula: PrimitiveStringSchema,
@@ -17,17 +18,6 @@ const SubstanceSpecificationStructureSchema = BackboneElementSchemaFunction({
   molecularWeight: SubstanceSpecificationStructureIsotopeMolecularWeightSchema,
   source: [ReferenceSchema],
   representation: [SubstanceSpecificationStructureRepresentationSchema],
-  typeName: { type: String, default: 'SubstanceSpecificationStructure' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationStructure' },
 });
 
-class SubstanceSpecificationStructure extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationStructureSchema);
-    this.typeName = 'SubstanceSpecificationStructure';
-    this._type = 'FHIR::SubstanceSpecificationStructure';
-  }
-}
-
 module.exports.SubstanceSpecificationStructureSchema = SubstanceSpecificationStructureSchema;
-module.exports.SubstanceSpecificationStructure = SubstanceSpecificationStructure;

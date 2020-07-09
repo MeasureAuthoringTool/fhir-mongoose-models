@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { PaymentReconciliationStatusSchema } = require('./allSchemaHeaders.js');
 
-const PaymentReconciliationStatusSchema = ElementSchemaFunction({
+PaymentReconciliationStatusSchema.add(ElementSchema);
+PaymentReconciliationStatusSchema.remove('id');
+PaymentReconciliationStatusSchema.add({
   value: String,
-  typeName: { type: String, default: 'PaymentReconciliationStatus' },
-  _type: { type: String, default: 'FHIR::PaymentReconciliationStatus' },
 });
 
-class PaymentReconciliationStatus extends mongoose.Document {
-  constructor(object) {
-    super(object, PaymentReconciliationStatusSchema);
-    this.typeName = 'PaymentReconciliationStatus';
-    this._type = 'FHIR::PaymentReconciliationStatus';
-  }
-}
-
 module.exports.PaymentReconciliationStatusSchema = PaymentReconciliationStatusSchema;
-module.exports.PaymentReconciliationStatus = PaymentReconciliationStatus;

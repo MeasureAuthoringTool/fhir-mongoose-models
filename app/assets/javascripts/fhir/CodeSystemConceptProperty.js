@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCodeSchema } = require('./PrimitiveCode');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCodeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { CodeSystemConceptPropertySchema } = require('./allSchemaHeaders.js');
 
-const CodeSystemConceptPropertySchema = BackboneElementSchemaFunction({
+CodeSystemConceptPropertySchema.add(BackboneElementSchema);
+CodeSystemConceptPropertySchema.remove('id');
+CodeSystemConceptPropertySchema.add({
   code: PrimitiveCodeSchema,
   valueCode: PrimitiveCodeSchema,
   valueCoding: CodingSchema,
@@ -18,17 +19,6 @@ const CodeSystemConceptPropertySchema = BackboneElementSchemaFunction({
   valueBoolean: PrimitiveBooleanSchema,
   valueDateTime: PrimitiveDateTimeSchema,
   valueDecimal: PrimitiveDecimalSchema,
-  typeName: { type: String, default: 'CodeSystemConceptProperty' },
-  _type: { type: String, default: 'FHIR::CodeSystemConceptProperty' },
 });
 
-class CodeSystemConceptProperty extends mongoose.Document {
-  constructor(object) {
-    super(object, CodeSystemConceptPropertySchema);
-    this.typeName = 'CodeSystemConceptProperty';
-    this._type = 'FHIR::CodeSystemConceptProperty';
-  }
-}
-
 module.exports.CodeSystemConceptPropertySchema = CodeSystemConceptPropertySchema;
-module.exports.CodeSystemConceptProperty = CodeSystemConceptProperty;

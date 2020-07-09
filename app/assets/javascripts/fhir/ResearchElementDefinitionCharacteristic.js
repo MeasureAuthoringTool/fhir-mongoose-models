@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DataRequirementSchema } = require('./DataRequirement');
-const { DurationSchema } = require('./Duration');
-const { ExpressionSchema } = require('./Expression');
-const { GroupMeasureSchema } = require('./GroupMeasure');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { TimingSchema } = require('./Timing');
-const { UsageContextSchema } = require('./UsageContext');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { GroupMeasureSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ResearchElementDefinitionCharacteristicSchema } = require('./allSchemaHeaders.js');
 
-const ResearchElementDefinitionCharacteristicSchema = BackboneElementSchemaFunction({
+ResearchElementDefinitionCharacteristicSchema.add(BackboneElementSchema);
+ResearchElementDefinitionCharacteristicSchema.remove('id');
+ResearchElementDefinitionCharacteristicSchema.add({
   definitionCodeableConcept: CodeableConceptSchema,
   definitionCanonical: PrimitiveCanonicalSchema,
   definitionExpression: ExpressionSchema,
@@ -36,17 +37,6 @@ const ResearchElementDefinitionCharacteristicSchema = BackboneElementSchemaFunct
   participantEffectiveTiming: TimingSchema,
   participantEffectiveTimeFromStart: DurationSchema,
   participantEffectiveGroupMeasure: GroupMeasureSchema,
-  typeName: { type: String, default: 'ResearchElementDefinitionCharacteristic' },
-  _type: { type: String, default: 'FHIR::ResearchElementDefinitionCharacteristic' },
 });
 
-class ResearchElementDefinitionCharacteristic extends mongoose.Document {
-  constructor(object) {
-    super(object, ResearchElementDefinitionCharacteristicSchema);
-    this.typeName = 'ResearchElementDefinitionCharacteristic';
-    this._type = 'FHIR::ResearchElementDefinitionCharacteristic';
-  }
-}
-
 module.exports.ResearchElementDefinitionCharacteristicSchema = ResearchElementDefinitionCharacteristicSchema;
-module.exports.ResearchElementDefinitionCharacteristic = ResearchElementDefinitionCharacteristic;

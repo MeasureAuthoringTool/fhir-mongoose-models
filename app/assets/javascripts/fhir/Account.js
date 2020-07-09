@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { AccountCoverageSchema } = require('./AccountCoverage');
-const { AccountGuarantorSchema } = require('./AccountGuarantor');
-const { AccountStatusSchema } = require('./AccountStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AccountCoverageSchema } = require('./allSchemaHeaders.js');
+const { AccountGuarantorSchema } = require('./allSchemaHeaders.js');
+const { AccountStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AccountSchema } = require('./allSchemaHeaders.js');
 
-const AccountSchema = DomainResourceSchemaFunction({
+AccountSchema.add(DomainResourceSchema);
+AccountSchema.remove('id');
+AccountSchema.add({
   identifier: [IdentifierSchema],
   status: AccountStatusSchema,
   type: CodeableConceptSchema,
@@ -22,17 +23,6 @@ const AccountSchema = DomainResourceSchemaFunction({
   description: PrimitiveStringSchema,
   guarantor: [AccountGuarantorSchema],
   partOf: ReferenceSchema,
-  typeName: { type: String, default: 'Account' },
-  _type: { type: String, default: 'FHIR::Account' },
 });
 
-class Account extends mongoose.Document {
-  constructor(object) {
-    super(object, AccountSchema);
-    this.typeName = 'Account';
-    this._type = 'FHIR::Account';
-  }
-}
-
 module.exports.AccountSchema = AccountSchema;
-module.exports.Account = Account;

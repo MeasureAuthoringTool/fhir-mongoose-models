@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SpecimenProcessingSchema } = require('./allSchemaHeaders.js');
 
-const SpecimenProcessingSchema = BackboneElementSchemaFunction({
+SpecimenProcessingSchema.add(BackboneElementSchema);
+SpecimenProcessingSchema.remove('id');
+SpecimenProcessingSchema.add({
   description: PrimitiveStringSchema,
   procedure: CodeableConceptSchema,
   additive: [ReferenceSchema],
   timeDateTime: PrimitiveDateTimeSchema,
   timePeriod: PeriodSchema,
-  typeName: { type: String, default: 'SpecimenProcessing' },
-  _type: { type: String, default: 'FHIR::SpecimenProcessing' },
 });
 
-class SpecimenProcessing extends mongoose.Document {
-  constructor(object) {
-    super(object, SpecimenProcessingSchema);
-    this.typeName = 'SpecimenProcessing';
-    this._type = 'FHIR::SpecimenProcessing';
-  }
-}
-
 module.exports.SpecimenProcessingSchema = SpecimenProcessingSchema;
-module.exports.SpecimenProcessing = SpecimenProcessing;

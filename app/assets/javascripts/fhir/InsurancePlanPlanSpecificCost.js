@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { InsurancePlanPlanSpecificCostBenefitSchema } = require('./InsurancePlanPlanSpecificCostBenefit');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanSpecificCostBenefitSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanSpecificCostSchema } = require('./allSchemaHeaders.js');
 
-const InsurancePlanPlanSpecificCostSchema = BackboneElementSchemaFunction({
+InsurancePlanPlanSpecificCostSchema.add(BackboneElementSchema);
+InsurancePlanPlanSpecificCostSchema.remove('id');
+InsurancePlanPlanSpecificCostSchema.add({
   category: CodeableConceptSchema,
   benefit: [InsurancePlanPlanSpecificCostBenefitSchema],
-  typeName: { type: String, default: 'InsurancePlanPlanSpecificCost' },
-  _type: { type: String, default: 'FHIR::InsurancePlanPlanSpecificCost' },
 });
 
-class InsurancePlanPlanSpecificCost extends mongoose.Document {
-  constructor(object) {
-    super(object, InsurancePlanPlanSpecificCostSchema);
-    this.typeName = 'InsurancePlanPlanSpecificCost';
-    this._type = 'FHIR::InsurancePlanPlanSpecificCost';
-  }
-}
-
 module.exports.InsurancePlanPlanSpecificCostSchema = InsurancePlanPlanSpecificCostSchema;
-module.exports.InsurancePlanPlanSpecificCost = InsurancePlanPlanSpecificCost;

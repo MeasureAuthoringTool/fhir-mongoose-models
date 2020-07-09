@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { SupplyDeliverySuppliedItemSchema } = require('./allSchemaHeaders.js');
 
-const SupplyDeliverySuppliedItemSchema = BackboneElementSchemaFunction({
+SupplyDeliverySuppliedItemSchema.add(BackboneElementSchema);
+SupplyDeliverySuppliedItemSchema.remove('id');
+SupplyDeliverySuppliedItemSchema.add({
   quantity: SimpleQuantitySchema,
   itemCodeableConcept: CodeableConceptSchema,
   itemReference: ReferenceSchema,
-  typeName: { type: String, default: 'SupplyDeliverySuppliedItem' },
-  _type: { type: String, default: 'FHIR::SupplyDeliverySuppliedItem' },
 });
 
-class SupplyDeliverySuppliedItem extends mongoose.Document {
-  constructor(object) {
-    super(object, SupplyDeliverySuppliedItemSchema);
-    this.typeName = 'SupplyDeliverySuppliedItem';
-    this._type = 'FHIR::SupplyDeliverySuppliedItem';
-  }
-}
-
 module.exports.SupplyDeliverySuppliedItemSchema = SupplyDeliverySuppliedItemSchema;
-module.exports.SupplyDeliverySuppliedItem = SupplyDeliverySuppliedItem;

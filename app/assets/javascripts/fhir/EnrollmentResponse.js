@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EnrollmentResponseStatusSchema } = require('./EnrollmentResponseStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { RemittanceOutcomeSchema } = require('./RemittanceOutcome');
+const { EnrollmentResponseStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RemittanceOutcomeSchema } = require('./allSchemaHeaders.js');
+const { EnrollmentResponseSchema } = require('./allSchemaHeaders.js');
 
-const EnrollmentResponseSchema = DomainResourceSchemaFunction({
+EnrollmentResponseSchema.add(DomainResourceSchema);
+EnrollmentResponseSchema.remove('id');
+EnrollmentResponseSchema.add({
   identifier: [IdentifierSchema],
   status: EnrollmentResponseStatusSchema,
   request: ReferenceSchema,
@@ -17,17 +18,6 @@ const EnrollmentResponseSchema = DomainResourceSchemaFunction({
   created: PrimitiveDateTimeSchema,
   organization: ReferenceSchema,
   requestProvider: ReferenceSchema,
-  typeName: { type: String, default: 'EnrollmentResponse' },
-  _type: { type: String, default: 'FHIR::EnrollmentResponse' },
 });
 
-class EnrollmentResponse extends mongoose.Document {
-  constructor(object) {
-    super(object, EnrollmentResponseSchema);
-    this.typeName = 'EnrollmentResponse';
-    this._type = 'FHIR::EnrollmentResponse';
-  }
-}
-
 module.exports.EnrollmentResponseSchema = EnrollmentResponseSchema;
-module.exports.EnrollmentResponse = EnrollmentResponse;

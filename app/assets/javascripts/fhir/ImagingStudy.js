@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ImagingStudySeriesSchema } = require('./ImagingStudySeries');
-const { ImagingStudyStatusSchema } = require('./ImagingStudyStatus');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudySeriesSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudyStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudySchema } = require('./allSchemaHeaders.js');
 
-const ImagingStudySchema = DomainResourceSchemaFunction({
+ImagingStudySchema.add(DomainResourceSchema);
+ImagingStudySchema.remove('id');
+ImagingStudySchema.add({
   identifier: [IdentifierSchema],
   status: ImagingStudyStatusSchema,
   modality: [CodingSchema],
@@ -33,17 +34,6 @@ const ImagingStudySchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   description: PrimitiveStringSchema,
   series: [ImagingStudySeriesSchema],
-  typeName: { type: String, default: 'ImagingStudy' },
-  _type: { type: String, default: 'FHIR::ImagingStudy' },
 });
 
-class ImagingStudy extends mongoose.Document {
-  constructor(object) {
-    super(object, ImagingStudySchema);
-    this.typeName = 'ImagingStudy';
-    this._type = 'FHIR::ImagingStudy';
-  }
-}
-
 module.exports.ImagingStudySchema = ImagingStudySchema;
-module.exports.ImagingStudy = ImagingStudy;

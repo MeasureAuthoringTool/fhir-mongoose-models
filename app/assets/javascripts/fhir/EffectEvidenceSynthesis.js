@@ -1,26 +1,27 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EffectEvidenceSynthesisCertaintySchema } = require('./EffectEvidenceSynthesisCertainty');
-const { EffectEvidenceSynthesisEffectEstimateSchema } = require('./EffectEvidenceSynthesisEffectEstimate');
-const { EffectEvidenceSynthesisResultsByExposureSchema } = require('./EffectEvidenceSynthesisResultsByExposure');
-const { EffectEvidenceSynthesisSampleSizeSchema } = require('./EffectEvidenceSynthesisSampleSize');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { UsageContextSchema } = require('./UsageContext');
+const { EffectEvidenceSynthesisCertaintySchema } = require('./allSchemaHeaders.js');
+const { EffectEvidenceSynthesisEffectEstimateSchema } = require('./allSchemaHeaders.js');
+const { EffectEvidenceSynthesisResultsByExposureSchema } = require('./allSchemaHeaders.js');
+const { EffectEvidenceSynthesisSampleSizeSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { EffectEvidenceSynthesisSchema } = require('./allSchemaHeaders.js');
 
-const EffectEvidenceSynthesisSchema = DomainResourceSchemaFunction({
+EffectEvidenceSynthesisSchema.add(DomainResourceSchema);
+EffectEvidenceSynthesisSchema.remove('id');
+EffectEvidenceSynthesisSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -54,17 +55,6 @@ const EffectEvidenceSynthesisSchema = DomainResourceSchemaFunction({
   resultsByExposure: [EffectEvidenceSynthesisResultsByExposureSchema],
   effectEstimate: [EffectEvidenceSynthesisEffectEstimateSchema],
   certainty: [EffectEvidenceSynthesisCertaintySchema],
-  typeName: { type: String, default: 'EffectEvidenceSynthesis' },
-  _type: { type: String, default: 'FHIR::EffectEvidenceSynthesis' },
 });
 
-class EffectEvidenceSynthesis extends mongoose.Document {
-  constructor(object) {
-    super(object, EffectEvidenceSynthesisSchema);
-    this.typeName = 'EffectEvidenceSynthesis';
-    this._type = 'FHIR::EffectEvidenceSynthesis';
-  }
-}
-
 module.exports.EffectEvidenceSynthesisSchema = EffectEvidenceSynthesisSchema;
-module.exports.EffectEvidenceSynthesis = EffectEvidenceSynthesis;

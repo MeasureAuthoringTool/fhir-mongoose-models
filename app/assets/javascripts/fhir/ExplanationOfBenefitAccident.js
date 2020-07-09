@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
+const { AddressSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitAccidentSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitAccidentSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitAccidentSchema.add(BackboneElementSchema);
+ExplanationOfBenefitAccidentSchema.remove('id');
+ExplanationOfBenefitAccidentSchema.add({
   date: PrimitiveDateSchema,
   type: CodeableConceptSchema,
   locationAddress: AddressSchema,
   locationReference: ReferenceSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitAccident' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitAccident' },
 });
 
-class ExplanationOfBenefitAccident extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitAccidentSchema);
-    this.typeName = 'ExplanationOfBenefitAccident';
-    this._type = 'FHIR::ExplanationOfBenefitAccident';
-  }
-}
-
 module.exports.ExplanationOfBenefitAccidentSchema = ExplanationOfBenefitAccidentSchema;
-module.exports.ExplanationOfBenefitAccident = ExplanationOfBenefitAccident;

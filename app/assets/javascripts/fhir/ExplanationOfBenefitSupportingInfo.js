@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitSupportingInfoSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitSupportingInfoSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitSupportingInfoSchema.add(BackboneElementSchema);
+ExplanationOfBenefitSupportingInfoSchema.remove('id');
+ExplanationOfBenefitSupportingInfoSchema.add({
   sequence: PrimitivePositiveIntSchema,
   category: CodeableConceptSchema,
   code: CodeableConceptSchema,
@@ -24,17 +25,6 @@ const ExplanationOfBenefitSupportingInfoSchema = BackboneElementSchemaFunction({
   valueAttachment: AttachmentSchema,
   valueReference: ReferenceSchema,
   reason: CodingSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitSupportingInfo' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitSupportingInfo' },
 });
 
-class ExplanationOfBenefitSupportingInfo extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitSupportingInfoSchema);
-    this.typeName = 'ExplanationOfBenefitSupportingInfo';
-    this._type = 'FHIR::ExplanationOfBenefitSupportingInfo';
-  }
-}
-
 module.exports.ExplanationOfBenefitSupportingInfoSchema = ExplanationOfBenefitSupportingInfoSchema;
-module.exports.ExplanationOfBenefitSupportingInfo = ExplanationOfBenefitSupportingInfo;

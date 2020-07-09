@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { FHIRDefinedTypeSchema } = require('./FHIRDefinedType');
-const { MimeTypeSchema } = require('./MimeType');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { TestScriptRequestMethodCodeSchema } = require('./TestScriptRequestMethodCode');
-const { TestScriptSetupActionOperationRequestHeaderSchema } = require('./TestScriptSetupActionOperationRequestHeader');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { FHIRDefinedTypeSchema } = require('./allSchemaHeaders.js');
+const { MimeTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { TestScriptRequestMethodCodeSchema } = require('./allSchemaHeaders.js');
+const { TestScriptSetupActionOperationRequestHeaderSchema } = require('./allSchemaHeaders.js');
+const { TestScriptSetupActionOperationSchema } = require('./allSchemaHeaders.js');
 
-const TestScriptSetupActionOperationSchema = BackboneElementSchemaFunction({
+TestScriptSetupActionOperationSchema.add(BackboneElementSchema);
+TestScriptSetupActionOperationSchema.remove('id');
+TestScriptSetupActionOperationSchema.add({
   type: CodingSchema,
   resource: FHIRDefinedTypeSchema,
   label: PrimitiveStringSchema,
@@ -29,17 +30,6 @@ const TestScriptSetupActionOperationSchema = BackboneElementSchemaFunction({
   sourceId: PrimitiveIdSchema,
   targetId: PrimitiveIdSchema,
   url: PrimitiveStringSchema,
-  typeName: { type: String, default: 'TestScriptSetupActionOperation' },
-  _type: { type: String, default: 'FHIR::TestScriptSetupActionOperation' },
 });
 
-class TestScriptSetupActionOperation extends mongoose.Document {
-  constructor(object) {
-    super(object, TestScriptSetupActionOperationSchema);
-    this.typeName = 'TestScriptSetupActionOperation';
-    this._type = 'FHIR::TestScriptSetupActionOperation';
-  }
-}
-
 module.exports.TestScriptSetupActionOperationSchema = TestScriptSetupActionOperationSchema;
-module.exports.TestScriptSetupActionOperation = TestScriptSetupActionOperation;

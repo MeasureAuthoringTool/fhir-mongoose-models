@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { GuidePageGenerationSchema } = require('./GuidePageGeneration');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
-const { ReferenceSchema } = require('./Reference');
+const { GuidePageGenerationSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUrlSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ImplementationGuideDefinitionPageSchema } = require('./allSchemaHeaders.js');
 
-const ImplementationGuideDefinitionPageSchema = BackboneElementSchemaFunction({
+ImplementationGuideDefinitionPageSchema.add(BackboneElementSchema);
+ImplementationGuideDefinitionPageSchema.remove('id');
+ImplementationGuideDefinitionPageSchema.add({
   nameUrl: PrimitiveUrlSchema,
   nameReference: ReferenceSchema,
   title: PrimitiveStringSchema,
   generation: GuidePageGenerationSchema,
   page: [ImplementationGuideDefinitionPageSchema],
-  typeName: { type: String, default: 'ImplementationGuideDefinitionPage' },
-  _type: { type: String, default: 'FHIR::ImplementationGuideDefinitionPage' },
 });
 
-class ImplementationGuideDefinitionPage extends mongoose.Document {
-  constructor(object) {
-    super(object, ImplementationGuideDefinitionPageSchema);
-    this.typeName = 'ImplementationGuideDefinitionPage';
-    this._type = 'FHIR::ImplementationGuideDefinitionPage';
-  }
-}
-
 module.exports.ImplementationGuideDefinitionPageSchema = ImplementationGuideDefinitionPageSchema;
-module.exports.ImplementationGuideDefinitionPage = ImplementationGuideDefinitionPage;

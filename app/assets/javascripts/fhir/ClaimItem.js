@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
+const { AddressSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ClaimItemDetailSchema } = require('./ClaimItemDetail');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { ClaimItemDetailSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ClaimItemSchema } = require('./allSchemaHeaders.js');
 
-const ClaimItemSchema = BackboneElementSchemaFunction({
+ClaimItemSchema.add(BackboneElementSchema);
+ClaimItemSchema.remove('id');
+ClaimItemSchema.add({
   sequence: PrimitivePositiveIntSchema,
   careTeamSequence: [PrimitivePositiveIntSchema],
   diagnosisSequence: [PrimitivePositiveIntSchema],
@@ -37,17 +38,6 @@ const ClaimItemSchema = BackboneElementSchemaFunction({
   subSite: [CodeableConceptSchema],
   encounter: [ReferenceSchema],
   detail: [ClaimItemDetailSchema],
-  typeName: { type: String, default: 'ClaimItem' },
-  _type: { type: String, default: 'FHIR::ClaimItem' },
 });
 
-class ClaimItem extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimItemSchema);
-    this.typeName = 'ClaimItem';
-    this._type = 'FHIR::ClaimItem';
-  }
-}
-
 module.exports.ClaimItemSchema = ClaimItemSchema;
-module.exports.ClaimItem = ClaimItem;

@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { AdministrativeGenderSchema } = require('./AdministrativeGender');
-const { AttachmentSchema } = require('./Attachment');
-const { ContactPointSchema } = require('./ContactPoint');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { AdministrativeGenderSchema } = require('./allSchemaHeaders.js');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { HumanNameSchema } = require('./HumanName');
-const { IdentifierSchema } = require('./Identifier');
-const { PersonLinkSchema } = require('./PersonLink');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { ReferenceSchema } = require('./Reference');
+const { HumanNameSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PersonLinkSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { PersonSchema } = require('./allSchemaHeaders.js');
 
-const PersonSchema = DomainResourceSchemaFunction({
+PersonSchema.add(DomainResourceSchema);
+PersonSchema.remove('id');
+PersonSchema.add({
   identifier: [IdentifierSchema],
   name: [HumanNameSchema],
   telecom: [ContactPointSchema],
@@ -23,17 +24,6 @@ const PersonSchema = DomainResourceSchemaFunction({
   managingOrganization: ReferenceSchema,
   active: PrimitiveBooleanSchema,
   link: [PersonLinkSchema],
-  typeName: { type: String, default: 'Person' },
-  _type: { type: String, default: 'FHIR::Person' },
 });
 
-class Person extends mongoose.Document {
-  constructor(object) {
-    super(object, PersonSchema);
-    this.typeName = 'Person';
-    this._type = 'FHIR::Person';
-  }
-}
-
 module.exports.PersonSchema = PersonSchema;
-module.exports.Person = Person;

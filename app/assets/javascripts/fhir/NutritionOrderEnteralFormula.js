@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { NutritionOrderEnteralFormulaAdministrationSchema } = require('./NutritionOrderEnteralFormulaAdministration');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderEnteralFormulaAdministrationSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { NutritionOrderEnteralFormulaSchema } = require('./allSchemaHeaders.js');
 
-const NutritionOrderEnteralFormulaSchema = BackboneElementSchemaFunction({
+NutritionOrderEnteralFormulaSchema.add(BackboneElementSchema);
+NutritionOrderEnteralFormulaSchema.remove('id');
+NutritionOrderEnteralFormulaSchema.add({
   baseFormulaType: CodeableConceptSchema,
   baseFormulaProductName: PrimitiveStringSchema,
   additiveType: CodeableConceptSchema,
@@ -16,17 +17,6 @@ const NutritionOrderEnteralFormulaSchema = BackboneElementSchemaFunction({
   administration: [NutritionOrderEnteralFormulaAdministrationSchema],
   maxVolumeToDeliver: SimpleQuantitySchema,
   administrationInstruction: PrimitiveStringSchema,
-  typeName: { type: String, default: 'NutritionOrderEnteralFormula' },
-  _type: { type: String, default: 'FHIR::NutritionOrderEnteralFormula' },
 });
 
-class NutritionOrderEnteralFormula extends mongoose.Document {
-  constructor(object) {
-    super(object, NutritionOrderEnteralFormulaSchema);
-    this.typeName = 'NutritionOrderEnteralFormula';
-    this._type = 'FHIR::NutritionOrderEnteralFormula';
-  }
-}
-
 module.exports.NutritionOrderEnteralFormulaSchema = NutritionOrderEnteralFormulaSchema;
-module.exports.NutritionOrderEnteralFormula = NutritionOrderEnteralFormula;

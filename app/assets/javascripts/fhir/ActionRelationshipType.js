@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ActionRelationshipTypeSchema } = require('./allSchemaHeaders.js');
 
-const ActionRelationshipTypeSchema = ElementSchemaFunction({
+ActionRelationshipTypeSchema.add(ElementSchema);
+ActionRelationshipTypeSchema.remove('id');
+ActionRelationshipTypeSchema.add({
   value: String,
-  typeName: { type: String, default: 'ActionRelationshipType' },
-  _type: { type: String, default: 'FHIR::ActionRelationshipType' },
 });
 
-class ActionRelationshipType extends mongoose.Document {
-  constructor(object) {
-    super(object, ActionRelationshipTypeSchema);
-    this.typeName = 'ActionRelationshipType';
-    this._type = 'FHIR::ActionRelationshipType';
-  }
-}
-
 module.exports.ActionRelationshipTypeSchema = ActionRelationshipTypeSchema;
-module.exports.ActionRelationshipType = ActionRelationshipType;

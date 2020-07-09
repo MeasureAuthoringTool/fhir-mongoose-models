@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { SubstanceSourceMaterialOrganismAuthorSchema } = require('./SubstanceSourceMaterialOrganismAuthor');
-const { SubstanceSourceMaterialOrganismHybridSchema } = require('./SubstanceSourceMaterialOrganismHybrid');
-const { SubstanceSourceMaterialOrganismOrganismGeneralSchema } = require('./SubstanceSourceMaterialOrganismOrganismGeneral');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialOrganismAuthorSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialOrganismHybridSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialOrganismOrganismGeneralSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSourceMaterialOrganismSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSourceMaterialOrganismSchema = BackboneElementSchemaFunction({
+SubstanceSourceMaterialOrganismSchema.add(BackboneElementSchema);
+SubstanceSourceMaterialOrganismSchema.remove('id');
+SubstanceSourceMaterialOrganismSchema.add({
   family: CodeableConceptSchema,
   genus: CodeableConceptSchema,
   species: CodeableConceptSchema,
@@ -16,17 +17,6 @@ const SubstanceSourceMaterialOrganismSchema = BackboneElementSchemaFunction({
   author: [SubstanceSourceMaterialOrganismAuthorSchema],
   hybrid: SubstanceSourceMaterialOrganismHybridSchema,
   organismGeneral: SubstanceSourceMaterialOrganismOrganismGeneralSchema,
-  typeName: { type: String, default: 'SubstanceSourceMaterialOrganism' },
-  _type: { type: String, default: 'FHIR::SubstanceSourceMaterialOrganism' },
 });
 
-class SubstanceSourceMaterialOrganism extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSourceMaterialOrganismSchema);
-    this.typeName = 'SubstanceSourceMaterialOrganism';
-    this._type = 'FHIR::SubstanceSourceMaterialOrganism';
-  }
-}
-
 module.exports.SubstanceSourceMaterialOrganismSchema = SubstanceSourceMaterialOrganismSchema;
-module.exports.SubstanceSourceMaterialOrganism = SubstanceSourceMaterialOrganism;

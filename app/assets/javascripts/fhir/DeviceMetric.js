@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DeviceMetricCalibrationSchema } = require('./DeviceMetricCalibration');
-const { DeviceMetricCategorySchema } = require('./DeviceMetricCategory');
-const { DeviceMetricColorSchema } = require('./DeviceMetricColor');
-const { DeviceMetricOperationalStatusSchema } = require('./DeviceMetricOperationalStatus');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DeviceMetricCalibrationSchema } = require('./allSchemaHeaders.js');
+const { DeviceMetricCategorySchema } = require('./allSchemaHeaders.js');
+const { DeviceMetricColorSchema } = require('./allSchemaHeaders.js');
+const { DeviceMetricOperationalStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ReferenceSchema } = require('./Reference');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { DeviceMetricSchema } = require('./allSchemaHeaders.js');
 
-const DeviceMetricSchema = DomainResourceSchemaFunction({
+DeviceMetricSchema.add(DomainResourceSchema);
+DeviceMetricSchema.remove('id');
+DeviceMetricSchema.add({
   identifier: [IdentifierSchema],
   type: CodeableConceptSchema,
   unit: CodeableConceptSchema,
@@ -21,17 +22,6 @@ const DeviceMetricSchema = DomainResourceSchemaFunction({
   category: DeviceMetricCategorySchema,
   measurementPeriod: TimingSchema,
   calibration: [DeviceMetricCalibrationSchema],
-  typeName: { type: String, default: 'DeviceMetric' },
-  _type: { type: String, default: 'FHIR::DeviceMetric' },
 });
 
-class DeviceMetric extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceMetricSchema);
-    this.typeName = 'DeviceMetric';
-    this._type = 'FHIR::DeviceMetric';
-  }
-}
-
 module.exports.DeviceMetricSchema = DeviceMetricSchema;
-module.exports.DeviceMetric = DeviceMetric;

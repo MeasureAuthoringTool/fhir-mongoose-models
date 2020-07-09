@@ -1,26 +1,27 @@
-const mongoose = require('mongoose/browser');
-const { CapabilityStatementKindSchema } = require('./CapabilityStatementKind');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodeSearchSupportSchema } = require('./CodeSearchSupport');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CapabilityStatementKindSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodeSearchSupportSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { TerminologyCapabilitiesClosureSchema } = require('./TerminologyCapabilitiesClosure');
-const { TerminologyCapabilitiesCodeSystemSchema } = require('./TerminologyCapabilitiesCodeSystem');
-const { TerminologyCapabilitiesExpansionSchema } = require('./TerminologyCapabilitiesExpansion');
-const { TerminologyCapabilitiesImplementationSchema } = require('./TerminologyCapabilitiesImplementation');
-const { TerminologyCapabilitiesSoftwareSchema } = require('./TerminologyCapabilitiesSoftware');
-const { TerminologyCapabilitiesTranslationSchema } = require('./TerminologyCapabilitiesTranslation');
-const { TerminologyCapabilitiesValidateCodeSchema } = require('./TerminologyCapabilitiesValidateCode');
-const { UsageContextSchema } = require('./UsageContext');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesClosureSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesCodeSystemSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesExpansionSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesImplementationSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesSoftwareSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesTranslationSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesValidateCodeSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { TerminologyCapabilitiesSchema } = require('./allSchemaHeaders.js');
 
-const TerminologyCapabilitiesSchema = DomainResourceSchemaFunction({
+TerminologyCapabilitiesSchema.add(DomainResourceSchema);
+TerminologyCapabilitiesSchema.remove('id');
+TerminologyCapabilitiesSchema.add({
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -45,17 +46,6 @@ const TerminologyCapabilitiesSchema = DomainResourceSchemaFunction({
   validateCode: TerminologyCapabilitiesValidateCodeSchema,
   translation: TerminologyCapabilitiesTranslationSchema,
   closure: TerminologyCapabilitiesClosureSchema,
-  typeName: { type: String, default: 'TerminologyCapabilities' },
-  _type: { type: String, default: 'FHIR::TerminologyCapabilities' },
 });
 
-class TerminologyCapabilities extends mongoose.Document {
-  constructor(object) {
-    super(object, TerminologyCapabilitiesSchema);
-    this.typeName = 'TerminologyCapabilities';
-    this._type = 'FHIR::TerminologyCapabilities';
-  }
-}
-
 module.exports.TerminologyCapabilitiesSchema = TerminologyCapabilitiesSchema;
-module.exports.TerminologyCapabilities = TerminologyCapabilities;

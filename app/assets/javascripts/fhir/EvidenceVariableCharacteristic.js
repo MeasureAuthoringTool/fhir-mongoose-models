@@ -1,22 +1,23 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DataRequirementSchema } = require('./DataRequirement');
-const { DurationSchema } = require('./Duration');
-const { ExpressionSchema } = require('./Expression');
-const { GroupMeasureSchema } = require('./GroupMeasure');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { TimingSchema } = require('./Timing');
-const { TriggerDefinitionSchema } = require('./TriggerDefinition');
-const { UsageContextSchema } = require('./UsageContext');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { GroupMeasureSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { TriggerDefinitionSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { EvidenceVariableCharacteristicSchema } = require('./allSchemaHeaders.js');
 
-const EvidenceVariableCharacteristicSchema = BackboneElementSchemaFunction({
+EvidenceVariableCharacteristicSchema.add(BackboneElementSchema);
+EvidenceVariableCharacteristicSchema.remove('id');
+EvidenceVariableCharacteristicSchema.add({
   description: PrimitiveStringSchema,
   definitionReference: ReferenceSchema,
   definitionCanonical: PrimitiveCanonicalSchema,
@@ -32,17 +33,6 @@ const EvidenceVariableCharacteristicSchema = BackboneElementSchemaFunction({
   participantEffectiveTiming: TimingSchema,
   timeFromStart: DurationSchema,
   groupMeasure: GroupMeasureSchema,
-  typeName: { type: String, default: 'EvidenceVariableCharacteristic' },
-  _type: { type: String, default: 'FHIR::EvidenceVariableCharacteristic' },
 });
 
-class EvidenceVariableCharacteristic extends mongoose.Document {
-  constructor(object) {
-    super(object, EvidenceVariableCharacteristicSchema);
-    this.typeName = 'EvidenceVariableCharacteristic';
-    this._type = 'FHIR::EvidenceVariableCharacteristic';
-  }
-}
-
 module.exports.EvidenceVariableCharacteristicSchema = EvidenceVariableCharacteristicSchema;
-module.exports.EvidenceVariableCharacteristic = EvidenceVariableCharacteristic;

@@ -1,24 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationNameOfficialSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationNameOfficialSchema = BackboneElementSchemaFunction({
+SubstanceSpecificationNameOfficialSchema.add(BackboneElementSchema);
+SubstanceSpecificationNameOfficialSchema.remove('id');
+SubstanceSpecificationNameOfficialSchema.add({
   authority: CodeableConceptSchema,
   status: CodeableConceptSchema,
   date: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'SubstanceSpecificationNameOfficial' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationNameOfficial' },
 });
 
-class SubstanceSpecificationNameOfficial extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationNameOfficialSchema);
-    this.typeName = 'SubstanceSpecificationNameOfficial';
-    this._type = 'FHIR::SubstanceSpecificationNameOfficial';
-  }
-}
-
 module.exports.SubstanceSpecificationNameOfficialSchema = SubstanceSpecificationNameOfficialSchema;
-module.exports.SubstanceSpecificationNameOfficial = SubstanceSpecificationNameOfficial;

@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
-const { RelatedArtifactTypeSchema } = require('./RelatedArtifactType');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUrlSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactTypeSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
 
-const RelatedArtifactSchema = ElementSchemaFunction({
+RelatedArtifactSchema.add(ElementSchema);
+RelatedArtifactSchema.remove('id');
+RelatedArtifactSchema.add({
   type: RelatedArtifactTypeSchema,
   label: PrimitiveStringSchema,
   display: PrimitiveStringSchema,
@@ -16,17 +17,6 @@ const RelatedArtifactSchema = ElementSchemaFunction({
   url: PrimitiveUrlSchema,
   document: AttachmentSchema,
   resource: PrimitiveCanonicalSchema,
-  typeName: { type: String, default: 'RelatedArtifact' },
-  _type: { type: String, default: 'FHIR::RelatedArtifact' },
 });
 
-class RelatedArtifact extends mongoose.Document {
-  constructor(object) {
-    super(object, RelatedArtifactSchema);
-    this.typeName = 'RelatedArtifact';
-    this._type = 'FHIR::RelatedArtifact';
-  }
-}
-
 module.exports.RelatedArtifactSchema = RelatedArtifactSchema;
-module.exports.RelatedArtifact = RelatedArtifact;

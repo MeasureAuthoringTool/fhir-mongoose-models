@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AuditEventActionSchema } = require('./AuditEventAction');
-const { AuditEventAgentSchema } = require('./AuditEventAgent');
-const { AuditEventEntitySchema } = require('./AuditEventEntity');
-const { AuditEventOutcomeSchema } = require('./AuditEventOutcome');
-const { AuditEventSourceSchema } = require('./AuditEventSource');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
+const { AuditEventActionSchema } = require('./allSchemaHeaders.js');
+const { AuditEventAgentSchema } = require('./allSchemaHeaders.js');
+const { AuditEventEntitySchema } = require('./allSchemaHeaders.js');
+const { AuditEventOutcomeSchema } = require('./allSchemaHeaders.js');
+const { AuditEventSourceSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { AuditEventSchema } = require('./allSchemaHeaders.js');
 
-const AuditEventSchema = DomainResourceSchemaFunction({
+AuditEventSchema.add(DomainResourceSchema);
+AuditEventSchema.remove('id');
+AuditEventSchema.add({
   type: CodingSchema,
   subtype: [CodingSchema],
   action: AuditEventActionSchema,
@@ -24,17 +25,6 @@ const AuditEventSchema = DomainResourceSchemaFunction({
   agent: [AuditEventAgentSchema],
   source: AuditEventSourceSchema,
   entity: [AuditEventEntitySchema],
-  typeName: { type: String, default: 'AuditEvent' },
-  _type: { type: String, default: 'FHIR::AuditEvent' },
 });
 
-class AuditEvent extends mongoose.Document {
-  constructor(object) {
-    super(object, AuditEventSchema);
-    this.typeName = 'AuditEvent';
-    this._type = 'FHIR::AuditEvent';
-  }
-}
-
 module.exports.AuditEventSchema = AuditEventSchema;
-module.exports.AuditEvent = AuditEvent;

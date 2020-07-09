@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ObservationReferenceRangeSchema } = require('./ObservationReferenceRange');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveTimeSchema } = require('./PrimitiveTime');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { RatioSchema } = require('./Ratio');
-const { SampledDataSchema } = require('./SampledData');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ObservationReferenceRangeSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveTimeSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { SampledDataSchema } = require('./allSchemaHeaders.js');
+const { ObservationComponentSchema } = require('./allSchemaHeaders.js');
 
-const ObservationComponentSchema = BackboneElementSchemaFunction({
+ObservationComponentSchema.add(BackboneElementSchema);
+ObservationComponentSchema.remove('id');
+ObservationComponentSchema.add({
   code: CodeableConceptSchema,
   valueQuantity: QuantitySchema,
   valueCodeableConcept: CodeableConceptSchema,
@@ -30,17 +31,6 @@ const ObservationComponentSchema = BackboneElementSchemaFunction({
   dataAbsentReason: CodeableConceptSchema,
   interpretation: [CodeableConceptSchema],
   referenceRange: [ObservationReferenceRangeSchema],
-  typeName: { type: String, default: 'ObservationComponent' },
-  _type: { type: String, default: 'FHIR::ObservationComponent' },
 });
 
-class ObservationComponent extends mongoose.Document {
-  constructor(object) {
-    super(object, ObservationComponentSchema);
-    this.typeName = 'ObservationComponent';
-    this._type = 'FHIR::ObservationComponent';
-  }
-}
-
 module.exports.ObservationComponentSchema = ObservationComponentSchema;
-module.exports.ObservationComponent = ObservationComponent;

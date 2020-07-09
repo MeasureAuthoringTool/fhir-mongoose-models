@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SubstanceSpecificationCodeSchema } = require('./SubstanceSpecificationCode');
-const { SubstanceSpecificationMoietySchema } = require('./SubstanceSpecificationMoiety');
-const { SubstanceSpecificationNameSchema } = require('./SubstanceSpecificationName');
-const { SubstanceSpecificationPropertySchema } = require('./SubstanceSpecificationProperty');
-const { SubstanceSpecificationRelationshipSchema } = require('./SubstanceSpecificationRelationship');
-const { SubstanceSpecificationStructureSchema } = require('./SubstanceSpecificationStructure');
-const { SubstanceSpecificationStructureIsotopeMolecularWeightSchema } = require('./SubstanceSpecificationStructureIsotopeMolecularWeight');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationCodeSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationMoietySchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationNameSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationPropertySchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationRelationshipSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureIsotopeMolecularWeightSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationSchema = DomainResourceSchemaFunction({
+SubstanceSpecificationSchema.add(DomainResourceSchema);
+SubstanceSpecificationSchema.remove('id');
+SubstanceSpecificationSchema.add({
   identifier: IdentifierSchema,
   type: CodeableConceptSchema,
   status: CodeableConceptSchema,
@@ -33,17 +34,6 @@ const SubstanceSpecificationSchema = DomainResourceSchemaFunction({
   polymer: ReferenceSchema,
   protein: ReferenceSchema,
   sourceMaterial: ReferenceSchema,
-  typeName: { type: String, default: 'SubstanceSpecification' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecification' },
 });
 
-class SubstanceSpecification extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationSchema);
-    this.typeName = 'SubstanceSpecification';
-    this._type = 'FHIR::SubstanceSpecification';
-  }
-}
-
 module.exports.SubstanceSpecificationSchema = SubstanceSpecificationSchema;
-module.exports.SubstanceSpecification = SubstanceSpecification;
