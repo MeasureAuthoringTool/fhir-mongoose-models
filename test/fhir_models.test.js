@@ -1,9 +1,11 @@
 const FHIR = require("./../app/assets/javascripts/AllDataElements");
 const CQM = require("./../app/assets/javascripts/cqm/AllCQMModels");
-const fhir_resource_patient = require("./fixtures/cqm_patients.json");
-const fhir_resource_measure = require("./fixtures/cqm_measures.json");
+const cqm_resource_patient = require("./fixtures/cqm_patients.json");
+const cqm_resource_measure = require("./fixtures/cqm_measures.json");
+const cqm_resource_measure2 = require("./fixtures/cqm_measures2.json");
 const fhir_resource_library = require("./fixtures/fhir_resources.json");
-const fhir_resource_valueset = require("./fixtures/cqm_value_sets.json");
+const cqm_resource_valueset = require("./fixtures/cqm_value_sets.json");
+const cqm_measure_package = require("./fixtures/cqm_measure_packages.json");
 
 describe("CQM-FHIR", () => {
   describe("FHIR model", () => {
@@ -51,9 +53,15 @@ describe("CQM-FHIR", () => {
     }
 
     test("can instantiate a CQM Model from JSON", () => {
-      let cqmMeasure = new CQM.CqmMeasure(fhir_resource_measure);
+      let cqmMeasure = new CQM.CqmMeasure(cqm_resource_measure);
       expect(cqmMeasure.validateSync()).toBeUndefined();
       expect(cqmMeasure.fhir_measure.name.value).toEqual("EXM104");
+    });
+
+    test("can instantiate a CQM Model from JSON #2", () => {
+      let cqmMeasure = new CQM.CqmMeasure(cqm_resource_measure2);
+      expect(cqmMeasure.validateSync()).toBeUndefined();
+      expect(cqmMeasure.fhir_measure.name.value).toEqual("EXM_104");
     });
 
     test("can construct a CQM measure", () => {
@@ -174,7 +182,7 @@ describe("CQM-FHIR", () => {
 
     test("can construct and save a measure with a package", () => {
       let measure = createCqmMeasure();
-      let measurePackage = new CQM.MeasurePackage({
+      let measurePackage = new CQM.CqmMeasurePackage({
         file: "TEST DATA",
       });
       measure.package = measurePackage;
@@ -211,7 +219,7 @@ describe("CQM-FHIR", () => {
 
   describe("FHIR patient", () => {
     test("can instantiate a CQM Patient from JSON", () => {
-      let cqmPatient = new CQM.CqmPatient(fhir_resource_patient);
+      let cqmPatient = new CQM.CqmPatient(cqm_resource_patient);
       expect(cqmPatient.validateSync()).toBeUndefined();
       expect(cqmPatient.fhir_patient.name[0].family.value).toEqual("Jones");
     });
@@ -290,7 +298,7 @@ describe("CQM-FHIR", () => {
     });
 
     test("can instantiate a CQM Valueset from JSON", () => {
-      let cqmValueSet = new CQM.CqmValueSet(fhir_resource_valueset);
+      let cqmValueSet = new CQM.CqmValueSet(cqm_resource_valueset);
       expect(cqmValueSet.validateSync()).toBeUndefined();
       expect(cqmValueSet.fhirValueSet.length).toEqual(0);
     });
@@ -305,4 +313,15 @@ describe("CQM-FHIR", () => {
       expect(library.validateSync()).toBeUndefined();
     });
   });
+
+  describe("MeasurePackage", () => {
+    test("can create a CQM MeasurePackage", () => {
+      expect(new CQM.CqmMeasurePackage({}).validateSync()).toBeUndefined();
+    });
+    test("can instantiate a MeasurePackage from JSON", () => {
+      let cqmPackage = new CQM.CqmMeasurePackage(cqm_measure_package);
+      expect(cqmPackage.validateSync()).toBeUndefined();
+    });
+  });
+
 });
