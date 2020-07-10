@@ -76,8 +76,8 @@ jobs:
         with:
           name: coverage
 
-      - name: Upload code coverage to Codacy
-        uses: codacy/codacy-coverage-reporter-action@master
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: lcov.info
+#      - name: Upload code coverage to Codacy
+#        uses: codacy/codacy-coverage-reporter-action@master
+#        with:
+#          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+#          coverage-reports: lcov.info
