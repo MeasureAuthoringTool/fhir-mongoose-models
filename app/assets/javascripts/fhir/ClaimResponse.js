@@ -1,26 +1,27 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { ClaimResponseAddItemSchema } = require('./ClaimResponseAddItem');
-const { ClaimResponseErrorSchema } = require('./ClaimResponseError');
-const { ClaimResponseInsuranceSchema } = require('./ClaimResponseInsurance');
-const { ClaimResponseItemSchema } = require('./ClaimResponseItem');
-const { ClaimResponseItemAdjudicationSchema } = require('./ClaimResponseItemAdjudication');
-const { ClaimResponsePaymentSchema } = require('./ClaimResponsePayment');
-const { ClaimResponseProcessNoteSchema } = require('./ClaimResponseProcessNote');
-const { ClaimResponseStatusSchema } = require('./ClaimResponseStatus');
-const { ClaimResponseTotalSchema } = require('./ClaimResponseTotal');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseAddItemSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseErrorSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseInsuranceSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseItemSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponsePaymentSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseProcessNoteSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseStatusSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseTotalSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { RemittanceOutcomeSchema } = require('./RemittanceOutcome');
-const { UseSchema } = require('./Use');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RemittanceOutcomeSchema } = require('./allSchemaHeaders.js');
+const { UseSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponseSchema = DomainResourceSchemaFunction({
+ClaimResponseSchema.add(DomainResourceSchema);
+ClaimResponseSchema.remove('id');
+ClaimResponseSchema.add({
   identifier: [IdentifierSchema],
   status: ClaimResponseStatusSchema,
   type: CodeableConceptSchema,
@@ -48,17 +49,6 @@ const ClaimResponseSchema = DomainResourceSchemaFunction({
   communicationRequest: [ReferenceSchema],
   insurance: [ClaimResponseInsuranceSchema],
   error: [ClaimResponseErrorSchema],
-  typeName: { type: String, default: 'ClaimResponse' },
-  _type: { type: String, default: 'FHIR::ClaimResponse' },
 });
 
-class ClaimResponse extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponseSchema);
-    this.typeName = 'ClaimResponse';
-    this._type = 'FHIR::ClaimResponse';
-  }
-}
-
 module.exports.ClaimResponseSchema = ClaimResponseSchema;
-module.exports.ClaimResponse = ClaimResponse;

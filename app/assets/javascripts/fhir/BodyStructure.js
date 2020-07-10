@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { BodyStructureSchema } = require('./allSchemaHeaders.js');
 
-const BodyStructureSchema = DomainResourceSchemaFunction({
+BodyStructureSchema.add(DomainResourceSchema);
+BodyStructureSchema.remove('id');
+BodyStructureSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   morphology: CodeableConceptSchema,
@@ -17,17 +18,6 @@ const BodyStructureSchema = DomainResourceSchemaFunction({
   description: PrimitiveStringSchema,
   image: [AttachmentSchema],
   patient: ReferenceSchema,
-  typeName: { type: String, default: 'BodyStructure' },
-  _type: { type: String, default: 'FHIR::BodyStructure' },
 });
 
-class BodyStructure extends mongoose.Document {
-  constructor(object) {
-    super(object, BodyStructureSchema);
-    this.typeName = 'BodyStructure';
-    this._type = 'FHIR::BodyStructure';
-  }
-}
-
 module.exports.BodyStructureSchema = BodyStructureSchema;
-module.exports.BodyStructure = BodyStructure;

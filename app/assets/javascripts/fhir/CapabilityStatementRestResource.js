@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CapabilityStatementRestResourceInteractionSchema } = require('./CapabilityStatementRestResourceInteraction');
-const { CapabilityStatementRestResourceOperationSchema } = require('./CapabilityStatementRestResourceOperation');
-const { CapabilityStatementRestResourceSearchParamSchema } = require('./CapabilityStatementRestResourceSearchParam');
-const { ConditionalDeleteStatusSchema } = require('./ConditionalDeleteStatus');
-const { ConditionalReadStatusSchema } = require('./ConditionalReadStatus');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceHandlingPolicySchema } = require('./ReferenceHandlingPolicy');
-const { ResourceTypeSchema } = require('./ResourceType');
-const { ResourceVersionPolicySchema } = require('./ResourceVersionPolicy');
+const { CapabilityStatementRestResourceInteractionSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceOperationSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceSearchParamSchema } = require('./allSchemaHeaders.js');
+const { ConditionalDeleteStatusSchema } = require('./allSchemaHeaders.js');
+const { ConditionalReadStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceHandlingPolicySchema } = require('./allSchemaHeaders.js');
+const { ResourceTypeSchema } = require('./allSchemaHeaders.js');
+const { ResourceVersionPolicySchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceSchema } = require('./allSchemaHeaders.js');
 
-const CapabilityStatementRestResourceSchema = BackboneElementSchemaFunction({
+CapabilityStatementRestResourceSchema.add(BackboneElementSchema);
+CapabilityStatementRestResourceSchema.remove('id');
+CapabilityStatementRestResourceSchema.add({
   type: ResourceTypeSchema,
   profile: PrimitiveCanonicalSchema,
   supportedProfile: [PrimitiveCanonicalSchema],
@@ -32,17 +33,6 @@ const CapabilityStatementRestResourceSchema = BackboneElementSchemaFunction({
   searchRevInclude: [PrimitiveStringSchema],
   searchParam: [CapabilityStatementRestResourceSearchParamSchema],
   operation: [CapabilityStatementRestResourceOperationSchema],
-  typeName: { type: String, default: 'CapabilityStatementRestResource' },
-  _type: { type: String, default: 'FHIR::CapabilityStatementRestResource' },
 });
 
-class CapabilityStatementRestResource extends mongoose.Document {
-  constructor(object) {
-    super(object, CapabilityStatementRestResourceSchema);
-    this.typeName = 'CapabilityStatementRestResource';
-    this._type = 'FHIR::CapabilityStatementRestResource';
-  }
-}
-
 module.exports.CapabilityStatementRestResourceSchema = CapabilityStatementRestResourceSchema;
-module.exports.CapabilityStatementRestResource = CapabilityStatementRestResource;

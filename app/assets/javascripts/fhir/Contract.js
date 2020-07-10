@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContractContentDefinitionSchema } = require('./ContractContentDefinition');
-const { ContractFriendlySchema } = require('./ContractFriendly');
-const { ContractLegalSchema } = require('./ContractLegal');
-const { ContractRuleSchema } = require('./ContractRule');
-const { ContractSignerSchema } = require('./ContractSigner');
-const { ContractStatusSchema } = require('./ContractStatus');
-const { ContractTermSchema } = require('./ContractTerm');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContractContentDefinitionSchema } = require('./allSchemaHeaders.js');
+const { ContractFriendlySchema } = require('./allSchemaHeaders.js');
+const { ContractLegalSchema } = require('./allSchemaHeaders.js');
+const { ContractRuleSchema } = require('./allSchemaHeaders.js');
+const { ContractSignerSchema } = require('./allSchemaHeaders.js');
+const { ContractStatusSchema } = require('./allSchemaHeaders.js');
+const { ContractTermSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ContractSchema } = require('./allSchemaHeaders.js');
 
-const ContractSchema = DomainResourceSchemaFunction({
+ContractSchema.add(DomainResourceSchema);
+ContractSchema.remove('id');
+ContractSchema.add({
   identifier: [IdentifierSchema],
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
@@ -53,17 +54,6 @@ const ContractSchema = DomainResourceSchemaFunction({
   rule: [ContractRuleSchema],
   legallyBindingAttachment: AttachmentSchema,
   legallyBindingReference: ReferenceSchema,
-  typeName: { type: String, default: 'Contract' },
-  _type: { type: String, default: 'FHIR::Contract' },
 });
 
-class Contract extends mongoose.Document {
-  constructor(object) {
-    super(object, ContractSchema);
-    this.typeName = 'Contract';
-    this._type = 'FHIR::Contract';
-  }
-}
-
 module.exports.ContractSchema = ContractSchema;
-module.exports.Contract = Contract;

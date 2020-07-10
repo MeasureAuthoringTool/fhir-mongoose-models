@@ -1,22 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionSpecializationSchema } = require('./allSchemaHeaders.js');
 
-const DeviceDefinitionSpecializationSchema = BackboneElementSchemaFunction({
+DeviceDefinitionSpecializationSchema.add(BackboneElementSchema);
+DeviceDefinitionSpecializationSchema.remove('id');
+DeviceDefinitionSpecializationSchema.add({
   systemType: PrimitiveStringSchema,
   version: PrimitiveStringSchema,
-  typeName: { type: String, default: 'DeviceDefinitionSpecialization' },
-  _type: { type: String, default: 'FHIR::DeviceDefinitionSpecialization' },
 });
 
-class DeviceDefinitionSpecialization extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceDefinitionSpecializationSchema);
-    this.typeName = 'DeviceDefinitionSpecialization';
-    this._type = 'FHIR::DeviceDefinitionSpecialization';
-  }
-}
-
 module.exports.DeviceDefinitionSpecializationSchema = DeviceDefinitionSpecializationSchema;
-module.exports.DeviceDefinitionSpecialization = DeviceDefinitionSpecialization;

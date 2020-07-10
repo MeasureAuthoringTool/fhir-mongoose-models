@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveTimeSchema } = require('./PrimitiveTime');
-const { QuantitySchema } = require('./Quantity');
-const { QuestionnaireItemOperatorSchema } = require('./QuestionnaireItemOperator');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveTimeSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemOperatorSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemEnableWhenSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireItemEnableWhenSchema = BackboneElementSchemaFunction({
+QuestionnaireItemEnableWhenSchema.add(BackboneElementSchema);
+QuestionnaireItemEnableWhenSchema.remove('id');
+QuestionnaireItemEnableWhenSchema.add({
   question: PrimitiveStringSchema,
   operator: QuestionnaireItemOperatorSchema,
   answerBoolean: PrimitiveBooleanSchema,
@@ -26,17 +27,6 @@ const QuestionnaireItemEnableWhenSchema = BackboneElementSchemaFunction({
   answerCoding: CodingSchema,
   answerQuantity: QuantitySchema,
   answerReference: ReferenceSchema,
-  typeName: { type: String, default: 'QuestionnaireItemEnableWhen' },
-  _type: { type: String, default: 'FHIR::QuestionnaireItemEnableWhen' },
 });
 
-class QuestionnaireItemEnableWhen extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireItemEnableWhenSchema);
-    this.typeName = 'QuestionnaireItemEnableWhen';
-    this._type = 'FHIR::QuestionnaireItemEnableWhen';
-  }
-}
-
 module.exports.QuestionnaireItemEnableWhenSchema = QuestionnaireItemEnableWhenSchema;
-module.exports.QuestionnaireItemEnableWhen = QuestionnaireItemEnableWhen;

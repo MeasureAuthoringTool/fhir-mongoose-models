@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ConstraintSeveritySchema } = require('./ConstraintSeverity');
+const { ConstraintSeveritySchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ElementDefinitionConstraintSchema } = require('./allSchemaHeaders.js');
 
-const ElementDefinitionConstraintSchema = ElementSchemaFunction({
+ElementDefinitionConstraintSchema.add(ElementSchema);
+ElementDefinitionConstraintSchema.remove('id');
+ElementDefinitionConstraintSchema.add({
   key: PrimitiveIdSchema,
   requirements: PrimitiveStringSchema,
   severity: ConstraintSeveritySchema,
@@ -14,17 +15,6 @@ const ElementDefinitionConstraintSchema = ElementSchemaFunction({
   expression: PrimitiveStringSchema,
   xpath: PrimitiveStringSchema,
   source: PrimitiveCanonicalSchema,
-  typeName: { type: String, default: 'ElementDefinitionConstraint' },
-  _type: { type: String, default: 'FHIR::ElementDefinitionConstraint' },
 });
 
-class ElementDefinitionConstraint extends mongoose.Document {
-  constructor(object) {
-    super(object, ElementDefinitionConstraintSchema);
-    this.typeName = 'ElementDefinitionConstraint';
-    this._type = 'FHIR::ElementDefinitionConstraint';
-  }
-}
-
 module.exports.ElementDefinitionConstraintSchema = ElementDefinitionConstraintSchema;
-module.exports.ElementDefinitionConstraint = ElementDefinitionConstraint;

@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { BindingStrengthSchema } = require('./BindingStrength');
+const { BindingStrengthSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ElementDefinitionBindingSchema } = require('./allSchemaHeaders.js');
 
-const ElementDefinitionBindingSchema = ElementSchemaFunction({
+ElementDefinitionBindingSchema.add(ElementSchema);
+ElementDefinitionBindingSchema.remove('id');
+ElementDefinitionBindingSchema.add({
   strength: BindingStrengthSchema,
   description: PrimitiveStringSchema,
   valueSet: PrimitiveCanonicalSchema,
-  typeName: { type: String, default: 'ElementDefinitionBinding' },
-  _type: { type: String, default: 'FHIR::ElementDefinitionBinding' },
 });
 
-class ElementDefinitionBinding extends mongoose.Document {
-  constructor(object) {
-    super(object, ElementDefinitionBindingSchema);
-    this.typeName = 'ElementDefinitionBinding';
-    this._type = 'FHIR::ElementDefinitionBinding';
-  }
-}
-
 module.exports.ElementDefinitionBindingSchema = ElementDefinitionBindingSchema;
-module.exports.ElementDefinitionBinding = ElementDefinitionBinding;

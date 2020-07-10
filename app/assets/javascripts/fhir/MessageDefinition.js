@@ -1,24 +1,25 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MessageDefinitionAllowedResponseSchema } = require('./MessageDefinitionAllowedResponse');
-const { MessageDefinitionFocusSchema } = require('./MessageDefinitionFocus');
-const { MessageheaderResponseRequestSchema } = require('./MessageheaderResponseRequest');
-const { MessageSignificanceCategorySchema } = require('./MessageSignificanceCategory');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MessageDefinitionAllowedResponseSchema } = require('./allSchemaHeaders.js');
+const { MessageDefinitionFocusSchema } = require('./allSchemaHeaders.js');
+const { MessageheaderResponseRequestSchema } = require('./allSchemaHeaders.js');
+const { MessageSignificanceCategorySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { MessageDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const MessageDefinitionSchema = DomainResourceSchemaFunction({
+MessageDefinitionSchema.add(DomainResourceSchema);
+MessageDefinitionSchema.remove('id');
+MessageDefinitionSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -44,17 +45,6 @@ const MessageDefinitionSchema = DomainResourceSchemaFunction({
   responseRequired: MessageheaderResponseRequestSchema,
   allowedResponse: [MessageDefinitionAllowedResponseSchema],
   graph: [PrimitiveCanonicalSchema],
-  typeName: { type: String, default: 'MessageDefinition' },
-  _type: { type: String, default: 'FHIR::MessageDefinition' },
 });
 
-class MessageDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, MessageDefinitionSchema);
-    this.typeName = 'MessageDefinition';
-    this._type = 'FHIR::MessageDefinition';
-  }
-}
-
 module.exports.MessageDefinitionSchema = MessageDefinitionSchema;
-module.exports.MessageDefinition = MessageDefinition;

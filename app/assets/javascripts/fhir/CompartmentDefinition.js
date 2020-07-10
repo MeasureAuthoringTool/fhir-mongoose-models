@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { CompartmentDefinitionResourceSchema } = require('./CompartmentDefinitionResource');
-const { CompartmentTypeSchema } = require('./CompartmentType');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CompartmentDefinitionResourceSchema } = require('./allSchemaHeaders.js');
+const { CompartmentTypeSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { CompartmentDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const CompartmentDefinitionSchema = DomainResourceSchemaFunction({
+CompartmentDefinitionSchema.add(DomainResourceSchema);
+CompartmentDefinitionSchema.remove('id');
+CompartmentDefinitionSchema.add({
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -27,17 +28,6 @@ const CompartmentDefinitionSchema = DomainResourceSchemaFunction({
   code: CompartmentTypeSchema,
   search: PrimitiveBooleanSchema,
   resource: [CompartmentDefinitionResourceSchema],
-  typeName: { type: String, default: 'CompartmentDefinition' },
-  _type: { type: String, default: 'FHIR::CompartmentDefinition' },
 });
 
-class CompartmentDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, CompartmentDefinitionSchema);
-    this.typeName = 'CompartmentDefinition';
-    this._type = 'FHIR::CompartmentDefinition';
-  }
-}
-
 module.exports.CompartmentDefinitionSchema = CompartmentDefinitionSchema;
-module.exports.CompartmentDefinition = CompartmentDefinition;

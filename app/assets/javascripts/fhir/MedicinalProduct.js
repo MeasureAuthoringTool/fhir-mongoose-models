@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MarketingStatusSchema } = require('./MarketingStatus');
-const { MedicinalProductManufacturingBusinessOperationSchema } = require('./MedicinalProductManufacturingBusinessOperation');
-const { MedicinalProductNameSchema } = require('./MedicinalProductName');
-const { MedicinalProductSpecialDesignationSchema } = require('./MedicinalProductSpecialDesignation');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MarketingStatusSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductManufacturingBusinessOperationSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductNameSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductSpecialDesignationSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductSchema = DomainResourceSchemaFunction({
+MedicinalProductSchema.add(DomainResourceSchema);
+MedicinalProductSchema.remove('id');
+MedicinalProductSchema.add({
   identifier: [IdentifierSchema],
   type: CodeableConceptSchema,
   domain: CodingSchema,
@@ -32,17 +33,6 @@ const MedicinalProductSchema = DomainResourceSchemaFunction({
   crossReference: [IdentifierSchema],
   manufacturingBusinessOperation: [MedicinalProductManufacturingBusinessOperationSchema],
   specialDesignation: [MedicinalProductSpecialDesignationSchema],
-  typeName: { type: String, default: 'MedicinalProduct' },
-  _type: { type: String, default: 'FHIR::MedicinalProduct' },
 });
 
-class MedicinalProduct extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductSchema);
-    this.typeName = 'MedicinalProduct';
-    this._type = 'FHIR::MedicinalProduct';
-  }
-}
-
 module.exports.MedicinalProductSchema = MedicinalProductSchema;
-module.exports.MedicinalProduct = MedicinalProduct;

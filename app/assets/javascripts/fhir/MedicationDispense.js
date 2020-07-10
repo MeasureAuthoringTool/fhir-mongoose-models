@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { DosageSchema } = require('./Dosage');
-const { IdentifierSchema } = require('./Identifier');
-const { MedicationDispensePerformerSchema } = require('./MedicationDispensePerformer');
-const { MedicationDispenseStatusSchema } = require('./MedicationDispenseStatus');
-const { MedicationDispenseSubstitutionSchema } = require('./MedicationDispenseSubstitution');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { DosageSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicationDispensePerformerSchema } = require('./allSchemaHeaders.js');
+const { MedicationDispenseStatusSchema } = require('./allSchemaHeaders.js');
+const { MedicationDispenseSubstitutionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { MedicationDispenseSchema } = require('./allSchemaHeaders.js');
 
-const MedicationDispenseSchema = DomainResourceSchemaFunction({
+MedicationDispenseSchema.add(DomainResourceSchema);
+MedicationDispenseSchema.remove('id');
+MedicationDispenseSchema.add({
   identifier: [IdentifierSchema],
   partOf: [ReferenceSchema],
   status: MedicationDispenseStatusSchema,
@@ -39,17 +40,6 @@ const MedicationDispenseSchema = DomainResourceSchemaFunction({
   substitution: MedicationDispenseSubstitutionSchema,
   detectedIssue: [ReferenceSchema],
   eventHistory: [ReferenceSchema],
-  typeName: { type: String, default: 'MedicationDispense' },
-  _type: { type: String, default: 'FHIR::MedicationDispense' },
 });
 
-class MedicationDispense extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationDispenseSchema);
-    this.typeName = 'MedicationDispense';
-    this._type = 'FHIR::MedicationDispense';
-  }
-}
-
 module.exports.MedicationDispenseSchema = MedicationDispenseSchema;
-module.exports.MedicationDispense = MedicationDispense;

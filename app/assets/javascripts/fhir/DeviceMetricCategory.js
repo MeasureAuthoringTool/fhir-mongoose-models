@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { DeviceMetricCategorySchema } = require('./allSchemaHeaders.js');
 
-const DeviceMetricCategorySchema = ElementSchemaFunction({
+DeviceMetricCategorySchema.add(ElementSchema);
+DeviceMetricCategorySchema.remove('id');
+DeviceMetricCategorySchema.add({
   value: String,
-  typeName: { type: String, default: 'DeviceMetricCategory' },
-  _type: { type: String, default: 'FHIR::DeviceMetricCategory' },
 });
 
-class DeviceMetricCategory extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceMetricCategorySchema);
-    this.typeName = 'DeviceMetricCategory';
-    this._type = 'FHIR::DeviceMetricCategory';
-  }
-}
-
 module.exports.DeviceMetricCategorySchema = DeviceMetricCategorySchema;
-module.exports.DeviceMetricCategory = DeviceMetricCategory;

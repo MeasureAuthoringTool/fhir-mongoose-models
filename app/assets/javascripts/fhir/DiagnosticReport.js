@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DiagnosticReportMediaSchema } = require('./DiagnosticReportMedia');
-const { DiagnosticReportStatusSchema } = require('./DiagnosticReportStatus');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DiagnosticReportMediaSchema } = require('./allSchemaHeaders.js');
+const { DiagnosticReportStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DiagnosticReportSchema } = require('./allSchemaHeaders.js');
 
-const DiagnosticReportSchema = DomainResourceSchemaFunction({
+DiagnosticReportSchema.add(DomainResourceSchema);
+DiagnosticReportSchema.remove('id');
+DiagnosticReportSchema.add({
   identifier: [IdentifierSchema],
   basedOn: [ReferenceSchema],
   status: DiagnosticReportStatusSchema,
@@ -32,17 +33,6 @@ const DiagnosticReportSchema = DomainResourceSchemaFunction({
   conclusion: PrimitiveStringSchema,
   conclusionCode: [CodeableConceptSchema],
   presentedForm: [AttachmentSchema],
-  typeName: { type: String, default: 'DiagnosticReport' },
-  _type: { type: String, default: 'FHIR::DiagnosticReport' },
 });
 
-class DiagnosticReport extends mongoose.Document {
-  constructor(object) {
-    super(object, DiagnosticReportSchema);
-    this.typeName = 'DiagnosticReport';
-    this._type = 'FHIR::DiagnosticReport';
-  }
-}
-
 module.exports.DiagnosticReportSchema = DiagnosticReportSchema;
-module.exports.DiagnosticReport = DiagnosticReport;

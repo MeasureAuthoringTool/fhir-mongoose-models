@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ExpressionSchema } = require('./Expression');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { MeasureGroupPopulationSchema } = require('./allSchemaHeaders.js');
 
-const MeasureGroupPopulationSchema = BackboneElementSchemaFunction({
+MeasureGroupPopulationSchema.add(BackboneElementSchema);
+MeasureGroupPopulationSchema.remove('id');
+MeasureGroupPopulationSchema.add({
   code: CodeableConceptSchema,
   description: PrimitiveStringSchema,
   criteria: ExpressionSchema,
-  typeName: { type: String, default: 'MeasureGroupPopulation' },
-  _type: { type: String, default: 'FHIR::MeasureGroupPopulation' },
 });
 
-class MeasureGroupPopulation extends mongoose.Document {
-  constructor(object) {
-    super(object, MeasureGroupPopulationSchema);
-    this.typeName = 'MeasureGroupPopulation';
-    this._type = 'FHIR::MeasureGroupPopulation';
-  }
-}
-
 module.exports.MeasureGroupPopulationSchema = MeasureGroupPopulationSchema;
-module.exports.MeasureGroupPopulation = MeasureGroupPopulation;

@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { InvoiceLineItemSchema } = require('./InvoiceLineItem');
-const { InvoiceLineItemPriceComponentSchema } = require('./InvoiceLineItemPriceComponent');
-const { InvoiceParticipantSchema } = require('./InvoiceParticipant');
-const { InvoiceStatusSchema } = require('./InvoiceStatus');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { InvoiceLineItemSchema } = require('./allSchemaHeaders.js');
+const { InvoiceLineItemPriceComponentSchema } = require('./allSchemaHeaders.js');
+const { InvoiceParticipantSchema } = require('./allSchemaHeaders.js');
+const { InvoiceStatusSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { InvoiceSchema } = require('./allSchemaHeaders.js');
 
-const InvoiceSchema = DomainResourceSchemaFunction({
+InvoiceSchema.add(DomainResourceSchema);
+InvoiceSchema.remove('id');
+InvoiceSchema.add({
   identifier: [IdentifierSchema],
   status: InvoiceStatusSchema,
   cancelledReason: PrimitiveStringSchema,
@@ -31,17 +32,6 @@ const InvoiceSchema = DomainResourceSchemaFunction({
   totalGross: MoneySchema,
   paymentTerms: PrimitiveMarkdownSchema,
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'Invoice' },
-  _type: { type: String, default: 'FHIR::Invoice' },
 });
 
-class Invoice extends mongoose.Document {
-  constructor(object) {
-    super(object, InvoiceSchema);
-    this.typeName = 'Invoice';
-    this._type = 'FHIR::Invoice';
-  }
-}
-
 module.exports.InvoiceSchema = InvoiceSchema;
-module.exports.Invoice = Invoice;

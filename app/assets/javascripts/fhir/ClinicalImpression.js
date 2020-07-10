@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { ClinicalImpressionFindingSchema } = require('./ClinicalImpressionFinding');
-const { ClinicalImpressionInvestigationSchema } = require('./ClinicalImpressionInvestigation');
-const { ClinicalImpressionStatusSchema } = require('./ClinicalImpressionStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { ClinicalImpressionFindingSchema } = require('./allSchemaHeaders.js');
+const { ClinicalImpressionInvestigationSchema } = require('./allSchemaHeaders.js');
+const { ClinicalImpressionStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ClinicalImpressionSchema } = require('./allSchemaHeaders.js');
 
-const ClinicalImpressionSchema = DomainResourceSchemaFunction({
+ClinicalImpressionSchema.add(DomainResourceSchema);
+ClinicalImpressionSchema.remove('id');
+ClinicalImpressionSchema.add({
   identifier: [IdentifierSchema],
   status: ClinicalImpressionStatusSchema,
   statusReason: CodeableConceptSchema,
@@ -35,17 +36,6 @@ const ClinicalImpressionSchema = DomainResourceSchemaFunction({
   prognosisReference: [ReferenceSchema],
   supportingInfo: [ReferenceSchema],
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'ClinicalImpression' },
-  _type: { type: String, default: 'FHIR::ClinicalImpression' },
 });
 
-class ClinicalImpression extends mongoose.Document {
-  constructor(object) {
-    super(object, ClinicalImpressionSchema);
-    this.typeName = 'ClinicalImpression';
-    this._type = 'FHIR::ClinicalImpression';
-  }
-}
-
 module.exports.ClinicalImpressionSchema = ClinicalImpressionSchema;
-module.exports.ClinicalImpression = ClinicalImpression;

@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AuditEventSourceSchema } = require('./allSchemaHeaders.js');
 
-const AuditEventSourceSchema = BackboneElementSchemaFunction({
+AuditEventSourceSchema.add(BackboneElementSchema);
+AuditEventSourceSchema.remove('id');
+AuditEventSourceSchema.add({
   site: PrimitiveStringSchema,
   observer: ReferenceSchema,
   type: [CodingSchema],
-  typeName: { type: String, default: 'AuditEventSource' },
-  _type: { type: String, default: 'FHIR::AuditEventSource' },
 });
 
-class AuditEventSource extends mongoose.Document {
-  constructor(object) {
-    super(object, AuditEventSourceSchema);
-    this.typeName = 'AuditEventSource';
-    this._type = 'FHIR::AuditEventSource';
-  }
-}
-
 module.exports.AuditEventSourceSchema = AuditEventSourceSchema;
-module.exports.AuditEventSource = AuditEventSource;

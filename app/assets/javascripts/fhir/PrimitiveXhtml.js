@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { PrimitiveXhtmlSchema } = require('./allSchemaHeaders.js');
 
-const PrimitiveXhtmlSchema = ElementSchemaFunction({
+PrimitiveXhtmlSchema.add(ElementSchema);
+PrimitiveXhtmlSchema.remove('id');
+PrimitiveXhtmlSchema.add({
   value: String,
-  typeName: { type: String, default: 'PrimitiveXhtml' },
-  _type: { type: String, default: 'FHIR::PrimitiveXhtml' },
 });
 
-class PrimitiveXhtml extends mongoose.Document {
-  constructor(object) {
-    super(object, PrimitiveXhtmlSchema);
-    this.typeName = 'PrimitiveXhtml';
-    this._type = 'FHIR::PrimitiveXhtml';
-  }
-}
-
 module.exports.PrimitiveXhtmlSchema = PrimitiveXhtmlSchema;
-module.exports.PrimitiveXhtml = PrimitiveXhtml;

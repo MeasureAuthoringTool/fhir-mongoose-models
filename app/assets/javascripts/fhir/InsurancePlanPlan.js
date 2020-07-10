@@ -1,30 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { InsurancePlanPlanGeneralCostSchema } = require('./InsurancePlanPlanGeneralCost');
-const { InsurancePlanPlanSpecificCostSchema } = require('./InsurancePlanPlanSpecificCost');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanGeneralCostSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanSpecificCostSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanSchema } = require('./allSchemaHeaders.js');
 
-const InsurancePlanPlanSchema = BackboneElementSchemaFunction({
+InsurancePlanPlanSchema.add(BackboneElementSchema);
+InsurancePlanPlanSchema.remove('id');
+InsurancePlanPlanSchema.add({
   identifier: [IdentifierSchema],
   type: CodeableConceptSchema,
   coverageArea: [ReferenceSchema],
   network: [ReferenceSchema],
   generalCost: [InsurancePlanPlanGeneralCostSchema],
   specificCost: [InsurancePlanPlanSpecificCostSchema],
-  typeName: { type: String, default: 'InsurancePlanPlan' },
-  _type: { type: String, default: 'FHIR::InsurancePlanPlan' },
 });
 
-class InsurancePlanPlan extends mongoose.Document {
-  constructor(object) {
-    super(object, InsurancePlanPlanSchema);
-    this.typeName = 'InsurancePlanPlan';
-    this._type = 'FHIR::InsurancePlanPlan';
-  }
-}
-
 module.exports.InsurancePlanPlanSchema = InsurancePlanPlanSchema;
-module.exports.InsurancePlanPlan = InsurancePlanPlan;

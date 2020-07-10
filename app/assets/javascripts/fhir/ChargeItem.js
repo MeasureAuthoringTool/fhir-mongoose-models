@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { ChargeItemPerformerSchema } = require('./ChargeItemPerformer');
-const { ChargeItemStatusSchema } = require('./ChargeItemStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { ChargeItemPerformerSchema } = require('./allSchemaHeaders.js');
+const { ChargeItemStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MoneySchema } = require('./Money');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { ChargeItemSchema } = require('./allSchemaHeaders.js');
 
-const ChargeItemSchema = DomainResourceSchemaFunction({
+ChargeItemSchema.add(DomainResourceSchema);
+ChargeItemSchema.remove('id');
+ChargeItemSchema.add({
   identifier: [IdentifierSchema],
   definitionUri: [PrimitiveUriSchema],
   definitionCanonical: [PrimitiveCanonicalSchema],
@@ -47,17 +48,6 @@ const ChargeItemSchema = DomainResourceSchemaFunction({
   account: [ReferenceSchema],
   note: [AnnotationSchema],
   supportingInformation: [ReferenceSchema],
-  typeName: { type: String, default: 'ChargeItem' },
-  _type: { type: String, default: 'FHIR::ChargeItem' },
 });
 
-class ChargeItem extends mongoose.Document {
-  constructor(object) {
-    super(object, ChargeItemSchema);
-    this.typeName = 'ChargeItem';
-    this._type = 'FHIR::ChargeItem';
-  }
-}
-
 module.exports.ChargeItemSchema = ChargeItemSchema;
-module.exports.ChargeItem = ChargeItem;

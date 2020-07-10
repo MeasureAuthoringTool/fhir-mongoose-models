@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { ResearchSubjectStatusSchema } = require('./ResearchSubjectStatus');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ResearchSubjectStatusSchema } = require('./allSchemaHeaders.js');
+const { ResearchSubjectSchema } = require('./allSchemaHeaders.js');
 
-const ResearchSubjectSchema = DomainResourceSchemaFunction({
+ResearchSubjectSchema.add(DomainResourceSchema);
+ResearchSubjectSchema.remove('id');
+ResearchSubjectSchema.add({
   identifier: [IdentifierSchema],
   status: ResearchSubjectStatusSchema,
   period: PeriodSchema,
@@ -16,17 +17,6 @@ const ResearchSubjectSchema = DomainResourceSchemaFunction({
   assignedArm: PrimitiveStringSchema,
   actualArm: PrimitiveStringSchema,
   consent: ReferenceSchema,
-  typeName: { type: String, default: 'ResearchSubject' },
-  _type: { type: String, default: 'FHIR::ResearchSubject' },
 });
 
-class ResearchSubject extends mongoose.Document {
-  constructor(object) {
-    super(object, ResearchSubjectSchema);
-    this.typeName = 'ResearchSubject';
-    this._type = 'FHIR::ResearchSubject';
-  }
-}
-
 module.exports.ResearchSubjectSchema = ResearchSubjectSchema;
-module.exports.ResearchSubject = ResearchSubject;

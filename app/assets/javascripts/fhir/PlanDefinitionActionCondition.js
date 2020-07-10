@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ActionConditionKindSchema } = require('./ActionConditionKind');
+const { ActionConditionKindSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ExpressionSchema } = require('./Expression');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionConditionSchema } = require('./allSchemaHeaders.js');
 
-const PlanDefinitionActionConditionSchema = BackboneElementSchemaFunction({
+PlanDefinitionActionConditionSchema.add(BackboneElementSchema);
+PlanDefinitionActionConditionSchema.remove('id');
+PlanDefinitionActionConditionSchema.add({
   kind: ActionConditionKindSchema,
   expression: ExpressionSchema,
-  typeName: { type: String, default: 'PlanDefinitionActionCondition' },
-  _type: { type: String, default: 'FHIR::PlanDefinitionActionCondition' },
 });
 
-class PlanDefinitionActionCondition extends mongoose.Document {
-  constructor(object) {
-    super(object, PlanDefinitionActionConditionSchema);
-    this.typeName = 'PlanDefinitionActionCondition';
-    this._type = 'FHIR::PlanDefinitionActionCondition';
-  }
-}
-
 module.exports.PlanDefinitionActionConditionSchema = PlanDefinitionActionConditionSchema;
-module.exports.PlanDefinitionActionCondition = PlanDefinitionActionCondition;

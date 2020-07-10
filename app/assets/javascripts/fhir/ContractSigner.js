@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { ReferenceSchema } = require('./Reference');
-const { SignatureSchema } = require('./Signature');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SignatureSchema } = require('./allSchemaHeaders.js');
+const { ContractSignerSchema } = require('./allSchemaHeaders.js');
 
-const ContractSignerSchema = BackboneElementSchemaFunction({
+ContractSignerSchema.add(BackboneElementSchema);
+ContractSignerSchema.remove('id');
+ContractSignerSchema.add({
   type: CodingSchema,
   party: ReferenceSchema,
   signature: [SignatureSchema],
-  typeName: { type: String, default: 'ContractSigner' },
-  _type: { type: String, default: 'FHIR::ContractSigner' },
 });
 
-class ContractSigner extends mongoose.Document {
-  constructor(object) {
-    super(object, ContractSignerSchema);
-    this.typeName = 'ContractSigner';
-    this._type = 'FHIR::ContractSigner';
-  }
-}
-
 module.exports.ContractSignerSchema = ContractSignerSchema;
-module.exports.ContractSigner = ContractSigner;

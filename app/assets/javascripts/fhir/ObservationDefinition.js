@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ObservationDataTypeSchema } = require('./ObservationDataType');
-const { ObservationDefinitionQualifiedIntervalSchema } = require('./ObservationDefinitionQualifiedInterval');
-const { ObservationDefinitionQuantitativeDetailsSchema } = require('./ObservationDefinitionQuantitativeDetails');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ObservationDataTypeSchema } = require('./allSchemaHeaders.js');
+const { ObservationDefinitionQualifiedIntervalSchema } = require('./allSchemaHeaders.js');
+const { ObservationDefinitionQuantitativeDetailsSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ObservationDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const ObservationDefinitionSchema = DomainResourceSchemaFunction({
+ObservationDefinitionSchema.add(DomainResourceSchema);
+ObservationDefinitionSchema.remove('id');
+ObservationDefinitionSchema.add({
   category: [CodeableConceptSchema],
   code: CodeableConceptSchema,
   identifier: [IdentifierSchema],
@@ -24,17 +25,6 @@ const ObservationDefinitionSchema = DomainResourceSchemaFunction({
   normalCodedValueSet: ReferenceSchema,
   abnormalCodedValueSet: ReferenceSchema,
   criticalCodedValueSet: ReferenceSchema,
-  typeName: { type: String, default: 'ObservationDefinition' },
-  _type: { type: String, default: 'FHIR::ObservationDefinition' },
 });
 
-class ObservationDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, ObservationDefinitionSchema);
-    this.typeName = 'ObservationDefinition';
-    this._type = 'FHIR::ObservationDefinition';
-  }
-}
-
 module.exports.ObservationDefinitionSchema = ObservationDefinitionSchema;
-module.exports.ObservationDefinition = ObservationDefinition;

@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ClaimRelatedSchema } = require('./allSchemaHeaders.js');
 
-const ClaimRelatedSchema = BackboneElementSchemaFunction({
+ClaimRelatedSchema.add(BackboneElementSchema);
+ClaimRelatedSchema.remove('id');
+ClaimRelatedSchema.add({
   claim: ReferenceSchema,
   relationship: CodeableConceptSchema,
   reference: IdentifierSchema,
-  typeName: { type: String, default: 'ClaimRelated' },
-  _type: { type: String, default: 'FHIR::ClaimRelated' },
 });
 
-class ClaimRelated extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimRelatedSchema);
-    this.typeName = 'ClaimRelated';
-    this._type = 'FHIR::ClaimRelated';
-  }
-}
-
 module.exports.ClaimRelatedSchema = ClaimRelatedSchema;
-module.exports.ClaimRelated = ClaimRelated;

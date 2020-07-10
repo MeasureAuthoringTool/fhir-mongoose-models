@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MeasureReportGroupSchema } = require('./MeasureReportGroup');
-const { MeasureReportStatusSchema } = require('./MeasureReportStatus');
-const { MeasureReportTypeSchema } = require('./MeasureReportType');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportGroupSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportStatusSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportTypeSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportSchema } = require('./allSchemaHeaders.js');
 
-const MeasureReportSchema = DomainResourceSchemaFunction({
+MeasureReportSchema.add(DomainResourceSchema);
+MeasureReportSchema.remove('id');
+MeasureReportSchema.add({
   identifier: [IdentifierSchema],
   status: MeasureReportStatusSchema,
   type: MeasureReportTypeSchema,
@@ -23,17 +24,6 @@ const MeasureReportSchema = DomainResourceSchemaFunction({
   improvementNotation: CodeableConceptSchema,
   group: [MeasureReportGroupSchema],
   evaluatedResource: [ReferenceSchema],
-  typeName: { type: String, default: 'MeasureReport' },
-  _type: { type: String, default: 'FHIR::MeasureReport' },
 });
 
-class MeasureReport extends mongoose.Document {
-  constructor(object) {
-    super(object, MeasureReportSchema);
-    this.typeName = 'MeasureReport';
-    this._type = 'FHIR::MeasureReport';
-  }
-}
-
 module.exports.MeasureReportSchema = MeasureReportSchema;
-module.exports.MeasureReport = MeasureReport;

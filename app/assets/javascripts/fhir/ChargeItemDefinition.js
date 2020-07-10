@@ -1,24 +1,25 @@
-const mongoose = require('mongoose/browser');
-const { ChargeItemDefinitionApplicabilitySchema } = require('./ChargeItemDefinitionApplicability');
-const { ChargeItemDefinitionPropertyGroupSchema } = require('./ChargeItemDefinitionPropertyGroup');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { ChargeItemDefinitionApplicabilitySchema } = require('./allSchemaHeaders.js');
+const { ChargeItemDefinitionPropertyGroupSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ChargeItemDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const ChargeItemDefinitionSchema = DomainResourceSchemaFunction({
+ChargeItemDefinitionSchema.add(DomainResourceSchema);
+ChargeItemDefinitionSchema.remove('id');
+ChargeItemDefinitionSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -42,17 +43,6 @@ const ChargeItemDefinitionSchema = DomainResourceSchemaFunction({
   instance: [ReferenceSchema],
   applicability: [ChargeItemDefinitionApplicabilitySchema],
   propertyGroup: [ChargeItemDefinitionPropertyGroupSchema],
-  typeName: { type: String, default: 'ChargeItemDefinition' },
-  _type: { type: String, default: 'FHIR::ChargeItemDefinition' },
 });
 
-class ChargeItemDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, ChargeItemDefinitionSchema);
-    this.typeName = 'ChargeItemDefinition';
-    this._type = 'FHIR::ChargeItemDefinition';
-  }
-}
-
 module.exports.ChargeItemDefinitionSchema = ChargeItemDefinitionSchema;
-module.exports.ChargeItemDefinition = ChargeItemDefinition;

@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CatalogEntryRelatedEntrySchema } = require('./CatalogEntryRelatedEntry');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CatalogEntryRelatedEntrySchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CatalogEntrySchema } = require('./allSchemaHeaders.js');
 
-const CatalogEntrySchema = DomainResourceSchemaFunction({
+CatalogEntrySchema.add(DomainResourceSchema);
+CatalogEntrySchema.remove('id');
+CatalogEntrySchema.add({
   identifier: [IdentifierSchema],
   type: CodeableConceptSchema,
   orderable: PrimitiveBooleanSchema,
@@ -24,17 +25,6 @@ const CatalogEntrySchema = DomainResourceSchemaFunction({
   additionalCharacteristic: [CodeableConceptSchema],
   additionalClassification: [CodeableConceptSchema],
   relatedEntry: [CatalogEntryRelatedEntrySchema],
-  typeName: { type: String, default: 'CatalogEntry' },
-  _type: { type: String, default: 'FHIR::CatalogEntry' },
 });
 
-class CatalogEntry extends mongoose.Document {
-  constructor(object) {
-    super(object, CatalogEntrySchema);
-    this.typeName = 'CatalogEntry';
-    this._type = 'FHIR::CatalogEntry';
-  }
-}
-
 module.exports.CatalogEntrySchema = CatalogEntrySchema;
-module.exports.CatalogEntry = CatalogEntry;

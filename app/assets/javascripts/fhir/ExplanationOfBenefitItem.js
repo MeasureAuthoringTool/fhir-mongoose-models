@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
+const { AddressSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ExplanationOfBenefitItemAdjudicationSchema } = require('./ExplanationOfBenefitItemAdjudication');
-const { ExplanationOfBenefitItemDetailSchema } = require('./ExplanationOfBenefitItemDetail');
-const { MoneySchema } = require('./Money');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemDetailSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitItemSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitItemSchema.add(BackboneElementSchema);
+ExplanationOfBenefitItemSchema.remove('id');
+ExplanationOfBenefitItemSchema.add({
   sequence: PrimitivePositiveIntSchema,
   careTeamSequence: [PrimitivePositiveIntSchema],
   diagnosisSequence: [PrimitivePositiveIntSchema],
@@ -40,17 +41,6 @@ const ExplanationOfBenefitItemSchema = BackboneElementSchemaFunction({
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ExplanationOfBenefitItemAdjudicationSchema],
   detail: [ExplanationOfBenefitItemDetailSchema],
-  typeName: { type: String, default: 'ExplanationOfBenefitItem' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitItem' },
 });
 
-class ExplanationOfBenefitItem extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitItemSchema);
-    this.typeName = 'ExplanationOfBenefitItem';
-    this._type = 'FHIR::ExplanationOfBenefitItem';
-  }
-}
-
 module.exports.ExplanationOfBenefitItemSchema = ExplanationOfBenefitItemSchema;
-module.exports.ExplanationOfBenefitItem = ExplanationOfBenefitItem;

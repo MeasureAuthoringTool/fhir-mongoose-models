@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
-const { RequestGroupActionSchema } = require('./RequestGroupAction');
-const { RequestIntentSchema } = require('./RequestIntent');
-const { RequestPrioritySchema } = require('./RequestPriority');
-const { RequestStatusSchema } = require('./RequestStatus');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RequestGroupActionSchema } = require('./allSchemaHeaders.js');
+const { RequestIntentSchema } = require('./allSchemaHeaders.js');
+const { RequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { RequestStatusSchema } = require('./allSchemaHeaders.js');
+const { RequestGroupSchema } = require('./allSchemaHeaders.js');
 
-const RequestGroupSchema = DomainResourceSchemaFunction({
+RequestGroupSchema.add(DomainResourceSchema);
+RequestGroupSchema.remove('id');
+RequestGroupSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -32,17 +33,6 @@ const RequestGroupSchema = DomainResourceSchemaFunction({
   reasonReference: [ReferenceSchema],
   note: [AnnotationSchema],
   action: [RequestGroupActionSchema],
-  typeName: { type: String, default: 'RequestGroup' },
-  _type: { type: String, default: 'FHIR::RequestGroup' },
 });
 
-class RequestGroup extends mongoose.Document {
-  constructor(object) {
-    super(object, RequestGroupSchema);
-    this.typeName = 'RequestGroup';
-    this._type = 'FHIR::RequestGroup';
-  }
-}
-
 module.exports.RequestGroupSchema = RequestGroupSchema;
-module.exports.RequestGroup = RequestGroup;

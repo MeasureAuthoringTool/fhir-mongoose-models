@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ContactPointSchema } = require('./ContactPoint');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 
-const ContactDetailSchema = ElementSchemaFunction({
+ContactDetailSchema.add(ElementSchema);
+ContactDetailSchema.remove('id');
+ContactDetailSchema.add({
   name: PrimitiveStringSchema,
   telecom: [ContactPointSchema],
-  typeName: { type: String, default: 'ContactDetail' },
-  _type: { type: String, default: 'FHIR::ContactDetail' },
 });
 
-class ContactDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ContactDetailSchema);
-    this.typeName = 'ContactDetail';
-    this._type = 'FHIR::ContactDetail';
-  }
-}
-
 module.exports.ContactDetailSchema = ContactDetailSchema;
-module.exports.ContactDetail = ContactDetail;

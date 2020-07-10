@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { DurationSchema } = require('./Duration');
+const { DurationSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementDateFilterSchema } = require('./allSchemaHeaders.js');
 
-const DataRequirementDateFilterSchema = ElementSchemaFunction({
+DataRequirementDateFilterSchema.add(ElementSchema);
+DataRequirementDateFilterSchema.remove('id');
+DataRequirementDateFilterSchema.add({
   path: PrimitiveStringSchema,
   searchParam: PrimitiveStringSchema,
   valueDateTime: PrimitiveDateTimeSchema,
   valuePeriod: PeriodSchema,
   valueDuration: DurationSchema,
-  typeName: { type: String, default: 'DataRequirementDateFilter' },
-  _type: { type: String, default: 'FHIR::DataRequirementDateFilter' },
 });
 
-class DataRequirementDateFilter extends mongoose.Document {
-  constructor(object) {
-    super(object, DataRequirementDateFilterSchema);
-    this.typeName = 'DataRequirementDateFilter';
-    this._type = 'FHIR::DataRequirementDateFilter';
-  }
-}
-
 module.exports.DataRequirementDateFilterSchema = DataRequirementDateFilterSchema;
-module.exports.DataRequirementDateFilter = DataRequirementDateFilter;

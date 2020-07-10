@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { UseSchema } = require('./allSchemaHeaders.js');
 
-const UseSchema = ElementSchemaFunction({
+UseSchema.add(ElementSchema);
+UseSchema.remove('id');
+UseSchema.add({
   value: String,
-  typeName: { type: String, default: 'Use' },
-  _type: { type: String, default: 'FHIR::Use' },
 });
 
-class Use extends mongoose.Document {
-  constructor(object) {
-    super(object, UseSchema);
-    this.typeName = 'Use';
-    this._type = 'FHIR::Use';
-  }
-}
-
 module.exports.UseSchema = UseSchema;
-module.exports.Use = Use;

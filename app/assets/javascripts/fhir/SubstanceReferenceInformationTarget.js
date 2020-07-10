@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationTargetSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceReferenceInformationTargetSchema = BackboneElementSchemaFunction({
+SubstanceReferenceInformationTargetSchema.add(BackboneElementSchema);
+SubstanceReferenceInformationTargetSchema.remove('id');
+SubstanceReferenceInformationTargetSchema.add({
   target: IdentifierSchema,
   type: CodeableConceptSchema,
   interaction: CodeableConceptSchema,
@@ -19,17 +20,6 @@ const SubstanceReferenceInformationTargetSchema = BackboneElementSchemaFunction(
   amountString: PrimitiveStringSchema,
   amountType: CodeableConceptSchema,
   source: [ReferenceSchema],
-  typeName: { type: String, default: 'SubstanceReferenceInformationTarget' },
-  _type: { type: String, default: 'FHIR::SubstanceReferenceInformationTarget' },
 });
 
-class SubstanceReferenceInformationTarget extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceReferenceInformationTargetSchema);
-    this.typeName = 'SubstanceReferenceInformationTarget';
-    this._type = 'FHIR::SubstanceReferenceInformationTarget';
-  }
-}
-
 module.exports.SubstanceReferenceInformationTargetSchema = SubstanceReferenceInformationTargetSchema;
-module.exports.SubstanceReferenceInformationTarget = SubstanceReferenceInformationTarget;

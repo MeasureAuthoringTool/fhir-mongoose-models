@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { NoteTypeSchema } = require('./NoteType');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { NoteTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitProcessNoteSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitProcessNoteSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitProcessNoteSchema.add(BackboneElementSchema);
+ExplanationOfBenefitProcessNoteSchema.remove('id');
+ExplanationOfBenefitProcessNoteSchema.add({
   number: PrimitivePositiveIntSchema,
   type: NoteTypeSchema,
   text: PrimitiveStringSchema,
   language: CodeableConceptSchema,
-  typeName: { type: String, default: 'ExplanationOfBenefitProcessNote' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitProcessNote' },
 });
 
-class ExplanationOfBenefitProcessNote extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitProcessNoteSchema);
-    this.typeName = 'ExplanationOfBenefitProcessNote';
-    this._type = 'FHIR::ExplanationOfBenefitProcessNote';
-  }
-}
-
 module.exports.ExplanationOfBenefitProcessNoteSchema = ExplanationOfBenefitProcessNoteSchema;
-module.exports.ExplanationOfBenefitProcessNote = ExplanationOfBenefitProcessNote;

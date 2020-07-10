@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DeviceUseStatementStatusSchema } = require('./DeviceUseStatementStatus');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DeviceUseStatementStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { DeviceUseStatementSchema } = require('./allSchemaHeaders.js');
 
-const DeviceUseStatementSchema = DomainResourceSchemaFunction({
+DeviceUseStatementSchema.add(DomainResourceSchema);
+DeviceUseStatementSchema.remove('id');
+DeviceUseStatementSchema.add({
   identifier: [IdentifierSchema],
   basedOn: [ReferenceSchema],
   status: DeviceUseStatementStatusSchema,
@@ -26,17 +27,6 @@ const DeviceUseStatementSchema = DomainResourceSchemaFunction({
   reasonReference: [ReferenceSchema],
   bodySite: CodeableConceptSchema,
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'DeviceUseStatement' },
-  _type: { type: String, default: 'FHIR::DeviceUseStatement' },
 });
 
-class DeviceUseStatement extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceUseStatementSchema);
-    this.typeName = 'DeviceUseStatement';
-    this._type = 'FHIR::DeviceUseStatement';
-  }
-}
-
 module.exports.DeviceUseStatementSchema = DeviceUseStatementSchema;
-module.exports.DeviceUseStatement = DeviceUseStatement;

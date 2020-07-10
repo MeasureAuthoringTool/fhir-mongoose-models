@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PeriodSchema } = require('./Period');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { EncounterParticipantSchema } = require('./allSchemaHeaders.js');
 
-const EncounterParticipantSchema = BackboneElementSchemaFunction({
+EncounterParticipantSchema.add(BackboneElementSchema);
+EncounterParticipantSchema.remove('id');
+EncounterParticipantSchema.add({
   type: [CodeableConceptSchema],
   period: PeriodSchema,
   individual: ReferenceSchema,
-  typeName: { type: String, default: 'EncounterParticipant' },
-  _type: { type: String, default: 'FHIR::EncounterParticipant' },
 });
 
-class EncounterParticipant extends mongoose.Document {
-  constructor(object) {
-    super(object, EncounterParticipantSchema);
-    this.typeName = 'EncounterParticipant';
-    this._type = 'FHIR::EncounterParticipant';
-  }
-}
-
 module.exports.EncounterParticipantSchema = EncounterParticipantSchema;
-module.exports.EncounterParticipant = EncounterParticipant;

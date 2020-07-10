@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductAuthorizationProcedureSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductAuthorizationProcedureSchema = BackboneElementSchemaFunction({
+MedicinalProductAuthorizationProcedureSchema.add(BackboneElementSchema);
+MedicinalProductAuthorizationProcedureSchema.remove('id');
+MedicinalProductAuthorizationProcedureSchema.add({
   identifier: IdentifierSchema,
   type: CodeableConceptSchema,
   datePeriod: PeriodSchema,
   dateDateTime: PrimitiveDateTimeSchema,
   application: [MedicinalProductAuthorizationProcedureSchema],
-  typeName: { type: String, default: 'MedicinalProductAuthorizationProcedure' },
-  _type: { type: String, default: 'FHIR::MedicinalProductAuthorizationProcedure' },
 });
 
-class MedicinalProductAuthorizationProcedure extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductAuthorizationProcedureSchema);
-    this.typeName = 'MedicinalProductAuthorizationProcedure';
-    this._type = 'FHIR::MedicinalProductAuthorizationProcedure';
-  }
-}
-
 module.exports.MedicinalProductAuthorizationProcedureSchema = MedicinalProductAuthorizationProcedureSchema;
-module.exports.MedicinalProductAuthorizationProcedure = MedicinalProductAuthorizationProcedure;

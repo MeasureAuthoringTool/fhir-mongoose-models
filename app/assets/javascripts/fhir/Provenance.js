@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ProvenanceAgentSchema } = require('./ProvenanceAgent');
-const { ProvenanceEntitySchema } = require('./ProvenanceEntity');
-const { ReferenceSchema } = require('./Reference');
-const { SignatureSchema } = require('./Signature');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ProvenanceAgentSchema } = require('./allSchemaHeaders.js');
+const { ProvenanceEntitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SignatureSchema } = require('./allSchemaHeaders.js');
+const { ProvenanceSchema } = require('./allSchemaHeaders.js');
 
-const ProvenanceSchema = DomainResourceSchemaFunction({
+ProvenanceSchema.add(DomainResourceSchema);
+ProvenanceSchema.remove('id');
+ProvenanceSchema.add({
   target: [ReferenceSchema],
   occurredPeriod: PeriodSchema,
   occurredDateTime: PrimitiveDateTimeSchema,
@@ -23,17 +24,6 @@ const ProvenanceSchema = DomainResourceSchemaFunction({
   agent: [ProvenanceAgentSchema],
   entity: [ProvenanceEntitySchema],
   signature: [SignatureSchema],
-  typeName: { type: String, default: 'Provenance' },
-  _type: { type: String, default: 'FHIR::Provenance' },
 });
 
-class Provenance extends mongoose.Document {
-  constructor(object) {
-    super(object, ProvenanceSchema);
-    this.typeName = 'Provenance';
-    this._type = 'FHIR::Provenance';
-  }
-}
-
 module.exports.ProvenanceSchema = ProvenanceSchema;
-module.exports.Provenance = Provenance;

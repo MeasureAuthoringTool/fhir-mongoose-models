@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ChargeItemDefinitionPriceComponentTypeSchema } = require('./ChargeItemDefinitionPriceComponentType');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
+const { ChargeItemDefinitionPriceComponentTypeSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { ChargeItemDefinitionPropertyGroupPriceComponentSchema } = require('./allSchemaHeaders.js');
 
-const ChargeItemDefinitionPropertyGroupPriceComponentSchema = BackboneElementSchemaFunction({
+ChargeItemDefinitionPropertyGroupPriceComponentSchema.add(BackboneElementSchema);
+ChargeItemDefinitionPropertyGroupPriceComponentSchema.remove('id');
+ChargeItemDefinitionPropertyGroupPriceComponentSchema.add({
   type: ChargeItemDefinitionPriceComponentTypeSchema,
   code: CodeableConceptSchema,
   factor: PrimitiveDecimalSchema,
   amount: MoneySchema,
-  typeName: { type: String, default: 'ChargeItemDefinitionPropertyGroupPriceComponent' },
-  _type: { type: String, default: 'FHIR::ChargeItemDefinitionPropertyGroupPriceComponent' },
 });
 
-class ChargeItemDefinitionPropertyGroupPriceComponent extends mongoose.Document {
-  constructor(object) {
-    super(object, ChargeItemDefinitionPropertyGroupPriceComponentSchema);
-    this.typeName = 'ChargeItemDefinitionPropertyGroupPriceComponent';
-    this._type = 'FHIR::ChargeItemDefinitionPropertyGroupPriceComponent';
-  }
-}
-
 module.exports.ChargeItemDefinitionPropertyGroupPriceComponentSchema = ChargeItemDefinitionPropertyGroupPriceComponentSchema;
-module.exports.ChargeItemDefinitionPropertyGroupPriceComponent = ChargeItemDefinitionPropertyGroupPriceComponent;

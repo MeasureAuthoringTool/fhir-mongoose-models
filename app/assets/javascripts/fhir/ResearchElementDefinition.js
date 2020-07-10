@@ -1,26 +1,27 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { ResearchElementDefinitionCharacteristicSchema } = require('./ResearchElementDefinitionCharacteristic');
-const { ResearchElementTypeSchema } = require('./ResearchElementType');
-const { UsageContextSchema } = require('./UsageContext');
-const { VariableTypeSchema } = require('./VariableType');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { ResearchElementDefinitionCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { ResearchElementTypeSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { VariableTypeSchema } = require('./allSchemaHeaders.js');
+const { ResearchElementDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const ResearchElementDefinitionSchema = DomainResourceSchemaFunction({
+ResearchElementDefinitionSchema.add(DomainResourceSchema);
+ResearchElementDefinitionSchema.remove('id');
+ResearchElementDefinitionSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -55,17 +56,6 @@ const ResearchElementDefinitionSchema = DomainResourceSchemaFunction({
   type: ResearchElementTypeSchema,
   variableType: VariableTypeSchema,
   characteristic: [ResearchElementDefinitionCharacteristicSchema],
-  typeName: { type: String, default: 'ResearchElementDefinition' },
-  _type: { type: String, default: 'FHIR::ResearchElementDefinition' },
 });
 
-class ResearchElementDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, ResearchElementDefinitionSchema);
-    this.typeName = 'ResearchElementDefinition';
-    this._type = 'FHIR::ResearchElementDefinition';
-  }
-}
-
 module.exports.ResearchElementDefinitionSchema = ResearchElementDefinitionSchema;
-module.exports.ResearchElementDefinition = ResearchElementDefinition;

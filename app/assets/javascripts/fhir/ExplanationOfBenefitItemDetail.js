@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ExplanationOfBenefitItemAdjudicationSchema } = require('./ExplanationOfBenefitItemAdjudication');
-const { ExplanationOfBenefitItemDetailSubDetailSchema } = require('./ExplanationOfBenefitItemDetailSubDetail');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemDetailSubDetailSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemDetailSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitItemDetailSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitItemDetailSchema.add(BackboneElementSchema);
+ExplanationOfBenefitItemDetailSchema.remove('id');
+ExplanationOfBenefitItemDetailSchema.add({
   sequence: PrimitivePositiveIntSchema,
   revenue: CodeableConceptSchema,
   category: CodeableConceptSchema,
@@ -25,17 +26,6 @@ const ExplanationOfBenefitItemDetailSchema = BackboneElementSchemaFunction({
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ExplanationOfBenefitItemAdjudicationSchema],
   subDetail: [ExplanationOfBenefitItemDetailSubDetailSchema],
-  typeName: { type: String, default: 'ExplanationOfBenefitItemDetail' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitItemDetail' },
 });
 
-class ExplanationOfBenefitItemDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitItemDetailSchema);
-    this.typeName = 'ExplanationOfBenefitItemDetail';
-    this._type = 'FHIR::ExplanationOfBenefitItemDetail';
-  }
-}
-
 module.exports.ExplanationOfBenefitItemDetailSchema = ExplanationOfBenefitItemDetailSchema;
-module.exports.ExplanationOfBenefitItemDetail = ExplanationOfBenefitItemDetail;

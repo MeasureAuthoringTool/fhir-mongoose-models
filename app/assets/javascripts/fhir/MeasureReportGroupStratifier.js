@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MeasureReportGroupStratifierStratumSchema } = require('./MeasureReportGroupStratifierStratum');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportGroupStratifierStratumSchema } = require('./allSchemaHeaders.js');
+const { MeasureReportGroupStratifierSchema } = require('./allSchemaHeaders.js');
 
-const MeasureReportGroupStratifierSchema = BackboneElementSchemaFunction({
+MeasureReportGroupStratifierSchema.add(BackboneElementSchema);
+MeasureReportGroupStratifierSchema.remove('id');
+MeasureReportGroupStratifierSchema.add({
   code: [CodeableConceptSchema],
   stratum: [MeasureReportGroupStratifierStratumSchema],
-  typeName: { type: String, default: 'MeasureReportGroupStratifier' },
-  _type: { type: String, default: 'FHIR::MeasureReportGroupStratifier' },
 });
 
-class MeasureReportGroupStratifier extends mongoose.Document {
-  constructor(object) {
-    super(object, MeasureReportGroupStratifierSchema);
-    this.typeName = 'MeasureReportGroupStratifier';
-    this._type = 'FHIR::MeasureReportGroupStratifier';
-  }
-}
-
 module.exports.MeasureReportGroupStratifierSchema = MeasureReportGroupStratifierSchema;
-module.exports.MeasureReportGroupStratifier = MeasureReportGroupStratifier;

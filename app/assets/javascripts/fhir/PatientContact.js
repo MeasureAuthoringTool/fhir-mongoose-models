@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { AdministrativeGenderSchema } = require('./AdministrativeGender');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { AdministrativeGenderSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
-const { HumanNameSchema } = require('./HumanName');
-const { PeriodSchema } = require('./Period');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
+const { HumanNameSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { PatientContactSchema } = require('./allSchemaHeaders.js');
 
-const PatientContactSchema = BackboneElementSchemaFunction({
+PatientContactSchema.add(BackboneElementSchema);
+PatientContactSchema.remove('id');
+PatientContactSchema.add({
   relationship: [CodeableConceptSchema],
   name: HumanNameSchema,
   telecom: [ContactPointSchema],
@@ -17,17 +18,6 @@ const PatientContactSchema = BackboneElementSchemaFunction({
   gender: AdministrativeGenderSchema,
   organization: ReferenceSchema,
   period: PeriodSchema,
-  typeName: { type: String, default: 'PatientContact' },
-  _type: { type: String, default: 'FHIR::PatientContact' },
 });
 
-class PatientContact extends mongoose.Document {
-  constructor(object) {
-    super(object, PatientContactSchema);
-    this.typeName = 'PatientContact';
-    this._type = 'FHIR::PatientContact';
-  }
-}
-
 module.exports.PatientContactSchema = PatientContactSchema;
-module.exports.PatientContact = PatientContact;

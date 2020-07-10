@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { EnableWhenBehaviorSchema } = require('./EnableWhenBehavior');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuestionnaireItemAnswerOptionSchema } = require('./QuestionnaireItemAnswerOption');
-const { QuestionnaireItemEnableWhenSchema } = require('./QuestionnaireItemEnableWhen');
-const { QuestionnaireItemInitialSchema } = require('./QuestionnaireItemInitial');
-const { QuestionnaireItemTypeSchema } = require('./QuestionnaireItemType');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { EnableWhenBehaviorSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemAnswerOptionSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemEnableWhenSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemInitialSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemTypeSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireItemSchema = BackboneElementSchemaFunction({
+QuestionnaireItemSchema.add(BackboneElementSchema);
+QuestionnaireItemSchema.remove('id');
+QuestionnaireItemSchema.add({
   linkId: PrimitiveStringSchema,
   definition: PrimitiveUriSchema,
   code: [CodingSchema],
@@ -30,17 +31,6 @@ const QuestionnaireItemSchema = BackboneElementSchemaFunction({
   answerOption: [QuestionnaireItemAnswerOptionSchema],
   initial: [QuestionnaireItemInitialSchema],
   item: [QuestionnaireItemSchema],
-  typeName: { type: String, default: 'QuestionnaireItem' },
-  _type: { type: String, default: 'FHIR::QuestionnaireItem' },
 });
 
-class QuestionnaireItem extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireItemSchema);
-    this.typeName = 'QuestionnaireItem';
-    this._type = 'FHIR::QuestionnaireItem';
-  }
-}
-
 module.exports.QuestionnaireItemSchema = QuestionnaireItemSchema;
-module.exports.QuestionnaireItem = QuestionnaireItem;

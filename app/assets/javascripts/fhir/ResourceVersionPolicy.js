@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ResourceVersionPolicySchema } = require('./allSchemaHeaders.js');
 
-const ResourceVersionPolicySchema = ElementSchemaFunction({
+ResourceVersionPolicySchema.add(ElementSchema);
+ResourceVersionPolicySchema.remove('id');
+ResourceVersionPolicySchema.add({
   value: String,
-  typeName: { type: String, default: 'ResourceVersionPolicy' },
-  _type: { type: String, default: 'FHIR::ResourceVersionPolicy' },
 });
 
-class ResourceVersionPolicy extends mongoose.Document {
-  constructor(object) {
-    super(object, ResourceVersionPolicySchema);
-    this.typeName = 'ResourceVersionPolicy';
-    this._type = 'FHIR::ResourceVersionPolicy';
-  }
-}
-
 module.exports.ResourceVersionPolicySchema = ResourceVersionPolicySchema;
-module.exports.ResourceVersionPolicy = ResourceVersionPolicy;

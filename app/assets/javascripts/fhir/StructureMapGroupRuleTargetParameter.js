@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { StructureMapGroupRuleTargetParameterSchema } = require('./allSchemaHeaders.js');
 
-const StructureMapGroupRuleTargetParameterSchema = BackboneElementSchemaFunction({
+StructureMapGroupRuleTargetParameterSchema.add(BackboneElementSchema);
+StructureMapGroupRuleTargetParameterSchema.remove('id');
+StructureMapGroupRuleTargetParameterSchema.add({
   valueId: PrimitiveIdSchema,
   valueString: PrimitiveStringSchema,
   valueBoolean: PrimitiveBooleanSchema,
   valueInteger: PrimitiveIntegerSchema,
   valueDecimal: PrimitiveDecimalSchema,
-  typeName: { type: String, default: 'StructureMapGroupRuleTargetParameter' },
-  _type: { type: String, default: 'FHIR::StructureMapGroupRuleTargetParameter' },
 });
 
-class StructureMapGroupRuleTargetParameter extends mongoose.Document {
-  constructor(object) {
-    super(object, StructureMapGroupRuleTargetParameterSchema);
-    this.typeName = 'StructureMapGroupRuleTargetParameter';
-    this._type = 'FHIR::StructureMapGroupRuleTargetParameter';
-  }
-}
-
 module.exports.StructureMapGroupRuleTargetParameterSchema = StructureMapGroupRuleTargetParameterSchema;
-module.exports.StructureMapGroupRuleTargetParameter = StructureMapGroupRuleTargetParameter;

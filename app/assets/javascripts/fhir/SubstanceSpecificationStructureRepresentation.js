@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationStructureRepresentationSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationStructureRepresentationSchema = BackboneElementSchemaFunction({
+SubstanceSpecificationStructureRepresentationSchema.add(BackboneElementSchema);
+SubstanceSpecificationStructureRepresentationSchema.remove('id');
+SubstanceSpecificationStructureRepresentationSchema.add({
   type: CodeableConceptSchema,
   representation: PrimitiveStringSchema,
   attachment: AttachmentSchema,
-  typeName: { type: String, default: 'SubstanceSpecificationStructureRepresentation' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationStructureRepresentation' },
 });
 
-class SubstanceSpecificationStructureRepresentation extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationStructureRepresentationSchema);
-    this.typeName = 'SubstanceSpecificationStructureRepresentation';
-    this._type = 'FHIR::SubstanceSpecificationStructureRepresentation';
-  }
-}
-
 module.exports.SubstanceSpecificationStructureRepresentationSchema = SubstanceSpecificationStructureRepresentationSchema;
-module.exports.SubstanceSpecificationStructureRepresentation = SubstanceSpecificationStructureRepresentation;

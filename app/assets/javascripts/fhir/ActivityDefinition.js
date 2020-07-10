@@ -1,34 +1,35 @@
-const mongoose = require('mongoose/browser');
-const { ActivityDefinitionDynamicValueSchema } = require('./ActivityDefinitionDynamicValue');
-const { ActivityDefinitionKindSchema } = require('./ActivityDefinitionKind');
-const { ActivityDefinitionParticipantSchema } = require('./ActivityDefinitionParticipant');
-const { AgeSchema } = require('./Age');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { ActivityDefinitionDynamicValueSchema } = require('./allSchemaHeaders.js');
+const { ActivityDefinitionKindSchema } = require('./allSchemaHeaders.js');
+const { ActivityDefinitionParticipantSchema } = require('./allSchemaHeaders.js');
+const { AgeSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { DosageSchema } = require('./Dosage');
-const { DurationSchema } = require('./Duration');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { RequestIntentSchema } = require('./RequestIntent');
-const { RequestPrioritySchema } = require('./RequestPriority');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
-const { TimingSchema } = require('./Timing');
-const { UsageContextSchema } = require('./UsageContext');
+const { DosageSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { RequestIntentSchema } = require('./allSchemaHeaders.js');
+const { RequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ActivityDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const ActivityDefinitionSchema = DomainResourceSchemaFunction({
+ActivityDefinitionSchema.add(DomainResourceSchema);
+ActivityDefinitionSchema.remove('id');
+ActivityDefinitionSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -82,17 +83,6 @@ const ActivityDefinitionSchema = DomainResourceSchemaFunction({
   observationResultRequirement: [ReferenceSchema],
   transform: PrimitiveCanonicalSchema,
   dynamicValue: [ActivityDefinitionDynamicValueSchema],
-  typeName: { type: String, default: 'ActivityDefinition' },
-  _type: { type: String, default: 'FHIR::ActivityDefinition' },
 });
 
-class ActivityDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, ActivityDefinitionSchema);
-    this.typeName = 'ActivityDefinition';
-    this._type = 'FHIR::ActivityDefinition';
-  }
-}
-
 module.exports.ActivityDefinitionSchema = ActivityDefinitionSchema;
-module.exports.ActivityDefinition = ActivityDefinition;

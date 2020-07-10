@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { SectionModeSchema } = require('./allSchemaHeaders.js');
 
-const SectionModeSchema = ElementSchemaFunction({
+SectionModeSchema.add(ElementSchema);
+SectionModeSchema.remove('id');
+SectionModeSchema.add({
   value: String,
-  typeName: { type: String, default: 'SectionMode' },
-  _type: { type: String, default: 'FHIR::SectionMode' },
 });
 
-class SectionMode extends mongoose.Document {
-  constructor(object) {
-    super(object, SectionModeSchema);
-    this.typeName = 'SectionMode';
-    this._type = 'FHIR::SectionMode';
-  }
-}
-
 module.exports.SectionModeSchema = SectionModeSchema;
-module.exports.SectionMode = SectionMode;

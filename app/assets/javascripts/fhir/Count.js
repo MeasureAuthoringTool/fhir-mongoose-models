@@ -1,19 +1,9 @@
-const mongoose = require('mongoose/browser');
 const { QuantitySchema } = require('./Quantity');
-const { QuantitySchemaFunction } = require('./Quantity');
+const { CountSchema } = require('./allSchemaHeaders.js');
 
-const CountSchema = QuantitySchemaFunction({
-  typeName: { type: String, default: 'Count' },
-  _type: { type: String, default: 'FHIR::Count' },
+CountSchema.add(QuantitySchema);
+CountSchema.remove('id');
+CountSchema.add({
 });
 
-class Count extends mongoose.Document {
-  constructor(object) {
-    super(object, CountSchema);
-    this.typeName = 'Count';
-    this._type = 'FHIR::Count';
-  }
-}
-
 module.exports.CountSchema = CountSchema;
-module.exports.Count = Count;

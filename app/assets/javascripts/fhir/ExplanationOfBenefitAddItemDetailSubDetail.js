@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ExplanationOfBenefitItemAdjudicationSchema } = require('./ExplanationOfBenefitItemAdjudication');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ExplanationOfBenefitAddItemDetailSubDetailSchema } = require('./allSchemaHeaders.js');
 
-const ExplanationOfBenefitAddItemDetailSubDetailSchema = BackboneElementSchemaFunction({
+ExplanationOfBenefitAddItemDetailSubDetailSchema.add(BackboneElementSchema);
+ExplanationOfBenefitAddItemDetailSubDetailSchema.remove('id');
+ExplanationOfBenefitAddItemDetailSubDetailSchema.add({
   productOrService: CodeableConceptSchema,
   modifier: [CodeableConceptSchema],
   quantity: SimpleQuantitySchema,
@@ -17,17 +18,6 @@ const ExplanationOfBenefitAddItemDetailSubDetailSchema = BackboneElementSchemaFu
   net: MoneySchema,
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ExplanationOfBenefitItemAdjudicationSchema],
-  typeName: { type: String, default: 'ExplanationOfBenefitAddItemDetailSubDetail' },
-  _type: { type: String, default: 'FHIR::ExplanationOfBenefitAddItemDetailSubDetail' },
 });
 
-class ExplanationOfBenefitAddItemDetailSubDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ExplanationOfBenefitAddItemDetailSubDetailSchema);
-    this.typeName = 'ExplanationOfBenefitAddItemDetailSubDetail';
-    this._type = 'FHIR::ExplanationOfBenefitAddItemDetailSubDetail';
-  }
-}
-
 module.exports.ExplanationOfBenefitAddItemDetailSubDetailSchema = ExplanationOfBenefitAddItemDetailSubDetailSchema;
-module.exports.ExplanationOfBenefitAddItemDetailSubDetail = ExplanationOfBenefitAddItemDetailSubDetail;

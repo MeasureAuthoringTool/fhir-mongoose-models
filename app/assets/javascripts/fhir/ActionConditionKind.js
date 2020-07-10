@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { ActionConditionKindSchema } = require('./allSchemaHeaders.js');
 
-const ActionConditionKindSchema = ElementSchemaFunction({
+ActionConditionKindSchema.add(ElementSchema);
+ActionConditionKindSchema.remove('id');
+ActionConditionKindSchema.add({
   value: String,
-  typeName: { type: String, default: 'ActionConditionKind' },
-  _type: { type: String, default: 'FHIR::ActionConditionKind' },
 });
 
-class ActionConditionKind extends mongoose.Document {
-  constructor(object) {
-    super(object, ActionConditionKindSchema);
-    this.typeName = 'ActionConditionKind';
-    this._type = 'FHIR::ActionConditionKind';
-  }
-}
-
 module.exports.ActionConditionKindSchema = ActionConditionKindSchema;
-module.exports.ActionConditionKind = ActionConditionKind;

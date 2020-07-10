@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ImmunizationRecommendationRecommendationDateCriterionSchema } = require('./allSchemaHeaders.js');
 
-const ImmunizationRecommendationRecommendationDateCriterionSchema = BackboneElementSchemaFunction({
+ImmunizationRecommendationRecommendationDateCriterionSchema.add(BackboneElementSchema);
+ImmunizationRecommendationRecommendationDateCriterionSchema.remove('id');
+ImmunizationRecommendationRecommendationDateCriterionSchema.add({
   code: CodeableConceptSchema,
   value: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'ImmunizationRecommendationRecommendationDateCriterion' },
-  _type: { type: String, default: 'FHIR::ImmunizationRecommendationRecommendationDateCriterion' },
 });
 
-class ImmunizationRecommendationRecommendationDateCriterion extends mongoose.Document {
-  constructor(object) {
-    super(object, ImmunizationRecommendationRecommendationDateCriterionSchema);
-    this.typeName = 'ImmunizationRecommendationRecommendationDateCriterion';
-    this._type = 'FHIR::ImmunizationRecommendationRecommendationDateCriterion';
-  }
-}
-
 module.exports.ImmunizationRecommendationRecommendationDateCriterionSchema = ImmunizationRecommendationRecommendationDateCriterionSchema;
-module.exports.ImmunizationRecommendationRecommendationDateCriterion = ImmunizationRecommendationRecommendationDateCriterion;

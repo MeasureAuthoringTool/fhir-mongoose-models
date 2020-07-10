@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CoverageEligibilityResponseErrorSchema } = require('./CoverageEligibilityResponseError');
-const { CoverageEligibilityResponseInsuranceSchema } = require('./CoverageEligibilityResponseInsurance');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityResponseErrorSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityResponseInsuranceSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EligibilityResponsePurposeSchema } = require('./EligibilityResponsePurpose');
-const { EligibilityResponseStatusSchema } = require('./EligibilityResponseStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { RemittanceOutcomeSchema } = require('./RemittanceOutcome');
+const { EligibilityResponsePurposeSchema } = require('./allSchemaHeaders.js');
+const { EligibilityResponseStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RemittanceOutcomeSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityResponseSchema } = require('./allSchemaHeaders.js');
 
-const CoverageEligibilityResponseSchema = DomainResourceSchemaFunction({
+CoverageEligibilityResponseSchema.add(DomainResourceSchema);
+CoverageEligibilityResponseSchema.remove('id');
+CoverageEligibilityResponseSchema.add({
   identifier: [IdentifierSchema],
   status: EligibilityResponseStatusSchema,
   purpose: [EligibilityResponsePurposeSchema],
@@ -31,17 +32,6 @@ const CoverageEligibilityResponseSchema = DomainResourceSchemaFunction({
   preAuthRef: PrimitiveStringSchema,
   form: CodeableConceptSchema,
   error: [CoverageEligibilityResponseErrorSchema],
-  typeName: { type: String, default: 'CoverageEligibilityResponse' },
-  _type: { type: String, default: 'FHIR::CoverageEligibilityResponse' },
 });
 
-class CoverageEligibilityResponse extends mongoose.Document {
-  constructor(object) {
-    super(object, CoverageEligibilityResponseSchema);
-    this.typeName = 'CoverageEligibilityResponse';
-    this._type = 'FHIR::CoverageEligibilityResponse';
-  }
-}
-
 module.exports.CoverageEligibilityResponseSchema = CoverageEligibilityResponseSchema;
-module.exports.CoverageEligibilityResponse = CoverageEligibilityResponse;

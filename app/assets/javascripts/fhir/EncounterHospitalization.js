@@ -1,11 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { EncounterHospitalizationSchema } = require('./allSchemaHeaders.js');
 
-const EncounterHospitalizationSchema = BackboneElementSchemaFunction({
+EncounterHospitalizationSchema.add(BackboneElementSchema);
+EncounterHospitalizationSchema.remove('id');
+EncounterHospitalizationSchema.add({
   preAdmissionIdentifier: IdentifierSchema,
   origin: ReferenceSchema,
   admitSource: CodeableConceptSchema,
@@ -15,17 +16,6 @@ const EncounterHospitalizationSchema = BackboneElementSchemaFunction({
   specialArrangement: [CodeableConceptSchema],
   destination: ReferenceSchema,
   dischargeDisposition: CodeableConceptSchema,
-  typeName: { type: String, default: 'EncounterHospitalization' },
-  _type: { type: String, default: 'FHIR::EncounterHospitalization' },
 });
 
-class EncounterHospitalization extends mongoose.Document {
-  constructor(object) {
-    super(object, EncounterHospitalizationSchema);
-    this.typeName = 'EncounterHospitalization';
-    this._type = 'FHIR::EncounterHospitalization';
-  }
-}
-
 module.exports.EncounterHospitalizationSchema = EncounterHospitalizationSchema;
-module.exports.EncounterHospitalization = EncounterHospitalization;

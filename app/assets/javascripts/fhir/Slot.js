@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SlotStatusSchema } = require('./SlotStatus');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SlotStatusSchema } = require('./allSchemaHeaders.js');
+const { SlotSchema } = require('./allSchemaHeaders.js');
 
-const SlotSchema = DomainResourceSchemaFunction({
+SlotSchema.add(DomainResourceSchema);
+SlotSchema.remove('id');
+SlotSchema.add({
   identifier: [IdentifierSchema],
   serviceCategory: [CodeableConceptSchema],
   serviceType: [CodeableConceptSchema],
@@ -21,17 +22,6 @@ const SlotSchema = DomainResourceSchemaFunction({
   end: PrimitiveInstantSchema,
   overbooked: PrimitiveBooleanSchema,
   comment: PrimitiveStringSchema,
-  typeName: { type: String, default: 'Slot' },
-  _type: { type: String, default: 'FHIR::Slot' },
 });
 
-class Slot extends mongoose.Document {
-  constructor(object) {
-    super(object, SlotSchema);
-    this.typeName = 'Slot';
-    this._type = 'FHIR::Slot';
-  }
-}
-
 module.exports.SlotSchema = SlotSchema;
-module.exports.Slot = Slot;

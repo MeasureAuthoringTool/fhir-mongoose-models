@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ActivityParticipantTypeSchema } = require('./ActivityParticipantType');
+const { ActivityParticipantTypeSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ActivityDefinitionParticipantSchema } = require('./allSchemaHeaders.js');
 
-const ActivityDefinitionParticipantSchema = BackboneElementSchemaFunction({
+ActivityDefinitionParticipantSchema.add(BackboneElementSchema);
+ActivityDefinitionParticipantSchema.remove('id');
+ActivityDefinitionParticipantSchema.add({
   type: ActivityParticipantTypeSchema,
   role: CodeableConceptSchema,
-  typeName: { type: String, default: 'ActivityDefinitionParticipant' },
-  _type: { type: String, default: 'FHIR::ActivityDefinitionParticipant' },
 });
 
-class ActivityDefinitionParticipant extends mongoose.Document {
-  constructor(object) {
-    super(object, ActivityDefinitionParticipantSchema);
-    this.typeName = 'ActivityDefinitionParticipant';
-    this._type = 'FHIR::ActivityDefinitionParticipant';
-  }
-}
-
 module.exports.ActivityDefinitionParticipantSchema = ActivityDefinitionParticipantSchema;
-module.exports.ActivityDefinitionParticipant = ActivityDefinitionParticipant;

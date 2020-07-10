@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { RatioSchema } = require('./Ratio');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationRelationshipSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationRelationshipSchema = BackboneElementSchemaFunction({
+SubstanceSpecificationRelationshipSchema.add(BackboneElementSchema);
+SubstanceSpecificationRelationshipSchema.remove('id');
+SubstanceSpecificationRelationshipSchema.add({
   substanceReference: ReferenceSchema,
   substanceCodeableConcept: CodeableConceptSchema,
   relationship: CodeableConceptSchema,
@@ -21,17 +22,6 @@ const SubstanceSpecificationRelationshipSchema = BackboneElementSchemaFunction({
   amountRatioLowLimit: RatioSchema,
   amountType: CodeableConceptSchema,
   source: [ReferenceSchema],
-  typeName: { type: String, default: 'SubstanceSpecificationRelationship' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationRelationship' },
 });
 
-class SubstanceSpecificationRelationship extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationRelationshipSchema);
-    this.typeName = 'SubstanceSpecificationRelationship';
-    this._type = 'FHIR::SubstanceSpecificationRelationship';
-  }
-}
-
 module.exports.SubstanceSpecificationRelationshipSchema = SubstanceSpecificationRelationshipSchema;
-module.exports.SubstanceSpecificationRelationship = SubstanceSpecificationRelationship;

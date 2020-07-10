@@ -1,24 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { MedicationRequestSubstitutionSchema } = require('./allSchemaHeaders.js');
 
-const MedicationRequestSubstitutionSchema = BackboneElementSchemaFunction({
+MedicationRequestSubstitutionSchema.add(BackboneElementSchema);
+MedicationRequestSubstitutionSchema.remove('id');
+MedicationRequestSubstitutionSchema.add({
   allowedBoolean: PrimitiveBooleanSchema,
   allowedCodeableConcept: CodeableConceptSchema,
   reason: CodeableConceptSchema,
-  typeName: { type: String, default: 'MedicationRequestSubstitution' },
-  _type: { type: String, default: 'FHIR::MedicationRequestSubstitution' },
 });
 
-class MedicationRequestSubstitution extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationRequestSubstitutionSchema);
-    this.typeName = 'MedicationRequestSubstitution';
-    this._type = 'FHIR::MedicationRequestSubstitution';
-  }
-}
-
 module.exports.MedicationRequestSubstitutionSchema = MedicationRequestSubstitutionSchema;
-module.exports.MedicationRequestSubstitution = MedicationRequestSubstitution;

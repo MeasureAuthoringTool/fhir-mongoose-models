@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { DataRequirementSchema } = require('./DataRequirement');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { ExpressionSchema } = require('./Expression');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { TimingSchema } = require('./Timing');
-const { TriggerTypeSchema } = require('./TriggerType');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { TriggerTypeSchema } = require('./allSchemaHeaders.js');
+const { TriggerDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const TriggerDefinitionSchema = ElementSchemaFunction({
+TriggerDefinitionSchema.add(ElementSchema);
+TriggerDefinitionSchema.remove('id');
+TriggerDefinitionSchema.add({
   type: TriggerTypeSchema,
   name: PrimitiveStringSchema,
   timingTiming: TimingSchema,
@@ -19,17 +20,6 @@ const TriggerDefinitionSchema = ElementSchemaFunction({
   timingDateTime: PrimitiveDateTimeSchema,
   data: [DataRequirementSchema],
   condition: ExpressionSchema,
-  typeName: { type: String, default: 'TriggerDefinition' },
-  _type: { type: String, default: 'FHIR::TriggerDefinition' },
 });
 
-class TriggerDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, TriggerDefinitionSchema);
-    this.typeName = 'TriggerDefinition';
-    this._type = 'FHIR::TriggerDefinition';
-  }
-}
-
 module.exports.TriggerDefinitionSchema = TriggerDefinitionSchema;
-module.exports.TriggerDefinition = TriggerDefinition;

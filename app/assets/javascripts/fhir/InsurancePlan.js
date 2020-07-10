@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { InsurancePlanContactSchema } = require('./InsurancePlanContact');
-const { InsurancePlanCoverageSchema } = require('./InsurancePlanCoverage');
-const { InsurancePlanPlanSchema } = require('./InsurancePlanPlan');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanContactSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanCoverageSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanPlanSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { InsurancePlanSchema } = require('./allSchemaHeaders.js');
 
-const InsurancePlanSchema = DomainResourceSchemaFunction({
+InsurancePlanSchema.add(DomainResourceSchema);
+InsurancePlanSchema.remove('id');
+InsurancePlanSchema.add({
   identifier: [IdentifierSchema],
   status: PublicationStatusSchema,
   type: [CodeableConceptSchema],
@@ -26,17 +27,6 @@ const InsurancePlanSchema = DomainResourceSchemaFunction({
   network: [ReferenceSchema],
   coverage: [InsurancePlanCoverageSchema],
   plan: [InsurancePlanPlanSchema],
-  typeName: { type: String, default: 'InsurancePlan' },
-  _type: { type: String, default: 'FHIR::InsurancePlan' },
 });
 
-class InsurancePlan extends mongoose.Document {
-  constructor(object) {
-    super(object, InsurancePlanSchema);
-    this.typeName = 'InsurancePlan';
-    this._type = 'FHIR::InsurancePlan';
-  }
-}
-
 module.exports.InsurancePlanSchema = InsurancePlanSchema;
-module.exports.InsurancePlan = InsurancePlan;

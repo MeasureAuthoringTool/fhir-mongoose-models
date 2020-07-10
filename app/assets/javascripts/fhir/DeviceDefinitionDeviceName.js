@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { DeviceNameTypeSchema } = require('./DeviceNameType');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { DeviceNameTypeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { DeviceDefinitionDeviceNameSchema } = require('./allSchemaHeaders.js');
 
-const DeviceDefinitionDeviceNameSchema = BackboneElementSchemaFunction({
+DeviceDefinitionDeviceNameSchema.add(BackboneElementSchema);
+DeviceDefinitionDeviceNameSchema.remove('id');
+DeviceDefinitionDeviceNameSchema.add({
   name: PrimitiveStringSchema,
   type: DeviceNameTypeSchema,
-  typeName: { type: String, default: 'DeviceDefinitionDeviceName' },
-  _type: { type: String, default: 'FHIR::DeviceDefinitionDeviceName' },
 });
 
-class DeviceDefinitionDeviceName extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceDefinitionDeviceNameSchema);
-    this.typeName = 'DeviceDefinitionDeviceName';
-    this._type = 'FHIR::DeviceDefinitionDeviceName';
-  }
-}
-
 module.exports.DeviceDefinitionDeviceNameSchema = DeviceDefinitionDeviceNameSchema;
-module.exports.DeviceDefinitionDeviceName = DeviceDefinitionDeviceName;

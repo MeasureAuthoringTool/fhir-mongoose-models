@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ConceptMapGroupSchema } = require('./ConceptMapGroup');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ConceptMapGroupSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ConceptMapSchema } = require('./allSchemaHeaders.js');
 
-const ConceptMapSchema = DomainResourceSchemaFunction({
+ConceptMapSchema.add(DomainResourceSchema);
+ConceptMapSchema.remove('id');
+ConceptMapSchema.add({
   url: PrimitiveUriSchema,
   identifier: IdentifierSchema,
   version: PrimitiveStringSchema,
@@ -35,17 +36,6 @@ const ConceptMapSchema = DomainResourceSchemaFunction({
   targetUri: PrimitiveUriSchema,
   targetCanonical: PrimitiveCanonicalSchema,
   group: [ConceptMapGroupSchema],
-  typeName: { type: String, default: 'ConceptMap' },
-  _type: { type: String, default: 'FHIR::ConceptMap' },
 });
 
-class ConceptMap extends mongoose.Document {
-  constructor(object) {
-    super(object, ConceptMapSchema);
-    this.typeName = 'ConceptMap';
-    this._type = 'FHIR::ConceptMap';
-  }
-}
-
 module.exports.ConceptMapSchema = ConceptMapSchema;
-module.exports.ConceptMap = ConceptMap;

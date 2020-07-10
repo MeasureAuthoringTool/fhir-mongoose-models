@@ -1,25 +1,26 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveCodeSchema } = require('./PrimitiveCode');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ResourceTypeSchema } = require('./ResourceType');
-const { SearchComparatorSchema } = require('./SearchComparator');
-const { SearchModifierCodeSchema } = require('./SearchModifierCode');
-const { SearchParameterComponentSchema } = require('./SearchParameterComponent');
-const { SearchParamTypeSchema } = require('./SearchParamType');
-const { UsageContextSchema } = require('./UsageContext');
-const { XPathUsageTypeSchema } = require('./XPathUsageType');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCodeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ResourceTypeSchema } = require('./allSchemaHeaders.js');
+const { SearchComparatorSchema } = require('./allSchemaHeaders.js');
+const { SearchModifierCodeSchema } = require('./allSchemaHeaders.js');
+const { SearchParameterComponentSchema } = require('./allSchemaHeaders.js');
+const { SearchParamTypeSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { XPathUsageTypeSchema } = require('./allSchemaHeaders.js');
+const { SearchParameterSchema } = require('./allSchemaHeaders.js');
 
-const SearchParameterSchema = DomainResourceSchemaFunction({
+SearchParameterSchema.add(DomainResourceSchema);
+SearchParameterSchema.remove('id');
+SearchParameterSchema.add({
   url: PrimitiveUriSchema,
   version: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -46,17 +47,6 @@ const SearchParameterSchema = DomainResourceSchemaFunction({
   modifier: [SearchModifierCodeSchema],
   chain: [PrimitiveStringSchema],
   component: [SearchParameterComponentSchema],
-  typeName: { type: String, default: 'SearchParameter' },
-  _type: { type: String, default: 'FHIR::SearchParameter' },
 });
 
-class SearchParameter extends mongoose.Document {
-  constructor(object) {
-    super(object, SearchParameterSchema);
-    this.typeName = 'SearchParameter';
-    this._type = 'FHIR::SearchParameter';
-  }
-}
-
 module.exports.SearchParameterSchema = SearchParameterSchema;
-module.exports.SearchParameter = SearchParameter;

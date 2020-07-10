@@ -1,25 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DetectedIssueMitigationSchema } = require('./allSchemaHeaders.js');
 
-const DetectedIssueMitigationSchema = BackboneElementSchemaFunction({
+DetectedIssueMitigationSchema.add(BackboneElementSchema);
+DetectedIssueMitigationSchema.remove('id');
+DetectedIssueMitigationSchema.add({
   action: CodeableConceptSchema,
   date: PrimitiveDateTimeSchema,
   author: ReferenceSchema,
-  typeName: { type: String, default: 'DetectedIssueMitigation' },
-  _type: { type: String, default: 'FHIR::DetectedIssueMitigation' },
 });
 
-class DetectedIssueMitigation extends mongoose.Document {
-  constructor(object) {
-    super(object, DetectedIssueMitigationSchema);
-    this.typeName = 'DetectedIssueMitigation';
-    this._type = 'FHIR::DetectedIssueMitigation';
-  }
-}
-
 module.exports.DetectedIssueMitigationSchema = DetectedIssueMitigationSchema;
-module.exports.DetectedIssueMitigation = DetectedIssueMitigation;

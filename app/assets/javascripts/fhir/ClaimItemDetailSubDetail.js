@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ClaimItemDetailSubDetailSchema } = require('./allSchemaHeaders.js');
 
-const ClaimItemDetailSubDetailSchema = BackboneElementSchemaFunction({
+ClaimItemDetailSubDetailSchema.add(BackboneElementSchema);
+ClaimItemDetailSubDetailSchema.remove('id');
+ClaimItemDetailSubDetailSchema.add({
   sequence: PrimitivePositiveIntSchema,
   revenue: CodeableConceptSchema,
   category: CodeableConceptSchema,
@@ -20,17 +21,6 @@ const ClaimItemDetailSubDetailSchema = BackboneElementSchemaFunction({
   factor: PrimitiveDecimalSchema,
   net: MoneySchema,
   udi: [ReferenceSchema],
-  typeName: { type: String, default: 'ClaimItemDetailSubDetail' },
-  _type: { type: String, default: 'FHIR::ClaimItemDetailSubDetail' },
 });
 
-class ClaimItemDetailSubDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimItemDetailSubDetailSchema);
-    this.typeName = 'ClaimItemDetailSubDetail';
-    this._type = 'FHIR::ClaimItemDetailSubDetail';
-  }
-}
-
 module.exports.ClaimItemDetailSubDetailSchema = ClaimItemDetailSubDetailSchema;
-module.exports.ClaimItemDetailSubDetail = ClaimItemDetailSubDetail;

@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MedicinalProductAuthorizationJurisdictionalAuthorizationSchema } = require('./MedicinalProductAuthorizationJurisdictionalAuthorization');
-const { MedicinalProductAuthorizationProcedureSchema } = require('./MedicinalProductAuthorizationProcedure');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductAuthorizationJurisdictionalAuthorizationSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductAuthorizationProcedureSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductAuthorizationSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductAuthorizationSchema = DomainResourceSchemaFunction({
+MedicinalProductAuthorizationSchema.add(DomainResourceSchema);
+MedicinalProductAuthorizationSchema.remove('id');
+MedicinalProductAuthorizationSchema.add({
   identifier: [IdentifierSchema],
   subject: ReferenceSchema,
   country: [CodeableConceptSchema],
@@ -26,17 +27,6 @@ const MedicinalProductAuthorizationSchema = DomainResourceSchemaFunction({
   holder: ReferenceSchema,
   regulator: ReferenceSchema,
   procedure: MedicinalProductAuthorizationProcedureSchema,
-  typeName: { type: String, default: 'MedicinalProductAuthorization' },
-  _type: { type: String, default: 'FHIR::MedicinalProductAuthorization' },
 });
 
-class MedicinalProductAuthorization extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductAuthorizationSchema);
-    this.typeName = 'MedicinalProductAuthorization';
-    this._type = 'FHIR::MedicinalProductAuthorization';
-  }
-}
-
 module.exports.MedicinalProductAuthorizationSchema = MedicinalProductAuthorizationSchema;
-module.exports.MedicinalProductAuthorization = MedicinalProductAuthorization;

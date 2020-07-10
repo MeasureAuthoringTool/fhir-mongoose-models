@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveTimeSchema } = require('./PrimitiveTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireItemInitialSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireItemInitialSchema = BackboneElementSchemaFunction({
+QuestionnaireItemInitialSchema.add(BackboneElementSchema);
+QuestionnaireItemInitialSchema.remove('id');
+QuestionnaireItemInitialSchema.add({
   valueBoolean: PrimitiveBooleanSchema,
   valueDecimal: PrimitiveDecimalSchema,
   valueInteger: PrimitiveIntegerSchema,
@@ -27,17 +28,6 @@ const QuestionnaireItemInitialSchema = BackboneElementSchemaFunction({
   valueCoding: CodingSchema,
   valueQuantity: QuantitySchema,
   valueReference: ReferenceSchema,
-  typeName: { type: String, default: 'QuestionnaireItemInitial' },
-  _type: { type: String, default: 'FHIR::QuestionnaireItemInitial' },
 });
 
-class QuestionnaireItemInitial extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireItemInitialSchema);
-    this.typeName = 'QuestionnaireItemInitial';
-    this._type = 'FHIR::QuestionnaireItemInitial';
-  }
-}
-
 module.exports.QuestionnaireItemInitialSchema = QuestionnaireItemInitialSchema;
-module.exports.QuestionnaireItemInitial = QuestionnaireItemInitial;

@@ -1,27 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { MedicationKnowledgeRegulatoryMaxDispenseSchema } = require('./MedicationKnowledgeRegulatoryMaxDispense');
-const { MedicationKnowledgeRegulatoryScheduleSchema } = require('./MedicationKnowledgeRegulatorySchedule');
-const { MedicationKnowledgeRegulatorySubstitutionSchema } = require('./MedicationKnowledgeRegulatorySubstitution');
-const { ReferenceSchema } = require('./Reference');
+const { MedicationKnowledgeRegulatoryMaxDispenseSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRegulatoryScheduleSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRegulatorySubstitutionSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRegulatorySchema } = require('./allSchemaHeaders.js');
 
-const MedicationKnowledgeRegulatorySchema = BackboneElementSchemaFunction({
+MedicationKnowledgeRegulatorySchema.add(BackboneElementSchema);
+MedicationKnowledgeRegulatorySchema.remove('id');
+MedicationKnowledgeRegulatorySchema.add({
   regulatoryAuthority: ReferenceSchema,
   substitution: [MedicationKnowledgeRegulatorySubstitutionSchema],
   schedule: [MedicationKnowledgeRegulatoryScheduleSchema],
   maxDispense: MedicationKnowledgeRegulatoryMaxDispenseSchema,
-  typeName: { type: String, default: 'MedicationKnowledgeRegulatory' },
-  _type: { type: String, default: 'FHIR::MedicationKnowledgeRegulatory' },
 });
 
-class MedicationKnowledgeRegulatory extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationKnowledgeRegulatorySchema);
-    this.typeName = 'MedicationKnowledgeRegulatory';
-    this._type = 'FHIR::MedicationKnowledgeRegulatory';
-  }
-}
-
 module.exports.MedicationKnowledgeRegulatorySchema = MedicationKnowledgeRegulatorySchema;
-module.exports.MedicationKnowledgeRegulatory = MedicationKnowledgeRegulatory;

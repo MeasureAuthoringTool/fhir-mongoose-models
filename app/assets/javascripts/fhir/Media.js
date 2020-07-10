@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MediaStatusSchema } = require('./MediaStatus');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MediaStatusSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MediaSchema } = require('./allSchemaHeaders.js');
 
-const MediaSchema = DomainResourceSchemaFunction({
+MediaSchema.add(DomainResourceSchema);
+MediaSchema.remove('id');
+MediaSchema.add({
   identifier: [IdentifierSchema],
   basedOn: [ReferenceSchema],
   partOf: [ReferenceSchema],
@@ -38,17 +39,6 @@ const MediaSchema = DomainResourceSchemaFunction({
   duration: PrimitiveDecimalSchema,
   content: AttachmentSchema,
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'Media' },
-  _type: { type: String, default: 'FHIR::Media' },
 });
 
-class Media extends mongoose.Document {
-  constructor(object) {
-    super(object, MediaSchema);
-    this.typeName = 'Media';
-    this._type = 'FHIR::Media';
-  }
-}
-
 module.exports.MediaSchema = MediaSchema;
-module.exports.Media = Media;

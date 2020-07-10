@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MedicationAdministrationDosageSchema } = require('./MedicationAdministrationDosage');
-const { MedicationAdministrationPerformerSchema } = require('./MedicationAdministrationPerformer');
-const { MedicationAdministrationStatusSchema } = require('./MedicationAdministrationStatus');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicationAdministrationDosageSchema } = require('./allSchemaHeaders.js');
+const { MedicationAdministrationPerformerSchema } = require('./allSchemaHeaders.js');
+const { MedicationAdministrationStatusSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicationAdministrationSchema } = require('./allSchemaHeaders.js');
 
-const MedicationAdministrationSchema = DomainResourceSchemaFunction({
+MedicationAdministrationSchema.add(DomainResourceSchema);
+MedicationAdministrationSchema.remove('id');
+MedicationAdministrationSchema.add({
   identifier: [IdentifierSchema],
   instantiates: [PrimitiveUriSchema],
   partOf: [ReferenceSchema],
@@ -34,17 +35,6 @@ const MedicationAdministrationSchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   dosage: MedicationAdministrationDosageSchema,
   eventHistory: [ReferenceSchema],
-  typeName: { type: String, default: 'MedicationAdministration' },
-  _type: { type: String, default: 'FHIR::MedicationAdministration' },
 });
 
-class MedicationAdministration extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationAdministrationSchema);
-    this.typeName = 'MedicationAdministration';
-    this._type = 'FHIR::MedicationAdministration';
-  }
-}
-
 module.exports.MedicationAdministrationSchema = MedicationAdministrationSchema;
-module.exports.MedicationAdministration = MedicationAdministration;

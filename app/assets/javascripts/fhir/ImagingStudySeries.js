@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { ImagingStudySeriesInstanceSchema } = require('./ImagingStudySeriesInstance');
-const { ImagingStudySeriesPerformerSchema } = require('./ImagingStudySeriesPerformer');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudySeriesInstanceSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudySeriesPerformerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ImagingStudySeriesSchema } = require('./allSchemaHeaders.js');
 
-const ImagingStudySeriesSchema = BackboneElementSchemaFunction({
+ImagingStudySeriesSchema.add(BackboneElementSchema);
+ImagingStudySeriesSchema.remove('id');
+ImagingStudySeriesSchema.add({
   uid: PrimitiveIdSchema,
   number: PrimitiveUnsignedIntSchema,
   modality: CodingSchema,
@@ -23,17 +24,6 @@ const ImagingStudySeriesSchema = BackboneElementSchemaFunction({
   started: PrimitiveDateTimeSchema,
   performer: [ImagingStudySeriesPerformerSchema],
   instance: [ImagingStudySeriesInstanceSchema],
-  typeName: { type: String, default: 'ImagingStudySeries' },
-  _type: { type: String, default: 'FHIR::ImagingStudySeries' },
 });
 
-class ImagingStudySeries extends mongoose.Document {
-  constructor(object) {
-    super(object, ImagingStudySeriesSchema);
-    this.typeName = 'ImagingStudySeries';
-    this._type = 'FHIR::ImagingStudySeries';
-  }
-}
-
 module.exports.ImagingStudySeriesSchema = ImagingStudySeriesSchema;
-module.exports.ImagingStudySeries = ImagingStudySeries;

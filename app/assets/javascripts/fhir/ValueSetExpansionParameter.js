@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCodeSchema } = require('./PrimitiveCode');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCodeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ValueSetExpansionParameterSchema } = require('./allSchemaHeaders.js');
 
-const ValueSetExpansionParameterSchema = BackboneElementSchemaFunction({
+ValueSetExpansionParameterSchema.add(BackboneElementSchema);
+ValueSetExpansionParameterSchema.remove('id');
+ValueSetExpansionParameterSchema.add({
   name: PrimitiveStringSchema,
   valueString: PrimitiveStringSchema,
   valueBoolean: PrimitiveBooleanSchema,
@@ -18,17 +19,6 @@ const ValueSetExpansionParameterSchema = BackboneElementSchemaFunction({
   valueUri: PrimitiveUriSchema,
   valueCode: PrimitiveCodeSchema,
   valueDateTime: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'ValueSetExpansionParameter' },
-  _type: { type: String, default: 'FHIR::ValueSetExpansionParameter' },
 });
 
-class ValueSetExpansionParameter extends mongoose.Document {
-  constructor(object) {
-    super(object, ValueSetExpansionParameterSchema);
-    this.typeName = 'ValueSetExpansionParameter';
-    this._type = 'FHIR::ValueSetExpansionParameter';
-  }
-}
-
 module.exports.ValueSetExpansionParameterSchema = ValueSetExpansionParameterSchema;
-module.exports.ValueSetExpansionParameter = ValueSetExpansionParameter;

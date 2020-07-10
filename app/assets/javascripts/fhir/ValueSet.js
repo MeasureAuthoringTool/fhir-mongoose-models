@@ -1,20 +1,21 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { UsageContextSchema } = require('./UsageContext');
-const { ValueSetComposeSchema } = require('./ValueSetCompose');
-const { ValueSetExpansionSchema } = require('./ValueSetExpansion');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ValueSetComposeSchema } = require('./allSchemaHeaders.js');
+const { ValueSetExpansionSchema } = require('./allSchemaHeaders.js');
+const { ValueSetSchema } = require('./allSchemaHeaders.js');
 
-const ValueSetSchema = DomainResourceSchemaFunction({
+ValueSetSchema.add(DomainResourceSchema);
+ValueSetSchema.remove('id');
+ValueSetSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -33,17 +34,6 @@ const ValueSetSchema = DomainResourceSchemaFunction({
   copyright: PrimitiveMarkdownSchema,
   compose: ValueSetComposeSchema,
   expansion: ValueSetExpansionSchema,
-  typeName: { type: String, default: 'ValueSet' },
-  _type: { type: String, default: 'FHIR::ValueSet' },
 });
 
-class ValueSet extends mongoose.Document {
-  constructor(object) {
-    super(object, ValueSetSchema);
-    this.typeName = 'ValueSet';
-    this._type = 'FHIR::ValueSet';
-  }
-}
-
 module.exports.ValueSetSchema = ValueSetSchema;
-module.exports.ValueSet = ValueSet;

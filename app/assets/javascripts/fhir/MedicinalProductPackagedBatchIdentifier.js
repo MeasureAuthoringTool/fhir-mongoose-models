@@ -1,22 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { IdentifierSchema } = require('./Identifier');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPackagedBatchIdentifierSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPackagedBatchIdentifierSchema = BackboneElementSchemaFunction({
+MedicinalProductPackagedBatchIdentifierSchema.add(BackboneElementSchema);
+MedicinalProductPackagedBatchIdentifierSchema.remove('id');
+MedicinalProductPackagedBatchIdentifierSchema.add({
   outerPackaging: IdentifierSchema,
   immediatePackaging: IdentifierSchema,
-  typeName: { type: String, default: 'MedicinalProductPackagedBatchIdentifier' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPackagedBatchIdentifier' },
 });
 
-class MedicinalProductPackagedBatchIdentifier extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPackagedBatchIdentifierSchema);
-    this.typeName = 'MedicinalProductPackagedBatchIdentifier';
-    this._type = 'FHIR::MedicinalProductPackagedBatchIdentifier';
-  }
-}
-
 module.exports.MedicinalProductPackagedBatchIdentifierSchema = MedicinalProductPackagedBatchIdentifierSchema;
-module.exports.MedicinalProductPackagedBatchIdentifier = MedicinalProductPackagedBatchIdentifier;

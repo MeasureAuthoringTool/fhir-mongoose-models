@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { SubstanceReferenceInformationClassificationSchema } = require('./SubstanceReferenceInformationClassification');
-const { SubstanceReferenceInformationGeneSchema } = require('./SubstanceReferenceInformationGene');
-const { SubstanceReferenceInformationGeneElementSchema } = require('./SubstanceReferenceInformationGeneElement');
-const { SubstanceReferenceInformationTargetSchema } = require('./SubstanceReferenceInformationTarget');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationClassificationSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationGeneSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationGeneElementSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationTargetSchema } = require('./allSchemaHeaders.js');
+const { SubstanceReferenceInformationSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceReferenceInformationSchema = DomainResourceSchemaFunction({
+SubstanceReferenceInformationSchema.add(DomainResourceSchema);
+SubstanceReferenceInformationSchema.remove('id');
+SubstanceReferenceInformationSchema.add({
   comment: PrimitiveStringSchema,
   gene: [SubstanceReferenceInformationGeneSchema],
   geneElement: [SubstanceReferenceInformationGeneElementSchema],
   classification: [SubstanceReferenceInformationClassificationSchema],
   target: [SubstanceReferenceInformationTargetSchema],
-  typeName: { type: String, default: 'SubstanceReferenceInformation' },
-  _type: { type: String, default: 'FHIR::SubstanceReferenceInformation' },
 });
 
-class SubstanceReferenceInformation extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceReferenceInformationSchema);
-    this.typeName = 'SubstanceReferenceInformation';
-    this._type = 'FHIR::SubstanceReferenceInformation';
-  }
-}
-
 module.exports.SubstanceReferenceInformationSchema = SubstanceReferenceInformationSchema;
-module.exports.SubstanceReferenceInformation = SubstanceReferenceInformation;

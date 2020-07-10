@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DataRequirementCodeFilterSchema } = require('./DataRequirementCodeFilter');
-const { DataRequirementDateFilterSchema } = require('./DataRequirementDateFilter');
-const { DataRequirementSortSchema } = require('./DataRequirementSort');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementCodeFilterSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementDateFilterSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSortSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { FHIRAllTypesSchema } = require('./FHIRAllTypes');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { FHIRAllTypesSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
 
-const DataRequirementSchema = ElementSchemaFunction({
+DataRequirementSchema.add(ElementSchema);
+DataRequirementSchema.remove('id');
+DataRequirementSchema.add({
   type: FHIRAllTypesSchema,
   profile: [PrimitiveCanonicalSchema],
   subjectCodeableConcept: CodeableConceptSchema,
@@ -21,17 +22,6 @@ const DataRequirementSchema = ElementSchemaFunction({
   dateFilter: [DataRequirementDateFilterSchema],
   limit: PrimitivePositiveIntSchema,
   sort: [DataRequirementSortSchema],
-  typeName: { type: String, default: 'DataRequirement' },
-  _type: { type: String, default: 'FHIR::DataRequirement' },
 });
 
-class DataRequirement extends mongoose.Document {
-  constructor(object) {
-    super(object, DataRequirementSchema);
-    this.typeName = 'DataRequirement';
-    this._type = 'FHIR::DataRequirement';
-  }
-}
-
 module.exports.DataRequirementSchema = DataRequirementSchema;
-module.exports.DataRequirement = DataRequirement;

@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { QuestionnaireResponseItemSchema } = require('./QuestionnaireResponseItem');
-const { QuestionnaireResponseStatusSchema } = require('./QuestionnaireResponseStatus');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseItemSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { QuestionnaireResponseSchema } = require('./allSchemaHeaders.js');
 
-const QuestionnaireResponseSchema = DomainResourceSchemaFunction({
+QuestionnaireResponseSchema.add(DomainResourceSchema);
+QuestionnaireResponseSchema.remove('id');
+QuestionnaireResponseSchema.add({
   identifier: IdentifierSchema,
   basedOn: [ReferenceSchema],
   partOf: [ReferenceSchema],
@@ -20,17 +21,6 @@ const QuestionnaireResponseSchema = DomainResourceSchemaFunction({
   author: ReferenceSchema,
   source: ReferenceSchema,
   item: [QuestionnaireResponseItemSchema],
-  typeName: { type: String, default: 'QuestionnaireResponse' },
-  _type: { type: String, default: 'FHIR::QuestionnaireResponse' },
 });
 
-class QuestionnaireResponse extends mongoose.Document {
-  constructor(object) {
-    super(object, QuestionnaireResponseSchema);
-    this.typeName = 'QuestionnaireResponse';
-    this._type = 'FHIR::QuestionnaireResponse';
-  }
-}
-
 module.exports.QuestionnaireResponseSchema = QuestionnaireResponseSchema;
-module.exports.QuestionnaireResponse = QuestionnaireResponse;

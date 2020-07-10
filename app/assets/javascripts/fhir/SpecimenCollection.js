@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DurationSchema } = require('./Duration');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { SpecimenCollectionSchema } = require('./allSchemaHeaders.js');
 
-const SpecimenCollectionSchema = BackboneElementSchemaFunction({
+SpecimenCollectionSchema.add(BackboneElementSchema);
+SpecimenCollectionSchema.remove('id');
+SpecimenCollectionSchema.add({
   collector: ReferenceSchema,
   collectedDateTime: PrimitiveDateTimeSchema,
   collectedPeriod: PeriodSchema,
@@ -18,17 +19,6 @@ const SpecimenCollectionSchema = BackboneElementSchemaFunction({
   bodySite: CodeableConceptSchema,
   fastingStatusCodeableConcept: CodeableConceptSchema,
   fastingStatusDuration: DurationSchema,
-  typeName: { type: String, default: 'SpecimenCollection' },
-  _type: { type: String, default: 'FHIR::SpecimenCollection' },
 });
 
-class SpecimenCollection extends mongoose.Document {
-  constructor(object) {
-    super(object, SpecimenCollectionSchema);
-    this.typeName = 'SpecimenCollection';
-    this._type = 'FHIR::SpecimenCollection';
-  }
-}
-
 module.exports.SpecimenCollectionSchema = SpecimenCollectionSchema;
-module.exports.SpecimenCollection = SpecimenCollection;

@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { MarketingStatusSchema } = require('./MarketingStatus');
-const { MedicinalProductPackagedBatchIdentifierSchema } = require('./MedicinalProductPackagedBatchIdentifier');
-const { MedicinalProductPackagedPackageItemSchema } = require('./MedicinalProductPackagedPackageItem');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MarketingStatusSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPackagedBatchIdentifierSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPackagedPackageItemSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPackagedSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPackagedSchema = DomainResourceSchemaFunction({
+MedicinalProductPackagedSchema.add(DomainResourceSchema);
+MedicinalProductPackagedSchema.remove('id');
+MedicinalProductPackagedSchema.add({
   identifier: [IdentifierSchema],
   subject: [ReferenceSchema],
   description: PrimitiveStringSchema,
@@ -19,17 +20,6 @@ const MedicinalProductPackagedSchema = DomainResourceSchemaFunction({
   manufacturer: [ReferenceSchema],
   batchIdentifier: [MedicinalProductPackagedBatchIdentifierSchema],
   packageItem: [MedicinalProductPackagedPackageItemSchema],
-  typeName: { type: String, default: 'MedicinalProductPackaged' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPackaged' },
 });
 
-class MedicinalProductPackaged extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPackagedSchema);
-    this.typeName = 'MedicinalProductPackaged';
-    this._type = 'FHIR::MedicinalProductPackaged';
-  }
-}
-
 module.exports.MedicinalProductPackagedSchema = MedicinalProductPackagedSchema;
-module.exports.MedicinalProductPackaged = MedicinalProductPackaged;

@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DurationSchema } = require('./Duration');
-const { MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesSchema } = require('./MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies');
-const { QuantitySchema } = require('./Quantity');
-const { RatioSchema } = require('./Ratio');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductPharmaceuticalRouteOfAdministrationSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductPharmaceuticalRouteOfAdministrationSchema = BackboneElementSchemaFunction({
+MedicinalProductPharmaceuticalRouteOfAdministrationSchema.add(BackboneElementSchema);
+MedicinalProductPharmaceuticalRouteOfAdministrationSchema.remove('id');
+MedicinalProductPharmaceuticalRouteOfAdministrationSchema.add({
   code: CodeableConceptSchema,
   firstDose: QuantitySchema,
   maxSingleDose: QuantitySchema,
@@ -15,17 +16,6 @@ const MedicinalProductPharmaceuticalRouteOfAdministrationSchema = BackboneElemen
   maxDosePerTreatmentPeriod: RatioSchema,
   maxTreatmentPeriod: DurationSchema,
   targetSpecies: [MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesSchema],
-  typeName: { type: String, default: 'MedicinalProductPharmaceuticalRouteOfAdministration' },
-  _type: { type: String, default: 'FHIR::MedicinalProductPharmaceuticalRouteOfAdministration' },
 });
 
-class MedicinalProductPharmaceuticalRouteOfAdministration extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductPharmaceuticalRouteOfAdministrationSchema);
-    this.typeName = 'MedicinalProductPharmaceuticalRouteOfAdministration';
-    this._type = 'FHIR::MedicinalProductPharmaceuticalRouteOfAdministration';
-  }
-}
-
 module.exports.MedicinalProductPharmaceuticalRouteOfAdministrationSchema = MedicinalProductPharmaceuticalRouteOfAdministrationSchema;
-module.exports.MedicinalProductPharmaceuticalRouteOfAdministration = MedicinalProductPharmaceuticalRouteOfAdministration;

@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { NutritiionOrderIntentSchema } = require('./allSchemaHeaders.js');
 
-const NutritiionOrderIntentSchema = ElementSchemaFunction({
+NutritiionOrderIntentSchema.add(ElementSchema);
+NutritiionOrderIntentSchema.remove('id');
+NutritiionOrderIntentSchema.add({
   value: String,
-  typeName: { type: String, default: 'NutritiionOrderIntent' },
-  _type: { type: String, default: 'FHIR::NutritiionOrderIntent' },
 });
 
-class NutritiionOrderIntent extends mongoose.Document {
-  constructor(object) {
-    super(object, NutritiionOrderIntentSchema);
-    this.typeName = 'NutritiionOrderIntent';
-    this._type = 'FHIR::NutritiionOrderIntent';
-  }
-}
-
 module.exports.NutritiionOrderIntentSchema = NutritiionOrderIntentSchema;
-module.exports.NutritiionOrderIntent = NutritiionOrderIntent;

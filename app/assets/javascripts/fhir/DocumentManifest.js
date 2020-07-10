@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DocumentManifestRelatedSchema } = require('./DocumentManifestRelated');
-const { DocumentReferenceStatusSchema } = require('./DocumentReferenceStatus');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DocumentManifestRelatedSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DocumentManifestSchema } = require('./allSchemaHeaders.js');
 
-const DocumentManifestSchema = DomainResourceSchemaFunction({
+DocumentManifestSchema.add(DomainResourceSchema);
+DocumentManifestSchema.remove('id');
+DocumentManifestSchema.add({
   masterIdentifier: IdentifierSchema,
   identifier: [IdentifierSchema],
   status: DocumentReferenceStatusSchema,
@@ -23,17 +24,6 @@ const DocumentManifestSchema = DomainResourceSchemaFunction({
   description: PrimitiveStringSchema,
   content: [ReferenceSchema],
   related: [DocumentManifestRelatedSchema],
-  typeName: { type: String, default: 'DocumentManifest' },
-  _type: { type: String, default: 'FHIR::DocumentManifest' },
 });
 
-class DocumentManifest extends mongoose.Document {
-  constructor(object) {
-    super(object, DocumentManifestSchema);
-    this.typeName = 'DocumentManifest';
-    this._type = 'FHIR::DocumentManifest';
-  }
-}
-
 module.exports.DocumentManifestSchema = DocumentManifestSchema;
-module.exports.DocumentManifest = DocumentManifest;

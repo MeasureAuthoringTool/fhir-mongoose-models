@@ -1,11 +1,12 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { NameUseSchema } = require('./NameUse');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { NameUseSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { HumanNameSchema } = require('./allSchemaHeaders.js');
 
-const HumanNameSchema = ElementSchemaFunction({
+HumanNameSchema.add(ElementSchema);
+HumanNameSchema.remove('id');
+HumanNameSchema.add({
   use: NameUseSchema,
   text: PrimitiveStringSchema,
   family: PrimitiveStringSchema,
@@ -13,17 +14,6 @@ const HumanNameSchema = ElementSchemaFunction({
   prefix: [PrimitiveStringSchema],
   suffix: [PrimitiveStringSchema],
   period: PeriodSchema,
-  typeName: { type: String, default: 'HumanName' },
-  _type: { type: String, default: 'FHIR::HumanName' },
 });
 
-class HumanName extends mongoose.Document {
-  constructor(object) {
-    super(object, HumanNameSchema);
-    this.typeName = 'HumanName';
-    this._type = 'FHIR::HumanName';
-  }
-}
-
 module.exports.HumanNameSchema = HumanNameSchema;
-module.exports.HumanName = HumanName;

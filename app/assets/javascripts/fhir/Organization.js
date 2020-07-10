@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { OrganizationContactSchema } = require('./OrganizationContact');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { OrganizationContactSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { OrganizationSchema } = require('./allSchemaHeaders.js');
 
-const OrganizationSchema = DomainResourceSchemaFunction({
+OrganizationSchema.add(DomainResourceSchema);
+OrganizationSchema.remove('id');
+OrganizationSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   type: [CodeableConceptSchema],
@@ -21,17 +22,6 @@ const OrganizationSchema = DomainResourceSchemaFunction({
   partOf: ReferenceSchema,
   contact: [OrganizationContactSchema],
   endpoint: [ReferenceSchema],
-  typeName: { type: String, default: 'Organization' },
-  _type: { type: String, default: 'FHIR::Organization' },
 });
 
-class Organization extends mongoose.Document {
-  constructor(object) {
-    super(object, OrganizationSchema);
-    this.typeName = 'Organization';
-    this._type = 'FHIR::Organization';
-  }
-}
-
 module.exports.OrganizationSchema = OrganizationSchema;
-module.exports.Organization = Organization;

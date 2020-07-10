@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SubstanceSpecificationPropertySchema } = require('./allSchemaHeaders.js');
 
-const SubstanceSpecificationPropertySchema = BackboneElementSchemaFunction({
+SubstanceSpecificationPropertySchema.add(BackboneElementSchema);
+SubstanceSpecificationPropertySchema.remove('id');
+SubstanceSpecificationPropertySchema.add({
   category: CodeableConceptSchema,
   code: CodeableConceptSchema,
   parameters: PrimitiveStringSchema,
@@ -14,17 +15,6 @@ const SubstanceSpecificationPropertySchema = BackboneElementSchemaFunction({
   definingSubstanceCodeableConcept: CodeableConceptSchema,
   amountQuantity: QuantitySchema,
   amountString: PrimitiveStringSchema,
-  typeName: { type: String, default: 'SubstanceSpecificationProperty' },
-  _type: { type: String, default: 'FHIR::SubstanceSpecificationProperty' },
 });
 
-class SubstanceSpecificationProperty extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceSpecificationPropertySchema);
-    this.typeName = 'SubstanceSpecificationProperty';
-    this._type = 'FHIR::SubstanceSpecificationProperty';
-  }
-}
-
 module.exports.SubstanceSpecificationPropertySchema = SubstanceSpecificationPropertySchema;
-module.exports.SubstanceSpecificationProperty = SubstanceSpecificationProperty;

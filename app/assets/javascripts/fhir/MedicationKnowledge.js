@@ -1,25 +1,26 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { MedicationKnowledgeAdministrationGuidelinesSchema } = require('./MedicationKnowledgeAdministrationGuidelines');
-const { MedicationKnowledgeCostSchema } = require('./MedicationKnowledgeCost');
-const { MedicationKnowledgeDrugCharacteristicSchema } = require('./MedicationKnowledgeDrugCharacteristic');
-const { MedicationKnowledgeIngredientSchema } = require('./MedicationKnowledgeIngredient');
-const { MedicationKnowledgeKineticsSchema } = require('./MedicationKnowledgeKinetics');
-const { MedicationKnowledgeMedicineClassificationSchema } = require('./MedicationKnowledgeMedicineClassification');
-const { MedicationKnowledgeMonitoringProgramSchema } = require('./MedicationKnowledgeMonitoringProgram');
-const { MedicationKnowledgeMonographSchema } = require('./MedicationKnowledgeMonograph');
-const { MedicationKnowledgePackagingSchema } = require('./MedicationKnowledgePackaging');
-const { MedicationKnowledgeRegulatorySchema } = require('./MedicationKnowledgeRegulatory');
-const { MedicationKnowledgeRelatedMedicationKnowledgeSchema } = require('./MedicationKnowledgeRelatedMedicationKnowledge');
-const { MedicationKnowledgeStatusSchema } = require('./MedicationKnowledgeStatus');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { MedicationKnowledgeAdministrationGuidelinesSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeCostSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeDrugCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeIngredientSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeKineticsSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeMedicineClassificationSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeMonitoringProgramSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeMonographSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgePackagingSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRegulatorySchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRelatedMedicationKnowledgeSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeSchema } = require('./allSchemaHeaders.js');
 
-const MedicationKnowledgeSchema = DomainResourceSchemaFunction({
+MedicationKnowledgeSchema.add(DomainResourceSchema);
+MedicationKnowledgeSchema.remove('id');
+MedicationKnowledgeSchema.add({
   code: CodeableConceptSchema,
   status: MedicationKnowledgeStatusSchema,
   manufacturer: ReferenceSchema,
@@ -42,17 +43,6 @@ const MedicationKnowledgeSchema = DomainResourceSchemaFunction({
   contraindication: [ReferenceSchema],
   regulatory: [MedicationKnowledgeRegulatorySchema],
   kinetics: [MedicationKnowledgeKineticsSchema],
-  typeName: { type: String, default: 'MedicationKnowledge' },
-  _type: { type: String, default: 'FHIR::MedicationKnowledge' },
 });
 
-class MedicationKnowledge extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationKnowledgeSchema);
-    this.typeName = 'MedicationKnowledge';
-    this._type = 'FHIR::MedicationKnowledge';
-  }
-}
-
 module.exports.MedicationKnowledgeSchema = MedicationKnowledgeSchema;
-module.exports.MedicationKnowledge = MedicationKnowledge;

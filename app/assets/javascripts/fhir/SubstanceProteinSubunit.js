@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { AttachmentSchema } = require('./Attachment');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { SubstanceProteinSubunitSchema } = require('./allSchemaHeaders.js');
 
-const SubstanceProteinSubunitSchema = BackboneElementSchemaFunction({
+SubstanceProteinSubunitSchema.add(BackboneElementSchema);
+SubstanceProteinSubunitSchema.remove('id');
+SubstanceProteinSubunitSchema.add({
   subunit: PrimitiveIntegerSchema,
   sequence: PrimitiveStringSchema,
   length: PrimitiveIntegerSchema,
@@ -15,17 +16,6 @@ const SubstanceProteinSubunitSchema = BackboneElementSchemaFunction({
   nTerminalModification: PrimitiveStringSchema,
   cTerminalModificationId: IdentifierSchema,
   cTerminalModification: PrimitiveStringSchema,
-  typeName: { type: String, default: 'SubstanceProteinSubunit' },
-  _type: { type: String, default: 'FHIR::SubstanceProteinSubunit' },
 });
 
-class SubstanceProteinSubunit extends mongoose.Document {
-  constructor(object) {
-    super(object, SubstanceProteinSubunitSchema);
-    this.typeName = 'SubstanceProteinSubunit';
-    this._type = 'FHIR::SubstanceProteinSubunit';
-  }
-}
-
 module.exports.SubstanceProteinSubunitSchema = SubstanceProteinSubunitSchema;
-module.exports.SubstanceProteinSubunit = SubstanceProteinSubunit;

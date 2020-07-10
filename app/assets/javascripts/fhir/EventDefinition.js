@@ -1,23 +1,24 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactDetailSchema } = require('./ContactDetail');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PublicationStatusSchema } = require('./PublicationStatus');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { TriggerDefinitionSchema } = require('./TriggerDefinition');
-const { UsageContextSchema } = require('./UsageContext');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PublicationStatusSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { TriggerDefinitionSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { EventDefinitionSchema } = require('./allSchemaHeaders.js');
 
-const EventDefinitionSchema = DomainResourceSchemaFunction({
+EventDefinitionSchema.add(DomainResourceSchema);
+EventDefinitionSchema.remove('id');
+EventDefinitionSchema.add({
   url: PrimitiveUriSchema,
   identifier: [IdentifierSchema],
   version: PrimitiveStringSchema,
@@ -47,17 +48,6 @@ const EventDefinitionSchema = DomainResourceSchemaFunction({
   endorser: [ContactDetailSchema],
   relatedArtifact: [RelatedArtifactSchema],
   trigger: [TriggerDefinitionSchema],
-  typeName: { type: String, default: 'EventDefinition' },
-  _type: { type: String, default: 'FHIR::EventDefinition' },
 });
 
-class EventDefinition extends mongoose.Document {
-  constructor(object) {
-    super(object, EventDefinitionSchema);
-    this.typeName = 'EventDefinition';
-    this._type = 'FHIR::EventDefinition';
-  }
-}
-
 module.exports.EventDefinitionSchema = EventDefinitionSchema;
-module.exports.EventDefinition = EventDefinition;

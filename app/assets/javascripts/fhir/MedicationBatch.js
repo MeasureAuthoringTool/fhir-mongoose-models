@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { MedicationBatchSchema } = require('./allSchemaHeaders.js');
 
-const MedicationBatchSchema = BackboneElementSchemaFunction({
+MedicationBatchSchema.add(BackboneElementSchema);
+MedicationBatchSchema.remove('id');
+MedicationBatchSchema.add({
   lotNumber: PrimitiveStringSchema,
   expirationDate: PrimitiveDateTimeSchema,
-  typeName: { type: String, default: 'MedicationBatch' },
-  _type: { type: String, default: 'FHIR::MedicationBatch' },
 });
 
-class MedicationBatch extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationBatchSchema);
-    this.typeName = 'MedicationBatch';
-    this._type = 'FHIR::MedicationBatch';
-  }
-}
-
 module.exports.MedicationBatchSchema = MedicationBatchSchema;
-module.exports.MedicationBatch = MedicationBatch;

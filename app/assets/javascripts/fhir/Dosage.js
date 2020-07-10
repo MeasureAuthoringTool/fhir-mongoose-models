@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DosageDoseAndRateSchema } = require('./DosageDoseAndRate');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { RatioSchema } = require('./Ratio');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
-const { TimingSchema } = require('./Timing');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DosageDoseAndRateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { DosageSchema } = require('./allSchemaHeaders.js');
 
-const DosageSchema = BackboneElementSchemaFunction({
+DosageSchema.add(BackboneElementSchema);
+DosageSchema.remove('id');
+DosageSchema.add({
   sequence: PrimitiveIntegerSchema,
   text: PrimitiveStringSchema,
   additionalInstruction: [CodeableConceptSchema],
@@ -25,17 +26,6 @@ const DosageSchema = BackboneElementSchemaFunction({
   maxDosePerPeriod: RatioSchema,
   maxDosePerAdministration: SimpleQuantitySchema,
   maxDosePerLifetime: SimpleQuantitySchema,
-  typeName: { type: String, default: 'Dosage' },
-  _type: { type: String, default: 'FHIR::Dosage' },
 });
 
-class Dosage extends mongoose.Document {
-  constructor(object) {
-    super(object, DosageSchema);
-    this.typeName = 'Dosage';
-    this._type = 'FHIR::Dosage';
-  }
-}
-
 module.exports.DosageSchema = DosageSchema;
-module.exports.Dosage = Dosage;

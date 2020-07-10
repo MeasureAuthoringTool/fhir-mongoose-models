@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ExampleScenarioInstanceContainedInstanceSchema } = require('./ExampleScenarioInstanceContainedInstance');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { ExampleScenarioInstanceContainedInstanceSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ExampleScenarioProcessStepOperationSchema } = require('./allSchemaHeaders.js');
 
-const ExampleScenarioProcessStepOperationSchema = BackboneElementSchemaFunction({
+ExampleScenarioProcessStepOperationSchema.add(BackboneElementSchema);
+ExampleScenarioProcessStepOperationSchema.remove('id');
+ExampleScenarioProcessStepOperationSchema.add({
   number: PrimitiveStringSchema,
   type: PrimitiveStringSchema,
   name: PrimitiveStringSchema,
@@ -17,17 +18,6 @@ const ExampleScenarioProcessStepOperationSchema = BackboneElementSchemaFunction(
   receiverActive: PrimitiveBooleanSchema,
   request: ExampleScenarioInstanceContainedInstanceSchema,
   response: ExampleScenarioInstanceContainedInstanceSchema,
-  typeName: { type: String, default: 'ExampleScenarioProcessStepOperation' },
-  _type: { type: String, default: 'FHIR::ExampleScenarioProcessStepOperation' },
 });
 
-class ExampleScenarioProcessStepOperation extends mongoose.Document {
-  constructor(object) {
-    super(object, ExampleScenarioProcessStepOperationSchema);
-    this.typeName = 'ExampleScenarioProcessStepOperation';
-    this._type = 'FHIR::ExampleScenarioProcessStepOperation';
-  }
-}
-
 module.exports.ExampleScenarioProcessStepOperationSchema = ExampleScenarioProcessStepOperationSchema;
-module.exports.ExampleScenarioProcessStepOperation = ExampleScenarioProcessStepOperation;

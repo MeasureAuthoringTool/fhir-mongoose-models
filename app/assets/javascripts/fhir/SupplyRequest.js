@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { QuantitySchema } = require('./Quantity');
-const { ReferenceSchema } = require('./Reference');
-const { RequestPrioritySchema } = require('./RequestPriority');
-const { SupplyRequestParameterSchema } = require('./SupplyRequestParameter');
-const { SupplyRequestStatusSchema } = require('./SupplyRequestStatus');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { SupplyRequestParameterSchema } = require('./allSchemaHeaders.js');
+const { SupplyRequestStatusSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { SupplyRequestSchema } = require('./allSchemaHeaders.js');
 
-const SupplyRequestSchema = DomainResourceSchemaFunction({
+SupplyRequestSchema.add(DomainResourceSchema);
+SupplyRequestSchema.remove('id');
+SupplyRequestSchema.add({
   identifier: [IdentifierSchema],
   status: SupplyRequestStatusSchema,
   category: CodeableConceptSchema,
@@ -31,17 +32,6 @@ const SupplyRequestSchema = DomainResourceSchemaFunction({
   reasonReference: [ReferenceSchema],
   deliverFrom: ReferenceSchema,
   deliverTo: ReferenceSchema,
-  typeName: { type: String, default: 'SupplyRequest' },
-  _type: { type: String, default: 'FHIR::SupplyRequest' },
 });
 
-class SupplyRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, SupplyRequestSchema);
-    this.typeName = 'SupplyRequest';
-    this._type = 'FHIR::SupplyRequest';
-  }
-}
-
 module.exports.SupplyRequestSchema = SupplyRequestSchema;
-module.exports.SupplyRequest = SupplyRequest;

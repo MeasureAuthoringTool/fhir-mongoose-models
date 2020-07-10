@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { AllergyIntoleranceTypeSchema } = require('./allSchemaHeaders.js');
 
-const AllergyIntoleranceTypeSchema = ElementSchemaFunction({
+AllergyIntoleranceTypeSchema.add(ElementSchema);
+AllergyIntoleranceTypeSchema.remove('id');
+AllergyIntoleranceTypeSchema.add({
   value: String,
-  typeName: { type: String, default: 'AllergyIntoleranceType' },
-  _type: { type: String, default: 'FHIR::AllergyIntoleranceType' },
 });
 
-class AllergyIntoleranceType extends mongoose.Document {
-  constructor(object) {
-    super(object, AllergyIntoleranceTypeSchema);
-    this.typeName = 'AllergyIntoleranceType';
-    this._type = 'FHIR::AllergyIntoleranceType';
-  }
-}
-
 module.exports.AllergyIntoleranceTypeSchema = AllergyIntoleranceTypeSchema;
-module.exports.AllergyIntoleranceType = AllergyIntoleranceType;

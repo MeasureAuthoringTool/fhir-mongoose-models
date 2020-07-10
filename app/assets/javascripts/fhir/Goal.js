@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { GoalLifecycleStatusSchema } = require('./GoalLifecycleStatus');
-const { GoalTargetSchema } = require('./GoalTarget');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { GoalLifecycleStatusSchema } = require('./allSchemaHeaders.js');
+const { GoalTargetSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { GoalSchema } = require('./allSchemaHeaders.js');
 
-const GoalSchema = DomainResourceSchemaFunction({
+GoalSchema.add(DomainResourceSchema);
+GoalSchema.remove('id');
+GoalSchema.add({
   identifier: [IdentifierSchema],
   lifecycleStatus: GoalLifecycleStatusSchema,
   achievementStatus: CodeableConceptSchema,
@@ -28,17 +29,6 @@ const GoalSchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   outcomeCode: [CodeableConceptSchema],
   outcomeReference: [ReferenceSchema],
-  typeName: { type: String, default: 'Goal' },
-  _type: { type: String, default: 'FHIR::Goal' },
 });
 
-class Goal extends mongoose.Document {
-  constructor(object) {
-    super(object, GoalSchema);
-    this.typeName = 'Goal';
-    this._type = 'FHIR::Goal';
-  }
-}
-
 module.exports.GoalSchema = GoalSchema;
-module.exports.Goal = Goal;

@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ExpressionSchema } = require('./Expression');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ActivityDefinitionDynamicValueSchema } = require('./allSchemaHeaders.js');
 
-const ActivityDefinitionDynamicValueSchema = BackboneElementSchemaFunction({
+ActivityDefinitionDynamicValueSchema.add(BackboneElementSchema);
+ActivityDefinitionDynamicValueSchema.remove('id');
+ActivityDefinitionDynamicValueSchema.add({
   path: PrimitiveStringSchema,
   expression: ExpressionSchema,
-  typeName: { type: String, default: 'ActivityDefinitionDynamicValue' },
-  _type: { type: String, default: 'FHIR::ActivityDefinitionDynamicValue' },
 });
 
-class ActivityDefinitionDynamicValue extends mongoose.Document {
-  constructor(object) {
-    super(object, ActivityDefinitionDynamicValueSchema);
-    this.typeName = 'ActivityDefinitionDynamicValue';
-    this._type = 'FHIR::ActivityDefinitionDynamicValue';
-  }
-}
-
 module.exports.ActivityDefinitionDynamicValueSchema = ActivityDefinitionDynamicValueSchema;
-module.exports.ActivityDefinitionDynamicValue = ActivityDefinitionDynamicValue;

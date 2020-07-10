@@ -1,12 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { AddressTypeSchema } = require('./AddressType');
-const { AddressUseSchema } = require('./AddressUse');
+const { AddressTypeSchema } = require('./allSchemaHeaders.js');
+const { AddressUseSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { AddressSchema } = require('./allSchemaHeaders.js');
 
-const AddressSchema = ElementSchemaFunction({
+AddressSchema.add(ElementSchema);
+AddressSchema.remove('id');
+AddressSchema.add({
   use: AddressUseSchema,
   type: AddressTypeSchema,
   text: PrimitiveStringSchema,
@@ -17,17 +18,6 @@ const AddressSchema = ElementSchemaFunction({
   postalCode: PrimitiveStringSchema,
   country: PrimitiveStringSchema,
   period: PeriodSchema,
-  typeName: { type: String, default: 'Address' },
-  _type: { type: String, default: 'FHIR::Address' },
 });
 
-class Address extends mongoose.Document {
-  constructor(object) {
-    super(object, AddressSchema);
-    this.typeName = 'Address';
-    this._type = 'FHIR::Address';
-  }
-}
-
 module.exports.AddressSchema = AddressSchema;
-module.exports.Address = Address;

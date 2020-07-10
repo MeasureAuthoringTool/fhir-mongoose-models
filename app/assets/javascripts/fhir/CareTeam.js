@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CareTeamParticipantSchema } = require('./CareTeamParticipant');
-const { CareTeamStatusSchema } = require('./CareTeamStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CareTeamParticipantSchema } = require('./allSchemaHeaders.js');
+const { CareTeamStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CareTeamSchema } = require('./allSchemaHeaders.js');
 
-const CareTeamSchema = DomainResourceSchemaFunction({
+CareTeamSchema.add(DomainResourceSchema);
+CareTeamSchema.remove('id');
+CareTeamSchema.add({
   identifier: [IdentifierSchema],
   status: CareTeamStatusSchema,
   category: [CodeableConceptSchema],
@@ -25,17 +26,6 @@ const CareTeamSchema = DomainResourceSchemaFunction({
   managingOrganization: [ReferenceSchema],
   telecom: [ContactPointSchema],
   note: [AnnotationSchema],
-  typeName: { type: String, default: 'CareTeam' },
-  _type: { type: String, default: 'FHIR::CareTeam' },
 });
 
-class CareTeam extends mongoose.Document {
-  constructor(object) {
-    super(object, CareTeamSchema);
-    this.typeName = 'CareTeam';
-    this._type = 'FHIR::CareTeam';
-  }
-}
-
 module.exports.CareTeamSchema = CareTeamSchema;
-module.exports.CareTeam = CareTeam;

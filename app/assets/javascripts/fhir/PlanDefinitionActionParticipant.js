@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { ActionParticipantTypeSchema } = require('./ActionParticipantType');
+const { ActionParticipantTypeSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionParticipantSchema } = require('./allSchemaHeaders.js');
 
-const PlanDefinitionActionParticipantSchema = BackboneElementSchemaFunction({
+PlanDefinitionActionParticipantSchema.add(BackboneElementSchema);
+PlanDefinitionActionParticipantSchema.remove('id');
+PlanDefinitionActionParticipantSchema.add({
   type: ActionParticipantTypeSchema,
   role: CodeableConceptSchema,
-  typeName: { type: String, default: 'PlanDefinitionActionParticipant' },
-  _type: { type: String, default: 'FHIR::PlanDefinitionActionParticipant' },
 });
 
-class PlanDefinitionActionParticipant extends mongoose.Document {
-  constructor(object) {
-    super(object, PlanDefinitionActionParticipantSchema);
-    this.typeName = 'PlanDefinitionActionParticipant';
-    this._type = 'FHIR::PlanDefinitionActionParticipant';
-  }
-}
-
 module.exports.PlanDefinitionActionParticipantSchema = PlanDefinitionActionParticipantSchema;
-module.exports.PlanDefinitionActionParticipant = PlanDefinitionActionParticipant;

@@ -1,21 +1,11 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MedicationKnowledgeRegulatoryScheduleSchema } = require('./allSchemaHeaders.js');
 
-const MedicationKnowledgeRegulatoryScheduleSchema = BackboneElementSchemaFunction({
+MedicationKnowledgeRegulatoryScheduleSchema.add(BackboneElementSchema);
+MedicationKnowledgeRegulatoryScheduleSchema.remove('id');
+MedicationKnowledgeRegulatoryScheduleSchema.add({
   schedule: CodeableConceptSchema,
-  typeName: { type: String, default: 'MedicationKnowledgeRegulatorySchedule' },
-  _type: { type: String, default: 'FHIR::MedicationKnowledgeRegulatorySchedule' },
 });
 
-class MedicationKnowledgeRegulatorySchedule extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationKnowledgeRegulatoryScheduleSchema);
-    this.typeName = 'MedicationKnowledgeRegulatorySchedule';
-    this._type = 'FHIR::MedicationKnowledgeRegulatorySchedule';
-  }
-}
-
 module.exports.MedicationKnowledgeRegulatoryScheduleSchema = MedicationKnowledgeRegulatoryScheduleSchema;
-module.exports.MedicationKnowledgeRegulatorySchedule = MedicationKnowledgeRegulatorySchedule;

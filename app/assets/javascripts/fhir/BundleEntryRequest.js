@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { HTTPVerbSchema } = require('./HTTPVerb');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
+const { HTTPVerbSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { BundleEntryRequestSchema } = require('./allSchemaHeaders.js');
 
-const BundleEntryRequestSchema = BackboneElementSchemaFunction({
+BundleEntryRequestSchema.add(BackboneElementSchema);
+BundleEntryRequestSchema.remove('id');
+BundleEntryRequestSchema.add({
   method: HTTPVerbSchema,
   url: PrimitiveUriSchema,
   ifNoneMatch: PrimitiveStringSchema,
   ifModifiedSince: PrimitiveInstantSchema,
   ifMatch: PrimitiveStringSchema,
   ifNoneExist: PrimitiveStringSchema,
-  typeName: { type: String, default: 'BundleEntryRequest' },
-  _type: { type: String, default: 'FHIR::BundleEntryRequest' },
 });
 
-class BundleEntryRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, BundleEntryRequestSchema);
-    this.typeName = 'BundleEntryRequest';
-    this._type = 'FHIR::BundleEntryRequest';
-  }
-}
-
 module.exports.BundleEntryRequestSchema = BundleEntryRequestSchema;
-module.exports.BundleEntryRequest = BundleEntryRequest;

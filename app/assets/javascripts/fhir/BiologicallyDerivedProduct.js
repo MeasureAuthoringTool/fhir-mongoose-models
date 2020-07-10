@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { BiologicallyDerivedProductCategorySchema } = require('./BiologicallyDerivedProductCategory');
-const { BiologicallyDerivedProductCollectionSchema } = require('./BiologicallyDerivedProductCollection');
-const { BiologicallyDerivedProductManipulationSchema } = require('./BiologicallyDerivedProductManipulation');
-const { BiologicallyDerivedProductProcessingSchema } = require('./BiologicallyDerivedProductProcessing');
-const { BiologicallyDerivedProductStatusSchema } = require('./BiologicallyDerivedProductStatus');
-const { BiologicallyDerivedProductStorageSchema } = require('./BiologicallyDerivedProductStorage');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { BiologicallyDerivedProductCategorySchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductCollectionSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductManipulationSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductProcessingSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductStatusSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductStorageSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { BiologicallyDerivedProductSchema } = require('./allSchemaHeaders.js');
 
-const BiologicallyDerivedProductSchema = DomainResourceSchemaFunction({
+BiologicallyDerivedProductSchema.add(DomainResourceSchema);
+BiologicallyDerivedProductSchema.remove('id');
+BiologicallyDerivedProductSchema.add({
   identifier: [IdentifierSchema],
   productCategory: BiologicallyDerivedProductCategorySchema,
   productCode: CodeableConceptSchema,
@@ -24,17 +25,6 @@ const BiologicallyDerivedProductSchema = DomainResourceSchemaFunction({
   processing: [BiologicallyDerivedProductProcessingSchema],
   manipulation: BiologicallyDerivedProductManipulationSchema,
   storage: [BiologicallyDerivedProductStorageSchema],
-  typeName: { type: String, default: 'BiologicallyDerivedProduct' },
-  _type: { type: String, default: 'FHIR::BiologicallyDerivedProduct' },
 });
 
-class BiologicallyDerivedProduct extends mongoose.Document {
-  constructor(object) {
-    super(object, BiologicallyDerivedProductSchema);
-    this.typeName = 'BiologicallyDerivedProduct';
-    this._type = 'FHIR::BiologicallyDerivedProduct';
-  }
-}
-
 module.exports.BiologicallyDerivedProductSchema = BiologicallyDerivedProductSchema;
-module.exports.BiologicallyDerivedProduct = BiologicallyDerivedProduct;

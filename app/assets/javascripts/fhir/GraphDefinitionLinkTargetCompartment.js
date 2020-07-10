@@ -1,28 +1,18 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CompartmentCodeSchema } = require('./CompartmentCode');
-const { GraphCompartmentRuleSchema } = require('./GraphCompartmentRule');
-const { GraphCompartmentUseSchema } = require('./GraphCompartmentUse');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { CompartmentCodeSchema } = require('./allSchemaHeaders.js');
+const { GraphCompartmentRuleSchema } = require('./allSchemaHeaders.js');
+const { GraphCompartmentUseSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { GraphDefinitionLinkTargetCompartmentSchema } = require('./allSchemaHeaders.js');
 
-const GraphDefinitionLinkTargetCompartmentSchema = BackboneElementSchemaFunction({
+GraphDefinitionLinkTargetCompartmentSchema.add(BackboneElementSchema);
+GraphDefinitionLinkTargetCompartmentSchema.remove('id');
+GraphDefinitionLinkTargetCompartmentSchema.add({
   use: GraphCompartmentUseSchema,
   code: CompartmentCodeSchema,
   rule: GraphCompartmentRuleSchema,
   expression: PrimitiveStringSchema,
   description: PrimitiveStringSchema,
-  typeName: { type: String, default: 'GraphDefinitionLinkTargetCompartment' },
-  _type: { type: String, default: 'FHIR::GraphDefinitionLinkTargetCompartment' },
 });
 
-class GraphDefinitionLinkTargetCompartment extends mongoose.Document {
-  constructor(object) {
-    super(object, GraphDefinitionLinkTargetCompartmentSchema);
-    this.typeName = 'GraphDefinitionLinkTargetCompartment';
-    this._type = 'FHIR::GraphDefinitionLinkTargetCompartment';
-  }
-}
-
 module.exports.GraphDefinitionLinkTargetCompartmentSchema = GraphDefinitionLinkTargetCompartmentSchema;
-module.exports.GraphDefinitionLinkTargetCompartment = GraphDefinitionLinkTargetCompartment;

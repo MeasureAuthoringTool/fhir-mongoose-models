@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { ClaimResponseItemAdjudicationSchema } = require('./ClaimResponseItemAdjudication');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { SimpleQuantitySchema } = require('./SimpleQuantity');
+const { ClaimResponseItemAdjudicationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { SimpleQuantitySchema } = require('./allSchemaHeaders.js');
+const { ClaimResponseAddItemDetailSubDetailSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponseAddItemDetailSubDetailSchema = BackboneElementSchemaFunction({
+ClaimResponseAddItemDetailSubDetailSchema.add(BackboneElementSchema);
+ClaimResponseAddItemDetailSubDetailSchema.remove('id');
+ClaimResponseAddItemDetailSubDetailSchema.add({
   productOrService: CodeableConceptSchema,
   modifier: [CodeableConceptSchema],
   quantity: SimpleQuantitySchema,
@@ -17,17 +18,6 @@ const ClaimResponseAddItemDetailSubDetailSchema = BackboneElementSchemaFunction(
   net: MoneySchema,
   noteNumber: [PrimitivePositiveIntSchema],
   adjudication: [ClaimResponseItemAdjudicationSchema],
-  typeName: { type: String, default: 'ClaimResponseAddItemDetailSubDetail' },
-  _type: { type: String, default: 'FHIR::ClaimResponseAddItemDetailSubDetail' },
 });
 
-class ClaimResponseAddItemDetailSubDetail extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponseAddItemDetailSubDetailSchema);
-    this.typeName = 'ClaimResponseAddItemDetailSubDetail';
-    this._type = 'FHIR::ClaimResponseAddItemDetailSubDetail';
-  }
-}
-
 module.exports.ClaimResponseAddItemDetailSubDetailSchema = ClaimResponseAddItemDetailSubDetailSchema;
-module.exports.ClaimResponseAddItemDetailSubDetail = ClaimResponseAddItemDetailSubDetail;

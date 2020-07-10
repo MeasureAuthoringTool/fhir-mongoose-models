@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { AppointmentParticipantSchema } = require('./AppointmentParticipant');
-const { AppointmentStatusSchema } = require('./AppointmentStatus');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AppointmentParticipantSchema } = require('./allSchemaHeaders.js');
+const { AppointmentStatusSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AppointmentSchema } = require('./allSchemaHeaders.js');
 
-const AppointmentSchema = DomainResourceSchemaFunction({
+AppointmentSchema.add(DomainResourceSchema);
+AppointmentSchema.remove('id');
+AppointmentSchema.add({
   identifier: [IdentifierSchema],
   status: AppointmentStatusSchema,
   cancelationReason: CodeableConceptSchema,
@@ -36,17 +37,6 @@ const AppointmentSchema = DomainResourceSchemaFunction({
   basedOn: [ReferenceSchema],
   participant: [AppointmentParticipantSchema],
   requestedPeriod: [PeriodSchema],
-  typeName: { type: String, default: 'Appointment' },
-  _type: { type: String, default: 'FHIR::Appointment' },
 });
 
-class Appointment extends mongoose.Document {
-  constructor(object) {
-    super(object, AppointmentSchema);
-    this.typeName = 'Appointment';
-    this._type = 'FHIR::Appointment';
-  }
-}
-
 module.exports.AppointmentSchema = AppointmentSchema;
-module.exports.Appointment = Appointment;

@@ -1,21 +1,11 @@
-const mongoose = require('mongoose/browser');
-const { ParametersParameterSchema } = require('./ParametersParameter');
+const { ParametersParameterSchema } = require('./allSchemaHeaders.js');
 const { ResourceSchema } = require('./Resource');
-const { ResourceSchemaFunction } = require('./Resource');
+const { ParametersSchema } = require('./allSchemaHeaders.js');
 
-const ParametersSchema = ResourceSchemaFunction({
+ParametersSchema.add(ResourceSchema);
+ParametersSchema.remove('id');
+ParametersSchema.add({
   parameter: [ParametersParameterSchema],
-  typeName: { type: String, default: 'Parameters' },
-  _type: { type: String, default: 'FHIR::Parameters' },
 });
 
-class Parameters extends mongoose.Document {
-  constructor(object) {
-    super(object, ParametersSchema);
-    this.typeName = 'Parameters';
-    this._type = 'FHIR::Parameters';
-  }
-}
-
 module.exports.ParametersSchema = ParametersSchema;
-module.exports.Parameters = Parameters;

@@ -1,22 +1,23 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { ContactPointSchema } = require('./ContactPoint');
-const { DeviceDeviceNameSchema } = require('./DeviceDeviceName');
-const { DevicePropertySchema } = require('./DeviceProperty');
-const { DeviceSpecializationSchema } = require('./DeviceSpecialization');
-const { DeviceUdiCarrierSchema } = require('./DeviceUdiCarrier');
-const { DeviceVersionSchema } = require('./DeviceVersion');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
+const { DeviceDeviceNameSchema } = require('./allSchemaHeaders.js');
+const { DevicePropertySchema } = require('./allSchemaHeaders.js');
+const { DeviceSpecializationSchema } = require('./allSchemaHeaders.js');
+const { DeviceUdiCarrierSchema } = require('./allSchemaHeaders.js');
+const { DeviceVersionSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { FHIRDeviceStatusSchema } = require('./FHIRDeviceStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ReferenceSchema } = require('./Reference');
+const { FHIRDeviceStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { DeviceSchema } = require('./allSchemaHeaders.js');
 
-const DeviceSchema = DomainResourceSchemaFunction({
+DeviceSchema.add(DomainResourceSchema);
+DeviceSchema.remove('id');
+DeviceSchema.add({
   identifier: [IdentifierSchema],
   definition: ReferenceSchema,
   udiCarrier: [DeviceUdiCarrierSchema],
@@ -43,17 +44,6 @@ const DeviceSchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   safety: [CodeableConceptSchema],
   parent: ReferenceSchema,
-  typeName: { type: String, default: 'Device' },
-  _type: { type: String, default: 'FHIR::Device' },
 });
 
-class Device extends mongoose.Document {
-  constructor(object) {
-    super(object, DeviceSchema);
-    this.typeName = 'Device';
-    this._type = 'FHIR::Device';
-  }
-}
-
 module.exports.DeviceSchema = DeviceSchema;
-module.exports.Device = Device;

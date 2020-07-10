@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
-const { DiscriminatorTypeSchema } = require('./DiscriminatorType');
+const { DiscriminatorTypeSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ElementDefinitionSlicingDiscriminatorSchema } = require('./allSchemaHeaders.js');
 
-const ElementDefinitionSlicingDiscriminatorSchema = ElementSchemaFunction({
+ElementDefinitionSlicingDiscriminatorSchema.add(ElementSchema);
+ElementDefinitionSlicingDiscriminatorSchema.remove('id');
+ElementDefinitionSlicingDiscriminatorSchema.add({
   type: DiscriminatorTypeSchema,
   path: PrimitiveStringSchema,
-  typeName: { type: String, default: 'ElementDefinitionSlicingDiscriminator' },
-  _type: { type: String, default: 'FHIR::ElementDefinitionSlicingDiscriminator' },
 });
 
-class ElementDefinitionSlicingDiscriminator extends mongoose.Document {
-  constructor(object) {
-    super(object, ElementDefinitionSlicingDiscriminatorSchema);
-    this.typeName = 'ElementDefinitionSlicingDiscriminator';
-    this._type = 'FHIR::ElementDefinitionSlicingDiscriminator';
-  }
-}
-
 module.exports.ElementDefinitionSlicingDiscriminatorSchema = ElementDefinitionSlicingDiscriminatorSchema;
-module.exports.ElementDefinitionSlicingDiscriminator = ElementDefinitionSlicingDiscriminator;

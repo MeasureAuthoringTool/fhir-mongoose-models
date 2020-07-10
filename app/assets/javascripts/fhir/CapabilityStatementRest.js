@@ -1,16 +1,17 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CapabilityStatementRestInteractionSchema } = require('./CapabilityStatementRestInteraction');
-const { CapabilityStatementRestResourceSchema } = require('./CapabilityStatementRestResource');
-const { CapabilityStatementRestResourceOperationSchema } = require('./CapabilityStatementRestResourceOperation');
-const { CapabilityStatementRestResourceSearchParamSchema } = require('./CapabilityStatementRestResourceSearchParam');
-const { CapabilityStatementRestSecuritySchema } = require('./CapabilityStatementRestSecurity');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { RestfulCapabilityModeSchema } = require('./RestfulCapabilityMode');
+const { CapabilityStatementRestInteractionSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceOperationSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestResourceSearchParamSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestSecuritySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { RestfulCapabilityModeSchema } = require('./allSchemaHeaders.js');
+const { CapabilityStatementRestSchema } = require('./allSchemaHeaders.js');
 
-const CapabilityStatementRestSchema = BackboneElementSchemaFunction({
+CapabilityStatementRestSchema.add(BackboneElementSchema);
+CapabilityStatementRestSchema.remove('id');
+CapabilityStatementRestSchema.add({
   mode: RestfulCapabilityModeSchema,
   documentation: PrimitiveMarkdownSchema,
   security: CapabilityStatementRestSecuritySchema,
@@ -19,17 +20,6 @@ const CapabilityStatementRestSchema = BackboneElementSchemaFunction({
   searchParam: [CapabilityStatementRestResourceSearchParamSchema],
   operation: [CapabilityStatementRestResourceOperationSchema],
   compartment: [PrimitiveCanonicalSchema],
-  typeName: { type: String, default: 'CapabilityStatementRest' },
-  _type: { type: String, default: 'FHIR::CapabilityStatementRest' },
 });
 
-class CapabilityStatementRest extends mongoose.Document {
-  constructor(object) {
-    super(object, CapabilityStatementRestSchema);
-    this.typeName = 'CapabilityStatementRest';
-    this._type = 'FHIR::CapabilityStatementRest';
-  }
-}
-
 module.exports.CapabilityStatementRestSchema = CapabilityStatementRestSchema;
-module.exports.CapabilityStatementRest = CapabilityStatementRest;

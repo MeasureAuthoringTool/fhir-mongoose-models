@@ -1,20 +1,10 @@
-const mongoose = require('mongoose/browser');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
+const { MedicationRequestIntentSchema } = require('./allSchemaHeaders.js');
 
-const MedicationRequestIntentSchema = ElementSchemaFunction({
+MedicationRequestIntentSchema.add(ElementSchema);
+MedicationRequestIntentSchema.remove('id');
+MedicationRequestIntentSchema.add({
   value: String,
-  typeName: { type: String, default: 'MedicationRequestIntent' },
-  _type: { type: String, default: 'FHIR::MedicationRequestIntent' },
 });
 
-class MedicationRequestIntent extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicationRequestIntentSchema);
-    this.typeName = 'MedicationRequestIntent';
-    this._type = 'FHIR::MedicationRequestIntent';
-  }
-}
-
 module.exports.MedicationRequestIntentSchema = MedicationRequestIntentSchema;
-module.exports.MedicationRequestIntent = MedicationRequestIntent;

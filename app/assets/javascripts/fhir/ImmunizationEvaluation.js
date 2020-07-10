@@ -1,15 +1,16 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { ImmunizationEvaluationStatusSchema } = require('./ImmunizationEvaluationStatus');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { ImmunizationEvaluationStatusSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ImmunizationEvaluationSchema } = require('./allSchemaHeaders.js');
 
-const ImmunizationEvaluationSchema = DomainResourceSchemaFunction({
+ImmunizationEvaluationSchema.add(DomainResourceSchema);
+ImmunizationEvaluationSchema.remove('id');
+ImmunizationEvaluationSchema.add({
   identifier: [IdentifierSchema],
   status: ImmunizationEvaluationStatusSchema,
   patient: ReferenceSchema,
@@ -25,17 +26,6 @@ const ImmunizationEvaluationSchema = DomainResourceSchemaFunction({
   doseNumberString: PrimitiveStringSchema,
   seriesDosesPositiveInt: PrimitivePositiveIntSchema,
   seriesDosesString: PrimitiveStringSchema,
-  typeName: { type: String, default: 'ImmunizationEvaluation' },
-  _type: { type: String, default: 'FHIR::ImmunizationEvaluation' },
 });
 
-class ImmunizationEvaluation extends mongoose.Document {
-  constructor(object) {
-    super(object, ImmunizationEvaluationSchema);
-    this.typeName = 'ImmunizationEvaluation';
-    this._type = 'FHIR::ImmunizationEvaluation';
-  }
-}
-
 module.exports.ImmunizationEvaluationSchema = ImmunizationEvaluationSchema;
-module.exports.ImmunizationEvaluation = ImmunizationEvaluation;

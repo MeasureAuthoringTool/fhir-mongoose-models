@@ -1,17 +1,18 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { GroupCharacteristicSchema } = require('./GroupCharacteristic');
-const { GroupMemberSchema } = require('./GroupMember');
-const { GroupTypeSchema } = require('./GroupType');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { ReferenceSchema } = require('./Reference');
+const { GroupCharacteristicSchema } = require('./allSchemaHeaders.js');
+const { GroupMemberSchema } = require('./allSchemaHeaders.js');
+const { GroupTypeSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { GroupSchema } = require('./allSchemaHeaders.js');
 
-const GroupSchema = DomainResourceSchemaFunction({
+GroupSchema.add(DomainResourceSchema);
+GroupSchema.remove('id');
+GroupSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   type: GroupTypeSchema,
@@ -22,17 +23,6 @@ const GroupSchema = DomainResourceSchemaFunction({
   managingEntity: ReferenceSchema,
   characteristic: [GroupCharacteristicSchema],
   member: [GroupMemberSchema],
-  typeName: { type: String, default: 'Group' },
-  _type: { type: String, default: 'FHIR::Group' },
 });
 
-class Group extends mongoose.Document {
-  constructor(object) {
-    super(object, GroupSchema);
-    this.typeName = 'Group';
-    this._type = 'FHIR::Group';
-  }
-}
-
 module.exports.GroupSchema = GroupSchema;
-module.exports.Group = Group;

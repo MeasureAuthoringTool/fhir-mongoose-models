@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { ContactPointSystemSchema } = require('./ContactPointSystem');
-const { ContactPointUseSchema } = require('./ContactPointUse');
+const { ContactPointSystemSchema } = require('./allSchemaHeaders.js');
+const { ContactPointUseSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { PeriodSchema } = require('./Period');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
 
-const ContactPointSchema = ElementSchemaFunction({
+ContactPointSchema.add(ElementSchema);
+ContactPointSchema.remove('id');
+ContactPointSchema.add({
   system: ContactPointSystemSchema,
   value: PrimitiveStringSchema,
   use: ContactPointUseSchema,
   rank: PrimitivePositiveIntSchema,
   period: PeriodSchema,
-  typeName: { type: String, default: 'ContactPoint' },
-  _type: { type: String, default: 'FHIR::ContactPoint' },
 });
 
-class ContactPoint extends mongoose.Document {
-  constructor(object) {
-    super(object, ContactPointSchema);
-    this.typeName = 'ContactPoint';
-    this._type = 'FHIR::ContactPoint';
-  }
-}
-
 module.exports.ContactPointSchema = ContactPointSchema;
-module.exports.ContactPoint = ContactPoint;

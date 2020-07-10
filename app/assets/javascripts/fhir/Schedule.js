@@ -1,14 +1,15 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ScheduleSchema } = require('./allSchemaHeaders.js');
 
-const ScheduleSchema = DomainResourceSchemaFunction({
+ScheduleSchema.add(DomainResourceSchema);
+ScheduleSchema.remove('id');
+ScheduleSchema.add({
   identifier: [IdentifierSchema],
   active: PrimitiveBooleanSchema,
   serviceCategory: [CodeableConceptSchema],
@@ -17,17 +18,6 @@ const ScheduleSchema = DomainResourceSchemaFunction({
   actor: [ReferenceSchema],
   planningHorizon: PeriodSchema,
   comment: PrimitiveStringSchema,
-  typeName: { type: String, default: 'Schedule' },
-  _type: { type: String, default: 'FHIR::Schedule' },
 });
 
-class Schedule extends mongoose.Document {
-  constructor(object) {
-    super(object, ScheduleSchema);
-    this.typeName = 'Schedule';
-    this._type = 'FHIR::Schedule';
-  }
-}
-
 module.exports.ScheduleSchema = ScheduleSchema;
-module.exports.Schedule = Schedule;

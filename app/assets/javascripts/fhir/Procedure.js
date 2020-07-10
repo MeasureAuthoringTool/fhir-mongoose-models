@@ -1,22 +1,23 @@
-const mongoose = require('mongoose/browser');
-const { AgeSchema } = require('./Age');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AgeSchema } = require('./allSchemaHeaders.js');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { ProcedureFocalDeviceSchema } = require('./ProcedureFocalDevice');
-const { ProcedurePerformerSchema } = require('./ProcedurePerformer');
-const { ProcedureStatusSchema } = require('./ProcedureStatus');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { ProcedureFocalDeviceSchema } = require('./allSchemaHeaders.js');
+const { ProcedurePerformerSchema } = require('./allSchemaHeaders.js');
+const { ProcedureStatusSchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ProcedureSchema } = require('./allSchemaHeaders.js');
 
-const ProcedureSchema = DomainResourceSchemaFunction({
+ProcedureSchema.add(DomainResourceSchema);
+ProcedureSchema.remove('id');
+ProcedureSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -49,17 +50,6 @@ const ProcedureSchema = DomainResourceSchemaFunction({
   focalDevice: [ProcedureFocalDeviceSchema],
   usedReference: [ReferenceSchema],
   usedCode: [CodeableConceptSchema],
-  typeName: { type: String, default: 'Procedure' },
-  _type: { type: String, default: 'FHIR::Procedure' },
 });
 
-class Procedure extends mongoose.Document {
-  constructor(object) {
-    super(object, ProcedureSchema);
-    this.typeName = 'Procedure';
-    this._type = 'FHIR::Procedure';
-  }
-}
-
 module.exports.ProcedureSchema = ProcedureSchema;
-module.exports.Procedure = Procedure;

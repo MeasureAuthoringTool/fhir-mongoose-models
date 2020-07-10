@@ -1,19 +1,20 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CoverageEligibilityRequestInsuranceSchema } = require('./CoverageEligibilityRequestInsurance');
-const { CoverageEligibilityRequestItemSchema } = require('./CoverageEligibilityRequestItem');
-const { CoverageEligibilityRequestSupportingInfoSchema } = require('./CoverageEligibilityRequestSupportingInfo');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityRequestInsuranceSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityRequestItemSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityRequestSupportingInfoSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { EligibilityRequestPurposeSchema } = require('./EligibilityRequestPurpose');
-const { EligibilityRequestStatusSchema } = require('./EligibilityRequestStatus');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { ReferenceSchema } = require('./Reference');
+const { EligibilityRequestPurposeSchema } = require('./allSchemaHeaders.js');
+const { EligibilityRequestStatusSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { CoverageEligibilityRequestSchema } = require('./allSchemaHeaders.js');
 
-const CoverageEligibilityRequestSchema = DomainResourceSchemaFunction({
+CoverageEligibilityRequestSchema.add(DomainResourceSchema);
+CoverageEligibilityRequestSchema.remove('id');
+CoverageEligibilityRequestSchema.add({
   identifier: [IdentifierSchema],
   status: EligibilityRequestStatusSchema,
   priority: CodeableConceptSchema,
@@ -29,17 +30,6 @@ const CoverageEligibilityRequestSchema = DomainResourceSchemaFunction({
   supportingInfo: [CoverageEligibilityRequestSupportingInfoSchema],
   insurance: [CoverageEligibilityRequestInsuranceSchema],
   item: [CoverageEligibilityRequestItemSchema],
-  typeName: { type: String, default: 'CoverageEligibilityRequest' },
-  _type: { type: String, default: 'FHIR::CoverageEligibilityRequest' },
 });
 
-class CoverageEligibilityRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, CoverageEligibilityRequestSchema);
-    this.typeName = 'CoverageEligibilityRequest';
-    this._type = 'FHIR::CoverageEligibilityRequest';
-  }
-}
-
 module.exports.CoverageEligibilityRequestSchema = CoverageEligibilityRequestSchema;
-module.exports.CoverageEligibilityRequest = CoverageEligibilityRequest;

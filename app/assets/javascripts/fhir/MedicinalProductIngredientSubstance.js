@@ -1,23 +1,13 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { MedicinalProductIngredientSpecifiedSubstanceStrengthSchema } = require('./MedicinalProductIngredientSpecifiedSubstanceStrength');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductIngredientSpecifiedSubstanceStrengthSchema } = require('./allSchemaHeaders.js');
+const { MedicinalProductIngredientSubstanceSchema } = require('./allSchemaHeaders.js');
 
-const MedicinalProductIngredientSubstanceSchema = BackboneElementSchemaFunction({
+MedicinalProductIngredientSubstanceSchema.add(BackboneElementSchema);
+MedicinalProductIngredientSubstanceSchema.remove('id');
+MedicinalProductIngredientSubstanceSchema.add({
   code: CodeableConceptSchema,
   strength: [MedicinalProductIngredientSpecifiedSubstanceStrengthSchema],
-  typeName: { type: String, default: 'MedicinalProductIngredientSubstance' },
-  _type: { type: String, default: 'FHIR::MedicinalProductIngredientSubstance' },
 });
 
-class MedicinalProductIngredientSubstance extends mongoose.Document {
-  constructor(object) {
-    super(object, MedicinalProductIngredientSubstanceSchema);
-    this.typeName = 'MedicinalProductIngredientSubstance';
-    this._type = 'FHIR::MedicinalProductIngredientSubstance';
-  }
-}
-
 module.exports.MedicinalProductIngredientSubstanceSchema = MedicinalProductIngredientSubstanceSchema;
-module.exports.MedicinalProductIngredientSubstance = MedicinalProductIngredientSubstance;

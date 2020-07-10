@@ -1,29 +1,19 @@
-const mongoose = require('mongoose/browser');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { IdentifierSchema } = require('./Identifier');
-const { MoneySchema } = require('./Money');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { ClaimResponsePaymentSchema } = require('./allSchemaHeaders.js');
 
-const ClaimResponsePaymentSchema = BackboneElementSchemaFunction({
+ClaimResponsePaymentSchema.add(BackboneElementSchema);
+ClaimResponsePaymentSchema.remove('id');
+ClaimResponsePaymentSchema.add({
   type: CodeableConceptSchema,
   adjustment: MoneySchema,
   adjustmentReason: CodeableConceptSchema,
   date: PrimitiveDateSchema,
   amount: MoneySchema,
   identifier: IdentifierSchema,
-  typeName: { type: String, default: 'ClaimResponsePayment' },
-  _type: { type: String, default: 'FHIR::ClaimResponsePayment' },
 });
 
-class ClaimResponsePayment extends mongoose.Document {
-  constructor(object) {
-    super(object, ClaimResponsePaymentSchema);
-    this.typeName = 'ClaimResponsePayment';
-    this._type = 'FHIR::ClaimResponsePayment';
-  }
-}
-
 module.exports.ClaimResponsePaymentSchema = ClaimResponsePaymentSchema;
-module.exports.ClaimResponsePayment = ClaimResponsePayment;

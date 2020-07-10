@@ -1,18 +1,19 @@
-const mongoose = require('mongoose/browser');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DocumentReferenceContentSchema } = require('./DocumentReferenceContent');
-const { DocumentReferenceContextSchema } = require('./DocumentReferenceContext');
-const { DocumentReferenceRelatesToSchema } = require('./DocumentReferenceRelatesTo');
-const { DocumentReferenceStatusSchema } = require('./DocumentReferenceStatus');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceContentSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceContextSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceRelatesToSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceStatusSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
-const { ReferredDocumentStatusSchema } = require('./ReferredDocumentStatus');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ReferredDocumentStatusSchema } = require('./allSchemaHeaders.js');
+const { DocumentReferenceSchema } = require('./allSchemaHeaders.js');
 
-const DocumentReferenceSchema = DomainResourceSchemaFunction({
+DocumentReferenceSchema.add(DomainResourceSchema);
+DocumentReferenceSchema.remove('id');
+DocumentReferenceSchema.add({
   masterIdentifier: IdentifierSchema,
   identifier: [IdentifierSchema],
   status: DocumentReferenceStatusSchema,
@@ -29,17 +30,6 @@ const DocumentReferenceSchema = DomainResourceSchemaFunction({
   securityLabel: [CodeableConceptSchema],
   content: [DocumentReferenceContentSchema],
   context: DocumentReferenceContextSchema,
-  typeName: { type: String, default: 'DocumentReference' },
-  _type: { type: String, default: 'FHIR::DocumentReference' },
 });
 
-class DocumentReference extends mongoose.Document {
-  constructor(object) {
-    super(object, DocumentReferenceSchema);
-    this.typeName = 'DocumentReference';
-    this._type = 'FHIR::DocumentReference';
-  }
-}
-
 module.exports.DocumentReferenceSchema = DocumentReferenceSchema;
-module.exports.DocumentReference = DocumentReference;

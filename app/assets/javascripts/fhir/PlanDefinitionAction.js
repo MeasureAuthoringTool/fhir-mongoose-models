@@ -1,33 +1,34 @@
-const mongoose = require('mongoose/browser');
-const { ActionCardinalityBehaviorSchema } = require('./ActionCardinalityBehavior');
-const { ActionGroupingBehaviorSchema } = require('./ActionGroupingBehavior');
-const { ActionPrecheckBehaviorSchema } = require('./ActionPrecheckBehavior');
-const { ActionRequiredBehaviorSchema } = require('./ActionRequiredBehavior');
-const { ActionSelectionBehaviorSchema } = require('./ActionSelectionBehavior');
-const { AgeSchema } = require('./Age');
+const { ActionCardinalityBehaviorSchema } = require('./allSchemaHeaders.js');
+const { ActionGroupingBehaviorSchema } = require('./allSchemaHeaders.js');
+const { ActionPrecheckBehaviorSchema } = require('./allSchemaHeaders.js');
+const { ActionRequiredBehaviorSchema } = require('./allSchemaHeaders.js');
+const { ActionSelectionBehaviorSchema } = require('./allSchemaHeaders.js');
+const { AgeSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { DataRequirementSchema } = require('./DataRequirement');
-const { DurationSchema } = require('./Duration');
-const { PeriodSchema } = require('./Period');
-const { PlanDefinitionActionConditionSchema } = require('./PlanDefinitionActionCondition');
-const { PlanDefinitionActionDynamicValueSchema } = require('./PlanDefinitionActionDynamicValue');
-const { PlanDefinitionActionParticipantSchema } = require('./PlanDefinitionActionParticipant');
-const { PlanDefinitionActionRelatedActionSchema } = require('./PlanDefinitionActionRelatedAction');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { RangeSchema } = require('./Range');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { RequestPrioritySchema } = require('./RequestPriority');
-const { TimingSchema } = require('./Timing');
-const { TriggerDefinitionSchema } = require('./TriggerDefinition');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionConditionSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionDynamicValueSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionParticipantSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionRelatedActionSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { RequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { TriggerDefinitionSchema } = require('./allSchemaHeaders.js');
+const { PlanDefinitionActionSchema } = require('./allSchemaHeaders.js');
 
-const PlanDefinitionActionSchema = BackboneElementSchemaFunction({
+PlanDefinitionActionSchema.add(BackboneElementSchema);
+PlanDefinitionActionSchema.remove('id');
+PlanDefinitionActionSchema.add({
   prefix: PrimitiveStringSchema,
   title: PrimitiveStringSchema,
   description: PrimitiveStringSchema,
@@ -62,17 +63,6 @@ const PlanDefinitionActionSchema = BackboneElementSchemaFunction({
   transform: PrimitiveCanonicalSchema,
   dynamicValue: [PlanDefinitionActionDynamicValueSchema],
   action: [PlanDefinitionActionSchema],
-  typeName: { type: String, default: 'PlanDefinitionAction' },
-  _type: { type: String, default: 'FHIR::PlanDefinitionAction' },
 });
 
-class PlanDefinitionAction extends mongoose.Document {
-  constructor(object) {
-    super(object, PlanDefinitionActionSchema);
-    this.typeName = 'PlanDefinitionAction';
-    this._type = 'FHIR::PlanDefinitionAction';
-  }
-}
-
 module.exports.PlanDefinitionActionSchema = PlanDefinitionActionSchema;
-module.exports.PlanDefinitionAction = PlanDefinitionAction;

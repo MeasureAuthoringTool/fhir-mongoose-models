@@ -1,58 +1,59 @@
-const mongoose = require('mongoose/browser');
-const { AddressSchema } = require('./Address');
-const { AgeSchema } = require('./Age');
-const { AnnotationSchema } = require('./Annotation');
-const { AttachmentSchema } = require('./Attachment');
-const { CodeableConceptSchema } = require('./CodeableConcept');
-const { CodingSchema } = require('./Coding');
-const { ContactDetailSchema } = require('./ContactDetail');
-const { ContactPointSchema } = require('./ContactPoint');
-const { ContributorSchema } = require('./Contributor');
-const { CountSchema } = require('./Count');
-const { DataRequirementSchema } = require('./DataRequirement');
-const { DistanceSchema } = require('./Distance');
-const { DosageSchema } = require('./Dosage');
-const { DurationSchema } = require('./Duration');
+const { AddressSchema } = require('./allSchemaHeaders.js');
+const { AgeSchema } = require('./allSchemaHeaders.js');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { AttachmentSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { ContactDetailSchema } = require('./allSchemaHeaders.js');
+const { ContactPointSchema } = require('./allSchemaHeaders.js');
+const { ContributorSchema } = require('./allSchemaHeaders.js');
+const { CountSchema } = require('./allSchemaHeaders.js');
+const { DataRequirementSchema } = require('./allSchemaHeaders.js');
+const { DistanceSchema } = require('./allSchemaHeaders.js');
+const { DosageSchema } = require('./allSchemaHeaders.js');
+const { DurationSchema } = require('./allSchemaHeaders.js');
 const { ElementSchema } = require('./Element');
-const { ElementSchemaFunction } = require('./Element');
-const { ExpressionSchema } = require('./Expression');
-const { HumanNameSchema } = require('./HumanName');
-const { IdentifierSchema } = require('./Identifier');
-const { MetaSchema } = require('./Meta');
-const { MoneySchema } = require('./Money');
-const { ParameterDefinitionSchema } = require('./ParameterDefinition');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveCodeSchema } = require('./PrimitiveCode');
-const { PrimitiveDateSchema } = require('./PrimitiveDate');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveDecimalSchema } = require('./PrimitiveDecimal');
-const { PrimitiveIdSchema } = require('./PrimitiveId');
-const { PrimitiveInstantSchema } = require('./PrimitiveInstant');
-const { PrimitiveIntegerSchema } = require('./PrimitiveInteger');
-const { PrimitiveMarkdownSchema } = require('./PrimitiveMarkdown');
-const { PrimitiveOidSchema } = require('./PrimitiveOid');
-const { PrimitivePositiveIntSchema } = require('./PrimitivePositiveInt');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveTimeSchema } = require('./PrimitiveTime');
-const { PrimitiveUnsignedIntSchema } = require('./PrimitiveUnsignedInt');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { PrimitiveUrlSchema } = require('./PrimitiveUrl');
-const { PrimitiveUuidSchema } = require('./PrimitiveUuid');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { RatioSchema } = require('./Ratio');
-const { ReferenceSchema } = require('./Reference');
-const { RelatedArtifactSchema } = require('./RelatedArtifact');
-const { SampledDataSchema } = require('./SampledData');
-const { SignatureSchema } = require('./Signature');
-const { TimingSchema } = require('./Timing');
-const { TriggerDefinitionSchema } = require('./TriggerDefinition');
-const { UsageContextSchema } = require('./UsageContext');
+const { ExpressionSchema } = require('./allSchemaHeaders.js');
+const { HumanNameSchema } = require('./allSchemaHeaders.js');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { MetaSchema } = require('./allSchemaHeaders.js');
+const { MoneySchema } = require('./allSchemaHeaders.js');
+const { ParameterDefinitionSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBase64BinarySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCodeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDecimalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIdSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveInstantSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveIntegerSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveMarkdownSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveOidSchema } = require('./allSchemaHeaders.js');
+const { PrimitivePositiveIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUnsignedIntSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUrlSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUuidSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { RelatedArtifactSchema } = require('./allSchemaHeaders.js');
+const { SampledDataSchema } = require('./allSchemaHeaders.js');
+const { SignatureSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { TriggerDefinitionSchema } = require('./allSchemaHeaders.js');
+const { UsageContextSchema } = require('./allSchemaHeaders.js');
+const { ElementDefinitionExampleSchema } = require('./allSchemaHeaders.js');
 
-const ElementDefinitionExampleSchema = ElementSchemaFunction({
+ElementDefinitionExampleSchema.add(ElementSchema);
+ElementDefinitionExampleSchema.remove('id');
+ElementDefinitionExampleSchema.add({
   label: PrimitiveStringSchema,
   valueBase64Binary: PrimitiveBase64BinarySchema,
   valueBoolean: PrimitiveBooleanSchema,
@@ -104,17 +105,6 @@ const ElementDefinitionExampleSchema = ElementSchemaFunction({
   valueUsageContext: UsageContextSchema,
   valueDosage: DosageSchema,
   valueMeta: MetaSchema,
-  typeName: { type: String, default: 'ElementDefinitionExample' },
-  _type: { type: String, default: 'FHIR::ElementDefinitionExample' },
 });
 
-class ElementDefinitionExample extends mongoose.Document {
-  constructor(object) {
-    super(object, ElementDefinitionExampleSchema);
-    this.typeName = 'ElementDefinitionExample';
-    this._type = 'FHIR::ElementDefinitionExample';
-  }
-}
-
 module.exports.ElementDefinitionExampleSchema = ElementDefinitionExampleSchema;
-module.exports.ElementDefinitionExample = ElementDefinitionExample;

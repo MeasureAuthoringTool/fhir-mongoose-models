@@ -1,13 +1,14 @@
-const mongoose = require('mongoose/browser');
-const { AuditEventEntityDetailSchema } = require('./AuditEventEntityDetail');
+const { AuditEventEntityDetailSchema } = require('./allSchemaHeaders.js');
 const { BackboneElementSchema } = require('./BackboneElement');
-const { BackboneElementSchemaFunction } = require('./BackboneElement');
-const { CodingSchema } = require('./Coding');
-const { PrimitiveBase64BinarySchema } = require('./PrimitiveBase64Binary');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { ReferenceSchema } = require('./Reference');
+const { CodingSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBase64BinarySchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { AuditEventEntitySchema } = require('./allSchemaHeaders.js');
 
-const AuditEventEntitySchema = BackboneElementSchemaFunction({
+AuditEventEntitySchema.add(BackboneElementSchema);
+AuditEventEntitySchema.remove('id');
+AuditEventEntitySchema.add({
   what: ReferenceSchema,
   type: CodingSchema,
   role: CodingSchema,
@@ -17,17 +18,6 @@ const AuditEventEntitySchema = BackboneElementSchemaFunction({
   description: PrimitiveStringSchema,
   query: PrimitiveBase64BinarySchema,
   detail: [AuditEventEntityDetailSchema],
-  typeName: { type: String, default: 'AuditEventEntity' },
-  _type: { type: String, default: 'FHIR::AuditEventEntity' },
 });
 
-class AuditEventEntity extends mongoose.Document {
-  constructor(object) {
-    super(object, AuditEventEntitySchema);
-    this.typeName = 'AuditEventEntity';
-    this._type = 'FHIR::AuditEventEntity';
-  }
-}
-
 module.exports.AuditEventEntitySchema = AuditEventEntitySchema;
-module.exports.AuditEventEntity = AuditEventEntity;

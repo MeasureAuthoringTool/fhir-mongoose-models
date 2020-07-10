@@ -1,25 +1,26 @@
-const mongoose = require('mongoose/browser');
-const { AnnotationSchema } = require('./Annotation');
-const { CodeableConceptSchema } = require('./CodeableConcept');
+const { AnnotationSchema } = require('./allSchemaHeaders.js');
+const { CodeableConceptSchema } = require('./allSchemaHeaders.js');
 const { DomainResourceSchema } = require('./DomainResource');
-const { DomainResourceSchemaFunction } = require('./DomainResource');
-const { IdentifierSchema } = require('./Identifier');
-const { PeriodSchema } = require('./Period');
-const { PrimitiveBooleanSchema } = require('./PrimitiveBoolean');
-const { PrimitiveCanonicalSchema } = require('./PrimitiveCanonical');
-const { PrimitiveDateTimeSchema } = require('./PrimitiveDateTime');
-const { PrimitiveStringSchema } = require('./PrimitiveString');
-const { PrimitiveUriSchema } = require('./PrimitiveUri');
-const { QuantitySchema } = require('./Quantity');
-const { RangeSchema } = require('./Range');
-const { RatioSchema } = require('./Ratio');
-const { ReferenceSchema } = require('./Reference');
-const { ServiceRequestIntentSchema } = require('./ServiceRequestIntent');
-const { ServiceRequestPrioritySchema } = require('./ServiceRequestPriority');
-const { ServiceRequestStatusSchema } = require('./ServiceRequestStatus');
-const { TimingSchema } = require('./Timing');
+const { IdentifierSchema } = require('./allSchemaHeaders.js');
+const { PeriodSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveBooleanSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveCanonicalSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveDateTimeSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveStringSchema } = require('./allSchemaHeaders.js');
+const { PrimitiveUriSchema } = require('./allSchemaHeaders.js');
+const { QuantitySchema } = require('./allSchemaHeaders.js');
+const { RangeSchema } = require('./allSchemaHeaders.js');
+const { RatioSchema } = require('./allSchemaHeaders.js');
+const { ReferenceSchema } = require('./allSchemaHeaders.js');
+const { ServiceRequestIntentSchema } = require('./allSchemaHeaders.js');
+const { ServiceRequestPrioritySchema } = require('./allSchemaHeaders.js');
+const { ServiceRequestStatusSchema } = require('./allSchemaHeaders.js');
+const { TimingSchema } = require('./allSchemaHeaders.js');
+const { ServiceRequestSchema } = require('./allSchemaHeaders.js');
 
-const ServiceRequestSchema = DomainResourceSchemaFunction({
+ServiceRequestSchema.add(DomainResourceSchema);
+ServiceRequestSchema.remove('id');
+ServiceRequestSchema.add({
   identifier: [IdentifierSchema],
   instantiatesCanonical: [PrimitiveCanonicalSchema],
   instantiatesUri: [PrimitiveUriSchema],
@@ -58,17 +59,6 @@ const ServiceRequestSchema = DomainResourceSchemaFunction({
   note: [AnnotationSchema],
   patientInstruction: PrimitiveStringSchema,
   relevantHistory: [ReferenceSchema],
-  typeName: { type: String, default: 'ServiceRequest' },
-  _type: { type: String, default: 'FHIR::ServiceRequest' },
 });
 
-class ServiceRequest extends mongoose.Document {
-  constructor(object) {
-    super(object, ServiceRequestSchema);
-    this.typeName = 'ServiceRequest';
-    this._type = 'FHIR::ServiceRequest';
-  }
-}
-
 module.exports.ServiceRequestSchema = ServiceRequestSchema;
-module.exports.ServiceRequest = ServiceRequest;
